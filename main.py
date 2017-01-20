@@ -51,9 +51,28 @@ class Home(Handler):
 
 class ChartViewer(Handler):
 	def get(self):
-		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.cve_periodo == 201611, DatoCNBV.cve_institucion == 5 ).fetch()
-		self.print_html('ChartViewer.html', datos_cnbv = datos_cnbv)
 		
+		self.print_html('ChartViewer.html')
+
+
+class CNBVQueries(Handler):
+	def post(self):
+		chart_details = json.loads(self.request.body)
+		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.cve_periodo == 201611, DatoCNBV.cve_institucion == 5, DatoCNBV.cve_dato == 4  ).fetch()
+		rows = []
+		for dp in datos_cnbv:
+			rows.append([dp.dl_TEC, dp.saldo])
+
+		chartData = {
+			'columns' : [['string', 'Tamano empresa'],['number', 'Numero de acreditados']],
+			'rows' : rows
+		}
+		print chartData
+
+		self.response.out.write(json.dumps({
+			'chartData':chartData
+		}))
+
 
 
 class LoadCSV(Handler):
@@ -61,7 +80,7 @@ class LoadCSV(Handler):
 		file_name = 'mini_040_11l_R0_20170110.csv'
 		csv_path = self.create_csv_path(file_name)
 		self.load_cnbv_csv(csv_path)
-		self.redirect('/')	
+		self.redirect('/ChartViewer')	
 
 
 	def create_csv_path(self, file_name):
@@ -100,5 +119,6 @@ class LoadCSV(Handler):
 app = webapp2.WSGIApplication([
     ('/', Home),
     ('/ChartViewer', ChartViewer),
+    ('/CNBVQueries',CNBVQueries),
     ('/LoadCSV', LoadCSV)
 ], debug=True)

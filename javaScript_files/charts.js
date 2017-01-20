@@ -10,26 +10,86 @@ google.charts.setOnLoadCallback(drawChart);
 // draws it.
 console.log('Si esta leyendo este archivo')
 
+
+function requestChartData(){
+  $.ajax({
+    type: "POST",
+    url: "/CNBVQueries",
+    dataType: 'json',
+    data: JSON.stringify({
+      'data_requested': 'TestDataCNBV', 
+    })
+  })
+  .done(function(data){
+    return data['chartData']
+    });    
+};
+
 function drawChart() {
 
   // Create the data table.
-  var data = new google.visualization.DataTable();
-  data.addColumn('string', 'Topping');
-  data.addColumn('number', 'Slices');
-  data.addRows([
-    ['Mushrooms', 3],
-    ['Onions', 1],
-    ['Olives', 1],
-    ['Zucchini', 1],
-    ['Pepperoni', 2]
-  ]);
+  
+  
+  $.ajax({
+    type: "POST",
+    url: "/CNBVQueries",
+    dataType: 'json',
+    data: JSON.stringify({
+      'data_requested': 'TestDataCNBV', 
+    })
+  })
+  .done(function(raw_data){
+    var data = new google.visualization.DataTable();
+    var raw_data = raw_data ['chartData'];
+      console.log(raw_data)
 
-  // Set chart options
-  var options = {'title':'How Much Pizza I Ate Last Night',
-                 'width':400,
-                 'height':300};
+    for (i in raw_data['columns']){
+      column = raw_data['columns'][i]
+      //console.log(column)
+      data.addColumn(column[0],column[1]);
+    };
 
-  // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-  chart.draw(data, options);
+    data.addRows(raw_data['rows'])
+    // for ( i in raw_data['rows'] ){
+    //    row = raw_data['rows'][i]
+    //    console.log(raw_data['rows'])
+    //    console.log(row)
+    //    data.addRows(rows)
+    // };
+
+    // Set chart options
+    var options = {'title':'Distribucion de numero de acreditados',
+                   'width':400,
+                   'height':300};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }); 
 }
+
+
+// La funcion original
+// function drawChart() {
+
+//   // Create the data table.
+//   var data = new google.visualization.DataTable();
+//   data.addColumn('string', 'Topping');
+//   data.addColumn('number', 'Slices');
+//   data.addRows([
+//     ['Mushrooms', 3],
+//     ['Onions', 1],
+//     ['Olives', 1],
+//     ['Zucchini', 1],
+//     ['Pepperoni', 2]
+//   ]);
+
+//   // Set chart options
+//   var options = {'title':'How Much Pizza I Ate Last Night',
+//                  'width':400,
+//                  'height':300};
+
+//   // Instantiate and draw our chart, passing in some options.
+//   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+//   chart.draw(data, options);
+// }
