@@ -1,0 +1,10 @@
+﻿archivo_fuente,extraccion,cve_periodo,cve_institucion,cve_TEC,cve_dato,saldo,dl_institucion,dl_dato,dl_TEC
+040_11l_R0,20170110,201510,040138,4,3,1018,ABC Capital,1. Número de Créditos,Grande
+040_11l_R0,20170110,200912,040014,1,1,8065984141,Santander,3. Cartera Vigente,Micro
+040_11l_R0,20170110,201111,040106,3,0,12444239,Bank of America,2. Cartera Total,Mediana
+040_11l_R0,20170110,201403,040128,3,2,20181970,Autofin,4. Cartera Vencida,Mediana
+040_11l_R0,20170110,201507,040108,4,3,41,Bank of Tokyo-Mitsubishi UFJ,1. Número de Créditos,Grande
+040_11l_R0,20170110,201404,040128,1,3,69,Autofin,1. Número de Créditos,Micro
+040_11l_R0,20170110,201304,040014,3,3,2968,Santander,1. Número de Créditos,Mediana
+040_11l_R0,20170110,201508,040132,1,3,202,Multiva,1. Número de Créditos,Micro
+040_11l_R0,20170110,201408,040030,3,0,5983209391,Banco del Bajío,2. Cartera Total,Mediana

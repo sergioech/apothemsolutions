@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 # -*- coding: utf-8 -*-
-import webapp2, jinja2, os, re, random, string, hashlib, json, logging, math 
+import webapp2, jinja2, os, csv, re, random, string, hashlib, json, logging, math 
 
 from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
@@ -23,6 +23,9 @@ from google.appengine.api import mail
 
 from python_files import datastore, constants
 constants = constants.constants
+
+DatoCNBV = datastore.DatoCNBV
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -45,10 +48,57 @@ class Home(Handler):
 	def get(self):
 		self.print_html('Home.html', message = 'Hello World!')
 
-    # def get(self):
-    #     self.response.write('Hello World!')
+
+class ChartViewer(Handler):
+	def get(self):
+		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.cve_periodo == 201611, DatoCNBV.cve_institucion == 5 ).fetch()
+		self.print_html('ChartViewer.html', datos_cnbv = datos_cnbv)
+		
+
+
+class LoadCSV(Handler):
+	def get(self):
+		file_name = 'mini_040_11l_R0_20170110.csv'
+		csv_path = self.create_csv_path(file_name)
+		self.load_cnbv_csv(csv_path)
+		self.redirect('/')	
+
+
+	def create_csv_path(self, file_name):
+		return os.path.join(os.path.dirname(__file__), 'csv_files', file_name)
+
+
+	def load_cnbv_csv(self, csv_path):
+		f = open(csv_path, 'rU')
+		f.close
+		csv_f = csv.reader(f, dialect=csv.excel_tab)
+		attributes = csv_f.next()[0].decode('utf-8-sig').split(',')
+		print
+		print 'Estos son los attributos'
+		print attributes
+		print
+		for row in csv_f:
+			new_dp = DatoCNBV()
+			i = 0
+			raw_dp = row[0].split(',')
+			for a_key in attributes:
+				a_val = raw_dp[i]
+
+				if a_key in ['extraccion', 'cve_periodo', 'cve_institucion', 'cve_TEC', 'cve_dato']:
+					setattr(new_dp, a_key, int(a_val))
+				elif a_key in ['archivo_fuente', 'dl_institucion', 'dl_dato', 'dl_TEC']:
+					setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
+				elif a_key in ['saldo']:
+					setattr(new_dp, a_key, float(a_val))		
+				
+				i += 1							
+			new_dp.put()
+
+		return
 
 
 app = webapp2.WSGIApplication([
-    ('/', Home)
+    ('/', Home),
+    ('/ChartViewer', ChartViewer),
+    ('/LoadCSV', LoadCSV)
 ], debug=True)

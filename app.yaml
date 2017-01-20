@@ -9,9 +9,6 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: .*
-  script: main.app
-
 - url: /bootstrap
   static_dir: bootstrap
 
@@ -26,9 +23,12 @@ handlers:
   application_readable: True
 
 
+- url: .*
+  script: main.app
+
 libraries:
 - name: webapp2
   version: "2.5.2"
 
 - name: jinja2
-  version: "2.6"  
+  version: "2.6" 
