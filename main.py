@@ -58,14 +58,18 @@ class ChartViewer(Handler):
 class CNBVQueries(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
-		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.cve_periodo == 201611, DatoCNBV.cve_institucion == 5, DatoCNBV.cve_dato == 4  ).fetch()
+		cve_dato = chart_details['cve_dato']
+		dl_dato = constants['cve_dl_dato'][cve_dato]
+
+		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.cve_periodo == 201611, DatoCNBV.cve_institucion == 5, DatoCNBV.cve_dato == int(cve_dato)).fetch()
 		rows = []
 		for dp in datos_cnbv:
 			rows.append([dp.dl_TEC, dp.saldo])
 
 		chartData = {
-			'columns' : [['string', 'Tamano empresa'],['number', 'Numero de acreditados']],
-			'rows' : rows
+			'columns' : [['string', 'Tamano empresa'],['number', dl_dato]],
+			'rows' : rows,
+			'title': 'Distribucion de ' + dl_dato
 		}
 		print chartData
 
@@ -117,7 +121,7 @@ class LoadCSV(Handler):
 
 
 app = webapp2.WSGIApplication([
-    ('/', Home),
+    ('/', ChartViewer),
     ('/ChartViewer', ChartViewer),
     ('/CNBVQueries',CNBVQueries),
     ('/LoadCSV', LoadCSV)

@@ -2,8 +2,29 @@
 
 {% block content %}
 <div class="row"> 	
-	<div class="col-xs-12"> 
-		<h1>Chart Viewer</h1>
+	<div class="col-xs-3" style="background-color: rgb(240,247,253);">
+		<form method="post">
+			<div style="margin-top: 10px;">
+				<label>Dato</label>				
+				<select class="form-control" name="cve_dato" id="cve_dato" style="margin-bottom:7px;">	
+					<option value="0"> Cartera total </option>	
+					<option value="1"> Cartera vigente </option>
+					<option value="2"> Cartera vencida </option>
+					<option value="3"> Número de créditos </option>
+					<option value="4"> Número de acreditados</option>
+				</select> 
+			</div>
+			<div style="margin-bottom: 20px;">
+				<button type="button" class="btn btn-primary btn-sm UpdateChartButton" name="action_description" value='UpdateChart'> Graficar <span style="margin-left:2px;" class="glyphicon glyphicon-pencil"></span></button>
+			</div>
+			
+		</form>
+	</div>	
+	<div class="col-xs-9" style="padding-left: 30px;">
+		
+		<div id="ChartLead">
+			<h1><span id="chart_lead"></span></h1>	
+		</div> 
 		<div id="chart_div"></div>
 	</div>
 </div>	
