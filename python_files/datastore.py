@@ -18,3 +18,11 @@ class DatoCNBV(ndb.Model):
 	dl_institucion = ndb.StringProperty()
 	dl_dato = ndb.StringProperty()
 	dl_TEC = ndb.StringProperty()
+
+
+class CsvFile(ndb.Model):
+	created = ndb.DateTimeProperty(auto_now_add=True)
+	blob_key = ndb.BlobKeyProperty()
+
+	file_name = ndb.StringProperty()
+	description = ndb.StringProperty()

@@ -21,6 +21,9 @@ from datetime import datetime, timedelta, time
 from google.appengine.ext import ndb
 from google.appengine.api import mail
 
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
+
 from python_files import datastore, constants
 constants = constants.constants
 
@@ -81,21 +84,14 @@ class CNBVQueries(Handler):
 
 class LoadCSV(Handler):
 	def get(self):
-		file_name = 'mini_040_11l_R0_20170110.csv'
-		csv_path = self.create_csv_path(file_name)
-		self.load_cnbv_csv(csv_path)
-		self.redirect('/ChartViewer')	
+		blob_key = self.request.get('blob_key')
+		self.load_cnbv_csv(blob_key)
+		
 
-
-	def create_csv_path(self, file_name):
-		return os.path.join(os.path.dirname(__file__), 'csv_files', file_name)
-
-
-	def load_cnbv_csv(self, csv_path):
-		f = open(csv_path, 'rU')
-		f.close
-		csv_f = csv.reader(f, dialect=csv.excel_tab)
-		attributes = csv_f.next()[0].decode('utf-8-sig').split(',')
+	def load_cnbv_csv(self, blob_key):
+		blob_reader = blobstore.BlobReader(blob_key).read()
+		csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
+		attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
 		print
 		print 'Estos son los attributos'
 		print attributes
@@ -116,13 +112,58 @@ class LoadCSV(Handler):
 				
 				i += 1							
 			new_dp.put()
-
 		return
+
+
+# class ClearDataStore(webapp2.RequestHandler):
+# 	def get(self):
+
+
+
+
+class CsvUploadFormHandler(webapp2.RequestHandler):
+    def get(self):
+        upload_url = blobstore.create_upload_url('/upload_csv')
+        # To upload files to the blobstore, the request method must be "POST"
+        # and enctype must be set to "multipart/form-data".
+        self.response.out.write("""
+			<html><body>
+			<form action="{0}" method="POST" enctype="multipart/form-data">
+			  Upload File: <input type="file" name="file"><br>
+			  <input type="submit" name="submit" value="Submit">
+			</form>
+			</body></html>""".format(upload_url))
+
+
+class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+    def post(self):
+		upload = self.get_uploads()[0]
+		csv_file = CsvFile(
+			file_name='Test upload 01',
+			blob_key=upload.key())
+		csv_file.put()
+        self.redirect('/LoadCSV?blob_key=%s' % upload.key())
+
+
+class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, photo_key):
+        if not blobstore.get(photo_key):
+            self.error(404)
+        else:
+            self.send_blob(photo_key)
+
+
+
 
 
 app = webapp2.WSGIApplication([
     ('/', ChartViewer),
     ('/ChartViewer', ChartViewer),
     ('/CNBVQueries',CNBVQueries),
-    ('/LoadCSV', LoadCSV)
+    ('/LoadCSV', LoadCSV),
+    ('/CsvUploadFormHandler', CsvUploadFormHandler),
+    ('/upload_csv', CsvUploadHandler),
+    ('/view_photo/([^/]+)?', ViewPhotoHandler)
 ], debug=True)
+
+
