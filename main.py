@@ -28,6 +28,7 @@ from python_files import datastore, constants
 constants = constants.constants
 
 DatoCNBV = datastore.DatoCNBV
+CsvFile = datastore.CsvFile
 
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
@@ -86,10 +87,10 @@ class LoadCSV(Handler):
 	def get(self):
 		blob_key = self.request.get('blob_key')
 		self.load_cnbv_csv(blob_key)
-		
+		self.redirect('/')
 
 	def load_cnbv_csv(self, blob_key):
-		blob_reader = blobstore.BlobReader(blob_key).read()
+		blob_reader = blobstore.BlobReader(blob_key)
 		csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
 		attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
 		print
@@ -115,11 +116,6 @@ class LoadCSV(Handler):
 		return
 
 
-# class ClearDataStore(webapp2.RequestHandler):
-# 	def get(self):
-
-
-
 
 class CsvUploadFormHandler(webapp2.RequestHandler):
     def get(self):
@@ -142,16 +138,7 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 			file_name='Test upload 01',
 			blob_key=upload.key())
 		csv_file.put()
-        self.redirect('/LoadCSV?blob_key=%s' % upload.key())
-
-
-class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
-    def get(self, photo_key):
-        if not blobstore.get(photo_key):
-            self.error(404)
-        else:
-            self.send_blob(photo_key)
-
+		self.redirect('/LoadCSV?blob_key=%s' % upload.key())
 
 
 
@@ -162,8 +149,7 @@ app = webapp2.WSGIApplication([
     ('/CNBVQueries',CNBVQueries),
     ('/LoadCSV', LoadCSV),
     ('/CsvUploadFormHandler', CsvUploadFormHandler),
-    ('/upload_csv', CsvUploadHandler),
-    ('/view_photo/([^/]+)?', ViewPhotoHandler)
+    ('/upload_csv', CsvUploadHandler)
 ], debug=True)
 
 
