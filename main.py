@@ -88,7 +88,6 @@ class CNBVQueries(Handler):
 		}))
 
 
-
 class LoadCSV(Handler):
 	def get(self):
 		blob_key = self.request.get('blob_key')
@@ -159,7 +158,7 @@ def load_cnbv_csv(blob_key, start_key=None):
 
 
 
-class CsvUploadFormHandler(webapp2.RequestHandler):
+class CsvUploadFormHandler(Handler):
     def get(self):
         upload_url = blobstore.create_upload_url('/upload_csv')
         # To upload files to the blobstore, the request method must be "POST"
@@ -214,6 +213,15 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 
+class DeleteAllCsvs(Handler):
+	def get(self):
+		CsvFiles = CsvFile.query().fetch()
+		for csv_file in CsvFiles:
+			blob_key = csv_file.blob_key
+			blobstore.delete(blob_key)
+			csv_file.key.delete()
+		self.redirect('/')
+
 
 
 app = webapp2.WSGIApplication([
@@ -222,7 +230,8 @@ app = webapp2.WSGIApplication([
     ('/CNBVQueries',CNBVQueries),
     ('/LoadCSV', LoadCSV),
     ('/CsvUploadFormHandler', CsvUploadFormHandler),
-    ('/upload_csv', CsvUploadHandler)
+    ('/upload_csv', CsvUploadHandler),
+    ('/DeleteAllCsvs',DeleteAllCsvs)
 ], debug=True)
 
 
