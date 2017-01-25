@@ -22,9 +22,13 @@ handlers:
   static_dir: csv_files
   application_readable: True
 
-
 - url: .*
   script: main.app
+
+- url: /_ah/queue/deferred
+  script: google.appengine.ext.deferred.deferred.application
+  login: admin
+
 
 libraries:
 - name: webapp2
@@ -32,3 +36,6 @@ libraries:
 
 - name: jinja2
   version: "2.6" 
+
+builtins:
+- deferred: on

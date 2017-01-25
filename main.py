@@ -24,6 +24,12 @@ from google.appengine.api import mail
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
+from google.appengine.ext import deferred
+from google.appengine.runtime import DeadlineExceededError
+
+# from google.appengine.api import urlfetch
+# urlfetch.set_default_fetch_deadline(900)
+
 from python_files import datastore, constants
 constants = constants.constants
 
@@ -86,9 +92,98 @@ class CNBVQueries(Handler):
 class LoadCSV(Handler):
 	def get(self):
 		blob_key = self.request.get('blob_key')
-		self.load_cnbv_csv(blob_key)
+		load_cnbv_csv(blob_key)
 		self.redirect('/')
 
+
+def load_cnbv_csv(blob_key, start_key=None):
+	blob_reader = blobstore.BlobReader(blob_key)
+	csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
+	attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
+	print
+	print 'Estos son los attributos'
+	print attributes
+	print
+	
+	logging.warning('Rows read when starting')
+	logging.warning(start_key)
+
+
+	if start_key:
+		for i in range(0, start_key):
+			csv_f.next()
+	else:
+		start_key = 0
+
+	try:
+		rows_read = 0
+		for row in csv_f:
+			i = 0
+			new_dp = DatoCNBV()
+			raw_dp = row[0].split(',')
+			for a_key in attributes:
+				a_val = raw_dp[i]
+
+				if a_key in ['extraccion', 'cve_periodo', 'cve_institucion', 'cve_TEC', 'cve_dato']:
+					setattr(new_dp, a_key, int(a_val))
+				elif a_key in ['archivo_fuente', 'dl_institucion', 'dl_dato', 'dl_TEC']:
+					setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
+				elif a_key in ['saldo']:
+					setattr(new_dp, a_key, float(a_val))		
+				
+				i += 1							
+			new_dp.put()
+			rows_read += 1
+			
+			# print 'Rows read...'
+			# print rows_read
+			# print
+			# print row
+			# print new_dp
+			# print
+
+			# if rows_read % 10 == 0:
+			# 	raise DeadlineExceededError
+
+	except DeadlineExceededError:
+		print
+		print "Con este valor entra rows read a la excepcion"
+		print rows_read
+		# print 'Ya fue el DeadLineExceededError'
+		deferred.defer(load_cnbv_csv, blob_key, start_key + rows_read)
+		return
+	return
+
+
+
+
+
+
+class CsvUploadFormHandler(webapp2.RequestHandler):
+    def get(self):
+        upload_url = blobstore.create_upload_url('/upload_csv')
+        # To upload files to the blobstore, the request method must be "POST"
+        # and enctype must be set to "multipart/form-data".
+        self.response.out.write("""
+			<html><body>
+			<form action="{0}" method="POST" enctype="multipart/form-data">
+			  Upload File: <input type="file" name="file"><br>
+			  <input type="submit" name="submit" value="Submit">
+			</form>
+			</body></html>""".format(upload_url))
+
+
+class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+	def post(self):
+		upload = self.get_uploads()[0]
+		csv_file = CsvFile(
+			file_name='Test upload 01',
+			blob_key=upload.key())
+		csv_file.put()		
+		# self.load_cnbv_csv(upload.key())
+		# self.redirect('/')
+
+		self.redirect('/LoadCSV?blob_key=%s' % upload.key())
 	def load_cnbv_csv(self, blob_key):
 		blob_reader = blobstore.BlobReader(blob_key)
 		csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
@@ -111,34 +206,12 @@ class LoadCSV(Handler):
 				elif a_key in ['saldo']:
 					setattr(new_dp, a_key, float(a_val))		
 				
-				i += 1							
+				i += 1	
+				if i % 100 == 0:
+					print i
 			new_dp.put()
 		return
 
-
-
-class CsvUploadFormHandler(webapp2.RequestHandler):
-    def get(self):
-        upload_url = blobstore.create_upload_url('/upload_csv')
-        # To upload files to the blobstore, the request method must be "POST"
-        # and enctype must be set to "multipart/form-data".
-        self.response.out.write("""
-			<html><body>
-			<form action="{0}" method="POST" enctype="multipart/form-data">
-			  Upload File: <input type="file" name="file"><br>
-			  <input type="submit" name="submit" value="Submit">
-			</form>
-			</body></html>""".format(upload_url))
-
-
-class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def post(self):
-		upload = self.get_uploads()[0]
-		csv_file = CsvFile(
-			file_name='Test upload 01',
-			blob_key=upload.key())
-		csv_file.put()
-		self.redirect('/LoadCSV?blob_key=%s' % upload.key())
 
 
 
