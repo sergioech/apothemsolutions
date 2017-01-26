@@ -2,27 +2,45 @@ from google.appengine.ext import ndb
 
 #--- datastore classes ----------
 
-class DatoCNBV(ndb.Model):
-	
-	created = ndb.DateTimeProperty(auto_now_add=True)	
-	archivo_fuente = ndb.StringProperty(required=True)
-	extraccion = ndb.IntegerProperty(required=True)
-
-	#Aparecen en: 040_11l_R0
-	cve_periodo = ndb.IntegerProperty()
-	cve_institucion = ndb.IntegerProperty()
-	cve_TEC = ndb.IntegerProperty()
-	cve_dato = ndb.IntegerProperty()
-	saldo = ndb.FloatProperty()
-	
-	dl_institucion = ndb.StringProperty()
-	dl_dato = ndb.StringProperty()
-	dl_TEC = ndb.StringProperty()
+class TablaCNBV(ndb.Model):
+	created = ndb.DateTimeProperty(auto_now_add=True)
+	nombre = ndb.StringProperty(required=True)
+	descripcion = ndb.StringProperty(required=True)
+	url_fuente = ndb.StringProperty()
+	unidades = ndb.JsonProperty()
+	registros = ndb.IntegerProperty()
+	diccionarios = ndb.JsonProperty()
 
 
-class CsvFile(ndb.Model):
+class CsvCNBV(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	blob_key = ndb.BlobKeyProperty()
+	Key_TablaCNBV = ndb.KeyProperty(kind=TablaCNBV)	
+	nombre = ndb.StringProperty()
+	covertura = ndb.JsonProperty()
+	rows_transfered = ndb.IntegerProperty()
 
-	file_name = ndb.StringProperty()
-	description = ndb.StringProperty()
+
+class DatoCNBV(ndb.Model):
+	
+	created = ndb.DateTimeProperty(auto_now_add=True)
+	tabla = ndb.KeyProperty(kind=TablaCNBV, required=True)	
+	archivo_fuente = ndb.KeyProperty(kind=CsvCNBV, required=True)
+		
+	periodo = ndb.IntegerProperty()
+	institucion = ndb.StringProperty()
+	tec = ndb.StringProperty()
+	estado = ndb.StringProperty()
+
+	#Formato vertical
+	tipo_valor = ndb.StringProperty()
+	valor = ndb.FloatProperty()
+	
+	#Formato horizontal
+	saldo_total = ndb.FloatProperty()
+	creditos = ndb.FloatProperty()
+	acreditados = ndb.FloatProperty()
+
+
+
+	

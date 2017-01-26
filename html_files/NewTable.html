@@ -1,0 +1,31 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<div class="row"> 	
+	<div class="col-xs-2"></div>
+	<div class="col-xs-8"> 
+		<div class="row" style="margin-top: 20px;">
+			<form method="POST">
+				<div class="col-xs-3">
+					<label>Nombre de la tabla</label>
+					<input type="text" class="form-control" placeholder="e.g. 040_11l_R0" name="nombre">	
+				</div>
+				
+				<div class="col-xs-9">
+					<label>Descripción</label>
+					<input type="text" class="form-control" placeholder="e.g. Número de créditos, acreditados y saldo por tamaño de empresa" name="descripcion">	
+				</div>
+				
+				<div class="col-xs-10">
+					<label>URL de la fuente</label>
+					<input type="text" class="form-control" placeholder="e.g. http://portafolioinfdoctos.cnbv.gob.mx/Documentacion/minfo/040_11l_R0.xls" name="url_fuente">	
+				</div>
+
+				<div class="col-xs-2">
+					<input style="margin-top: 25px;" type="submit" class="form-control" name="submit" value="Crear tabla">	
+				</div>
+			</form>
+		</div>
+	</div>
+</div>	
+{% endblock %}
