@@ -30,8 +30,9 @@ from google.appengine.runtime import DeadlineExceededError
 # from google.appengine.api import urlfetch
 # urlfetch.set_default_fetch_deadline(900)
 
-from python_files import datastore, constants
+from python_files import datastore, constants, diccionarios_CNBV
 constants = constants.constants
+diccionarios_CNBV = diccionarios_CNBV.diccionarios_CNBV
 
 DatoCNBV = datastore.DatoCNBV
 CsvCNBV = datastore.CsvCNBV
@@ -66,20 +67,23 @@ class ChartViewer(Handler):
 
 	def post(self):
 		chart_details = json.loads(self.request.body)
-		cve_dato = chart_details['cve_dato']
-		dl_dato = constants['cve_dl_dato'][cve_dato]
 
-		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.cve_periodo == 201611, DatoCNBV.cve_institucion == 5, DatoCNBV.cve_dato == int(cve_dato)).fetch()
+		tipo_valor = chart_details['tipo_valor']
+
+		dl_dato = diccionarios_CNBV['des_040_11l_R0']['tipo_valor'][tipo_valor]
+		desc_tec = diccionarios_CNBV['des_040_11l_R0']['tec']
+
+		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.periodo == 201611, DatoCNBV.institucion == '5', DatoCNBV.tipo_valor == tipo_valor).fetch()
 		rows = []
 		for dp in datos_cnbv:
-			rows.append([dp.dl_TEC, dp.saldo])
+			rows.append([desc_tec[dp.tec], dp.valor])
 
 		chartData = {
 			'columns' : [['string', 'Tamano empresa'],['number', dl_dato]],
 			'rows' : rows,
 			'title': 'Distribucion de ' + dl_dato
 		}
-		print chartData
+		# print chartData
 
 		self.response.out.write(json.dumps({
 			'chartData':chartData
@@ -106,70 +110,35 @@ class TableViewer(Handler):
 	def get(self):
 		tablas_cnbv = TablaCNBV.query().fetch()
 		upload_url = blobstore.create_upload_url('/upload_csv')
-		blob_file_input = """<form action="{0}" method="POST" enctype="multipart/form-data"> Upload File: <input type="file" name="file"><input type="submit" name="submit" value="Submit"></form>""".format(upload_url)
+		blob_file_input = "{0}".format(upload_url)
 		self.print_html('TableViewer.html', tablas_cnbv=tablas_cnbv, blob_file_input=blob_file_input)
 
 
 
 class LoadCSV(Handler):
 	def get(self):
-		blob_key = self.request.get('blob_key')
-		load_cnbv_csv(blob_key)
+		tabla_id = self.request.get('tabla_id')
+		csv_id = self.request.get('csv_id')
+		load_cnbv_csv(tabla_id, csv_id, start_key=None)
 		self.redirect('/')
 
-
-class CsvUploadFormHandler(Handler):
-    def get(self):
-        upload_url = blobstore.create_upload_url('/upload_csv')
-        # To upload files to the blobstore, the request method must be "POST"
-        # and enctype must be set to "multipart/form-data".
-        self.response.out.write("""
-			<html><body>
-			<form action="{0}" method="POST" enctype="multipart/form-data">
-			  Upload File: <input type="file" name="file"><br>
-			  <input type="submit" name="submit" value="Submit">
-			</form>
-			</body></html>""".format(upload_url))
 
 
 class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	def post(self):
 		upload = self.get_uploads()[0]
+		tabla_id = self.request.get('id_tabla')
+		tabla_cnbv = TablaCNBV.get_by_id(int(tabla_id))
+
 		csv_file = CsvCNBV(
-			file_name='Test upload 01',
-			blob_key=upload.key())
+			blob_key=upload.key(),
+			Key_TablaCNBV = tabla_cnbv.key,
+			nombre=upload.filename,
+			nombre_tablaCNBV=tabla_cnbv.nombre)
 		csv_file.put()		
-		# self.load_cnbv_csv(upload.key())
-		# self.redirect('/')
 
-		self.redirect('/LoadCSV?blob_key=%s' % upload.key())
-	def load_cnbv_csv(self, blob_key):
-		blob_reader = blobstore.BlobReader(blob_key)
-		csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
-		attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
-		print
-		print 'Estos son los attributos'
-		print attributes
-		print
-		for row in csv_f:
-			new_dp = DatoCNBV()
-			i = 0
-			raw_dp = row[0].split(',')
-			for a_key in attributes:
-				a_val = raw_dp[i]
+		self.redirect('/LoadCSV?tabla_id=' + tabla_id + '&csv_id=' + str(csv_file.key.id()))
 
-				if a_key in ['extraccion', 'cve_periodo', 'cve_institucion', 'cve_TEC', 'cve_dato']:
-					setattr(new_dp, a_key, int(a_val))
-				elif a_key in ['archivo_fuente', 'dl_institucion', 'dl_dato', 'dl_TEC']:
-					setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
-				elif a_key in ['saldo']:
-					setattr(new_dp, a_key, float(a_val))		
-				
-				i += 1	
-				if i % 100 == 0:
-					print i
-			new_dp.put()
-		return
 
 
 class DeleteAllCsvs(Handler):
@@ -183,17 +152,39 @@ class DeleteAllCsvs(Handler):
 
 
 #--- Funciones ---
-def load_cnbv_csv(blob_key, start_key=None):
+def load_cnbv_csv(tabla_id, csv_id, start_key=None):
+
+	tabla_cnbv = TablaCNBV.get_by_id(int(tabla_id))
+	csv_cnbv = CsvCNBV.get_by_id(int(csv_id))
+
+	key_tabla = tabla_cnbv.key
+	key_csv = csv_cnbv.key
+
+	blob_key = csv_cnbv.blob_key
+
 	blob_reader = blobstore.BlobReader(blob_key)
 	csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
-	attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
-	print
-	print 'Estos son los attributos'
-	print attributes
-	print
+	original_attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
+
+	attr_dic_cnbv = diccionarios_CNBV[str('attr_' + tabla_cnbv.nombre)]
+
 	
-	logging.warning('Rows read when starting')
-	logging.warning(start_key)
+	# print
+	# print 'Estos son los attributos originales'
+	# print original_attributes 
+	# print
+
+	attributes = []
+
+	for a in original_attributes:
+		attributes.append(attr_dic_cnbv[a])
+
+	# print
+	# print 'Estos son los attributos ajustados'
+	# print attributes
+	# print
+	# print 'Rows read when starting'
+	# print start_key
 
 
 	if start_key:
@@ -206,17 +197,18 @@ def load_cnbv_csv(blob_key, start_key=None):
 		rows_read = 0
 		for row in csv_f:
 			i = 0
-			new_dp = DatoCNBV()
+			new_dp = DatoCNBV(tabla=key_tabla, archivo_fuente=key_csv)
 			raw_dp = row[0].split(',')
 			for a_key in attributes:
 				a_val = raw_dp[i]
 
-				if a_key in ['extraccion', 'cve_periodo', 'cve_institucion', 'cve_TEC', 'cve_dato']:
-					setattr(new_dp, a_key, int(a_val))
-				elif a_key in ['archivo_fuente', 'dl_institucion', 'dl_dato', 'dl_TEC']:
+				if a_key in ['institucion', 'tec', 'estado', 'tipo_valor']:
 					setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
-				elif a_key in ['saldo']:
+				elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados']:
 					setattr(new_dp, a_key, float(a_val))		
+				elif a_key in ['periodo']:
+					setattr(new_dp, a_key, int(a_val))
+
 				
 				i += 1							
 			new_dp.put()
@@ -233,13 +225,28 @@ def load_cnbv_csv(blob_key, start_key=None):
 			# 	raise DeadlineExceededError
 
 	except DeadlineExceededError:
-		print
-		print "Con este valor entra rows read a la excepcion"
-		print rows_read
 		# print 'Ya fue el DeadLineExceededError'
+		
+		tabla_cnbv.registros += rows_read
+		csv_cnbv.rows_transfered += rows_read
+		tabla_cnbv.put()
+		csv_cnbv.put()
+
+		# print
+		# print "Con este valor entra rows read a la excepcion"
+		# print rows_read
+		# print
+
 		deferred.defer(load_cnbv_csv, blob_key, start_key + rows_read)
 		return
+
+	tabla_cnbv.registros += rows_read
+	csv_cnbv.rows_transfered += rows_read
+	tabla_cnbv.put()
+	csv_cnbv.put()
+
 	return
+
 
 def get_post_details(self):
 	post_details = {}
@@ -247,6 +254,7 @@ def get_post_details(self):
 	for argument in arguments:
 		post_details[str(argument)] = self.request.get(str(argument))
 	return adjust_post_details(post_details)
+
 
 def adjust_post_details(post_details): 
 	details = {}
@@ -264,7 +272,6 @@ app = webapp2.WSGIApplication([
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),
-    ('/CsvUploadFormHandler', CsvUploadFormHandler),
     ('/upload_csv', CsvUploadHandler),
     ('/DeleteAllCsvs',DeleteAllCsvs)
 ], debug=True)

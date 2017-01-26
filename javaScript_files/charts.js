@@ -10,7 +10,7 @@ google.charts.load('current', {'packages':['corechart']});
 // draws it.
 
 $(document).on('click', '.UpdateChartButton', function(){  
-  var cve_dato = $('#cve_dato option:selected').val()
+  var tipo_valor = $('#tipo_valor option:selected').val()
 
   $.ajax({
     type: "POST",
@@ -18,7 +18,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     dataType: 'json',
     data: JSON.stringify({
       'data_requested': 'TestDataCNBV', 
-      'cve_dato': cve_dato
+      'tipo_valor': tipo_valor
     })
   })
   .done(function(raw_data){

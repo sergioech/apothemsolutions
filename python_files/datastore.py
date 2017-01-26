@@ -8,17 +8,18 @@ class TablaCNBV(ndb.Model):
 	descripcion = ndb.StringProperty(required=True)
 	url_fuente = ndb.StringProperty()
 	unidades = ndb.JsonProperty()
-	registros = ndb.IntegerProperty()
+	registros = ndb.IntegerProperty(default=0)
 	diccionarios = ndb.JsonProperty()
 
 
 class CsvCNBV(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
-	blob_key = ndb.BlobKeyProperty()
-	Key_TablaCNBV = ndb.KeyProperty(kind=TablaCNBV)	
+	blob_key = ndb.BlobKeyProperty(required=True)
+	Key_TablaCNBV = ndb.KeyProperty(kind=TablaCNBV, required=True)	
+	nombre_tablaCNBV =  ndb.StringProperty(required=True)
 	nombre = ndb.StringProperty()
 	covertura = ndb.JsonProperty()
-	rows_transfered = ndb.IntegerProperty()
+	rows_transfered = ndb.IntegerProperty(default=0)
 
 
 class DatoCNBV(ndb.Model):

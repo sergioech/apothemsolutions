@@ -76,7 +76,7 @@ dl_TEC = {
 	'5': 'Fideicomiso',
 }
 
-dl_estado {
+dl_estado = {
 	'1': 'Aguascalientes',
 	'2': 'Baja California',
 	'3': 'Baja California Sur',
@@ -124,8 +124,8 @@ attr_040_11l_R0 = {
 }
 
 des_040_11l_R0 = {
-	'institucion': dl_institucion
-	'tec': dl_TEC
+	'institucion': dl_institucion,
+	'tec': dl_TEC,
 	'tipo_valor': dl_dato
 }
 
@@ -158,3 +158,16 @@ des_040_11l_R3 = {
 	'estado': dl_estado,
 	'tec': dl_TEC
 }
+
+
+diccionarios_CNBV = {
+	'attr_040_11A_R4': attr_040_11A_R4,
+	'des_040_11A_R4' : des_040_11A_R4, 
+
+	'attr_040_11l_R0': attr_040_11l_R0,
+	'des_040_11l_R0': des_040_11l_R0,
+
+	'attr_040_11l_R3': attr_040_11l_R3,
+	'des_040_11l_R3': des_040_11l_R3
+}
+
