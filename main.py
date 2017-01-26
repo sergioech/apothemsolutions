@@ -141,16 +141,6 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 
-class DeleteAllCsvs(Handler):
-	def get(self):
-		CsvCNBVs = CsvCNBV.query().fetch()
-		for csv_file in CsvCNBVs:
-			blob_key = csv_file.blob_key
-			blobstore.delete(blob_key)
-			csv_file.key.delete()
-		self.redirect('/')
-
-
 #--- Funciones ---
 def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 
@@ -272,8 +262,7 @@ app = webapp2.WSGIApplication([
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),
-    ('/upload_csv', CsvUploadHandler),
-    ('/DeleteAllCsvs',DeleteAllCsvs)
+    ('/upload_csv', CsvUploadHandler)
 ], debug=True)
 
 
