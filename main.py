@@ -215,19 +215,19 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 			# 	raise DeadlineExceededError
 
 	except DeadlineExceededError:
-		# print 'Ya fue el DeadLineExceededError'
+		print 'Ya fue el DeadLineExceededError'
 		
 		tabla_cnbv.registros += rows_read
 		csv_cnbv.rows_transfered += rows_read
 		tabla_cnbv.put()
 		csv_cnbv.put()
 
-		# print
-		# print "Con este valor entra rows read a la excepcion"
-		# print rows_read
-		# print
+		print
+		print "Con este valor entra rows read a la excepcion"
+		print rows_read
+		print
 
-		deferred.defer(load_cnbv_csv, blob_key, start_key + rows_read)
+		deferred.defer(load_cnbv_csv, tabla_id, csv_id, start_key + rows_read)
 		return
 
 	tabla_cnbv.registros += rows_read
