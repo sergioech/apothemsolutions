@@ -10,7 +10,9 @@ google.charts.load('current', {'packages':['corechart']});
 // draws it.
 
 $(document).on('click', '.UpdateChartButton', function(){  
-  var tipo_valor = $('#tipo_valor option:selected').val()
+  var variable = $('#variable option:selected').val()
+  var renglones = $('#renglones option:selected').val()
+  var columnas = $('#columnas option:selected').val()
 
   $.ajax({
     type: "POST",
@@ -18,33 +20,34 @@ $(document).on('click', '.UpdateChartButton', function(){
     dataType: 'json',
     data: JSON.stringify({
       'data_requested': 'TestDataCNBV', 
-      'tipo_valor': tipo_valor
+      'variable': variable,
+      'renglones':renglones,
+      'columnas':columnas
     })
   })
   .done(function(raw_data){
-    var data = new google.visualization.DataTable();
-    var raw_data = raw_data ['chartData'];
-      console.log(raw_data)
+    // var chart_data = new google.visualization.DataTable();
+    var chart_array = raw_data['chart_array'];
+      console.log(chart_array);
 
-    for (i in raw_data['columns']){
-      column = raw_data['columns'][i]
-      data.addColumn(column[0],column[1]);
-    };
-
-    data.addRows(raw_data['rows'])
+    var chart_data = google.visualization.arrayToDataTable(chart_array)
 
     // Set chart options
     $('#chart_lead').text(raw_data['title']);
-    console.log(raw_data['title'])
-    var options = {'title':raw_data['Title'],                  
-                   'width':400,
-                   'height':300,
-                   'legend': {position: 'none'}};
+
+    var options = {
+      chart: {
+        title: 'Company Performance',
+        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+      },
+      bars: 'horizontal' // Required for Material Bar Charts.
+    };
+
 
     // Instantiate and draw our chart, passing in some options.
     //var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
+    var chart = new google.visualization.Bar(document.getElementById('chart_div'));
+    chart.draw(chart_data, options);
   })
 });
 

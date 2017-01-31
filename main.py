@@ -32,7 +32,6 @@ from google.appengine.runtime import DeadlineExceededError
 
 from python_files import datastore, constants, diccionarios_CNBV
 constants = constants.constants
-diccionarios_CNBV = diccionarios_CNBV.diccionarios_CNBV
 
 DatoCNBV = datastore.DatoCNBV
 CsvCNBV = datastore.CsvCNBV
@@ -62,32 +61,90 @@ class Home(Handler):
 
 
 class ChartViewer(Handler):
-	def get(self):		
-		self.print_html('ChartViewer.html')
+	def get(self):
+		opciones_iniciales = diccionarios_CNBV.opciones_iniciales
+		variables = opciones_iniciales['variables']
+		cortes = opciones_iniciales['cortes'] 
+
+		self.print_html('ChartViewer.html', variables=variables, cortes=cortes)
 
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
-		tipo_valor = chart_details['tipo_valor']
+		variable = chart_details['variable']
+		corte_renglones = chart_details['renglones']
+		corte_columnas = chart_details['columnas']
 
-		dl_dato = diccionarios_CNBV['des_040_11l_R0']['tipo_valor'][tipo_valor]
-		desc_tec = diccionarios_CNBV['des_040_11l_R0']['tec']
+		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.periodo == 201611, DatoCNBV.institucion == '5').fetch()		
+		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas)
 
-		datos_cnbv = DatoCNBV.query().filter(DatoCNBV.periodo == 201611, DatoCNBV.institucion == '5', DatoCNBV.tipo_valor == tipo_valor).fetch()
-		rows = []
-		for dp in datos_cnbv:
-			rows.append([desc_tec[dp.tec], dp.valor])
+		# for dp in datos_cnbv:
+		# 	rows.append(desc_renglones[dp[renglones]], dp.valor)
 
 		chartData = {
-			'columns' : [['string', 'Tamano empresa'],['number', dl_dato]],
-			'rows' : rows,
-			'title': 'Distribucion de ' + dl_dato
+			'chart_array': chart_array,
+			# 'columns' : [['string', 'Tamano empresa'],['number', dl_dato]],
+			# 'rows' : rows,
+			'title': 'Echeverria es puto'
 		}
 		# print chartData
 
-		self.response.out.write(json.dumps({
-			'chartData':chartData
-		}))
+		self.response.out.write(json.dumps({'chartData':chartData}))
+
+
+	def options_to_chart_array(self, rows_options, column_options):
+		
+		array_headings = ['Rows title']
+		for column in column_options:
+			array_headings.append(column[0])
+
+		numero_columnas = len(array_headings)
+
+		chart_array = [array_headings]
+
+		for row in rows_options:
+			new_row = [row[0]]
+			for i in range(1, numero_columnas):
+				new_row.append(0)
+			chart_array.append(new_row)	
+
+		return chart_array
+
+
+	def pimp_chart_array(self, chart_array,rows_definitions, col_definitions):
+		pimped_array = []
+
+		pimped_headings = [chart_array[0][0]]
+
+		for heading in chart_array[0][1:]:
+			pimped_headings.append(col_definitions[heading])
+
+		pimped_array.append(pimped_headings)
+
+		for row in chart_array[1:]:
+			pimped_row = [rows_definitions[row[0]]] + row[1:]
+			pimped_array.append(pimped_row)
+
+		return pimped_array
+
+
+	def query_to_chart_array(self, query_result, variable, corte_renglones, corte_columnas):
+		
+		opciones = diccionarios_CNBV.opciones
+		row_options = opciones[corte_renglones]
+		column_options = opciones[corte_columnas]
+		chart_array, rows_position, columns_positions = self.options_to_chart_array(row_options, column_options)
+
+		for dp in query_result:
+			chart_array[rows_position[getattr(dp, corte_renglones)]][columns_position[getattr(dp, corte_renglones)]] += getattr(dp, variable) 
+
+		definiciones =  diccionarios_CNBV.definiciones
+		row_definitions = definiciones[corte_renglones]
+		column_definitions = definiciones[corte_columnas]
+
+		chart_array = self.pimp_chart_array(chart_array,rows_definitions, columns_definitions)	
+
+		return chart_array
 
 
 class NewTable(Handler):
@@ -156,8 +213,8 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 	csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
 	original_attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
 
-	attr_dic_cnbv = diccionarios_CNBV[str('attr_' + tabla_cnbv.nombre)]
-
+	# attr_dic_cnbv = diccionarios_CNBV[str('attr_' + tabla_cnbv.nombre)]
+	tm = diccionarios_CNBV.transformation_maps_CNBV[tabla_cnbv.nombre]
 	
 	# print
 	# print 'Estos son los attributos originales'
@@ -165,9 +222,16 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 	# print
 
 	attributes = []
+	values_map = {}
 
+	# for a in original_attributes:
+	# 	attributes.append(attr_dic_cnbv[a])
 	for a in original_attributes:
-		attributes.append(attr_dic_cnbv[a])
+		attr_map = tm[a]
+		attributes.append(attr_map[0])
+		if len(attr_map) == 2:
+			values_map[attr_map[0]] = attr_map[1]
+
 
 	# print
 	# print 'Estos son los attributos ajustados'
@@ -193,40 +257,22 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 				a_val = raw_dp[i]
 
 				if a_key in ['institucion', 'tec', 'estado', 'tipo_valor']:
-					setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
+					# setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
+					setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 				elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados']:
 					setattr(new_dp, a_key, float(a_val))		
 				elif a_key in ['periodo']:
 					setattr(new_dp, a_key, int(a_val))
-
 				
 				i += 1							
 			new_dp.put()
 			rows_read += 1
 			
-			# print 'Rows read...'
-			# print rows_read
-			# print
-			# print row
-			# print new_dp
-			# print
-
-			# if rows_read % 10 == 0:
-			# 	raise DeadlineExceededError
-
-	except DeadlineExceededError:
-		print 'Ya fue el DeadLineExceededError'
-		
+	except DeadlineExceededError:		
 		tabla_cnbv.registros += rows_read
 		csv_cnbv.rows_transfered += rows_read
 		tabla_cnbv.put()
 		csv_cnbv.put()
-
-		print
-		print "Con este valor entra rows read a la excepcion"
-		print rows_read
-		print
-
 		deferred.defer(load_cnbv_csv, tabla_id, csv_id, start_key + rows_read)
 		return
 

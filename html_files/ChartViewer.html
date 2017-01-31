@@ -5,13 +5,30 @@
 	<div class="col-xs-3" style="background-color: rgb(240,247,253);">
 		<form method="post">
 			<div style="margin-top: 10px;">
-				<label>Dato</label>				
-				<select class="form-control" name="tipo_valor" id="tipo_valor" style="margin-bottom:7px;">	
-					<option value="0"> Cartera total </option>	
-					<option value="1"> Cartera vigente </option>
-					<option value="2"> Cartera vencida </option>
-					<option value="3"> Número de créditos </option>
-					<option value="4"> Número de acreditados</option>
+				<label>Variable </label>				
+				<select class="form-control" name="variable" id="variable" style="margin-bottom:7px;">	
+					<option selected="true" disabled="disabled">Seleccionar</option>
+					{% for variable in variables %}
+					<option value="{{variable}}"> {{variable}} </option>
+					{% endfor %}	
+				</select> 
+			</div>
+			<div style="margin-top: 10px;">
+				<label> Renglones </label>				
+				<select class="form-control" name="renglones" id="renglones" style="margin-bottom:7px;">	
+					<option selected="true" disabled="disabled">Seleccionar</option>
+					{% for corte in cortes %}
+					<option value="{{corte}}"> {{corte}} </option>
+					{% endfor %}	
+				</select> 
+			</div>
+			<div style="margin-top: 10px;">
+				<label> Columnas </label>				
+				<select class="form-control" name="columnas" id="columnas" style="margin-bottom:7px;">
+					<option selected="true" disabled="disabled">Seleccionar</option>	
+					{% for corte in cortes %}
+					<option value="{{corte}}"> {{corte}} </option>
+					{% endfor %}	
 				</select> 
 			</div>
 			<div style="margin-bottom: 20px;">
