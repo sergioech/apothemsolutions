@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #--- Definiciones y opciones ---
-def_tipo_dato = {
+def_tipo_valor = {
 	'01': 'Cartera total',
 	'02': 'Cartera vigente',
 	'03': 'Cartera vencida',
@@ -13,7 +13,7 @@ def_tipo_dato = {
 	'51':'Plazo ponderado en meses (remanente)'
 }
 
-opc_tipo_dato = [
+opc_tipo_valor = [
 	['01', 'Cartera total'],
 	['02', 'Cartera vigente'],
 	['03', 'Cartera vencida'],
@@ -221,7 +221,7 @@ opc_estado = [
 
 
 definiciones = {
-	'tipo_dato':def_tipo_dato,
+	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
 	'tec':def_tec,
 	'estado': def_estado, 
@@ -229,7 +229,7 @@ definiciones = {
 
 
 opciones = {
-	'tipo_dato': opc_tipo_dato,
+	'tipo_valor': opc_tipo_valor,
 	'institucion': opc_institucion,
 	'tec': opc_tec,
 	'estado': opc_estado
@@ -273,14 +273,14 @@ def pimp_chart_array(chart_array,rows_definitions, col_definitions):
 
 
 
-# chart_array = options_to_chart_array(opc_tipo_dato, opc_tec)
+# chart_array = options_to_chart_array(opc_tipo_valor, opc_tec)
 # print chart_array
 # print
 
 
 
 
-# pimped_array = pimp_chart_array(chart_array, def_tipo_dato, def_tec )
+# pimped_array = pimp_chart_array(chart_array, def_tipo_valor, def_tec )
 # pimped_array[3][3] += 10
 # pimped_array[3][3] += 59 
 # print pimped_array
@@ -478,8 +478,8 @@ def generar_indice_CNBV(lista_tablas):
 
 tablas_CNBV = [
 	'040_11A_R4',
-	# '040_11l_R0',
-	# '040_11l_R3'
+	'040_11l_R0',
+	'040_11l_R3'
 ]
 
 def definir_opciones_validas(indice_CNBV):

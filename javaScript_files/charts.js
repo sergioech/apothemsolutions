@@ -27,8 +27,10 @@ $(document).on('click', '.UpdateChartButton', function(){
   })
   .done(function(raw_data){
     // var chart_data = new google.visualization.DataTable();
+    // console.log(raw_data);
+    // var chart_array = [];
     var chart_array = raw_data['chart_array'];
-      console.log(chart_array);
+    console.log(chart_array);
 
     var chart_data = google.visualization.arrayToDataTable(chart_array)
 
@@ -36,17 +38,19 @@ $(document).on('click', '.UpdateChartButton', function(){
     $('#chart_lead').text(raw_data['title']);
 
     var options = {
+      chartArea:{height: 600},
       chart: {
         title: 'Company Performance',
         subtitle: 'Sales, Expenses, and Profit: 2014-2017',
       },
-      bars: 'horizontal' // Required for Material Bar Charts.
+      bars: 'horizontal', // Required for Material Bar Charts.
+      
     };
 
 
     // Instantiate and draw our chart, passing in some options.
     //var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    var chart = new google.visualization.Bar(document.getElementById('chart_div'));
+    var chart = new google.charts.Bar(document.getElementById('chart_div'));
     chart.draw(chart_data, options);
   })
 });
