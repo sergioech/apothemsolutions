@@ -9,25 +9,25 @@
 				<select class="form-control" name="variable" id="variable" style="margin-bottom:7px;">	
 					<option selected="true" disabled="disabled">Seleccionar</option>
 					{% for variable in variables %}
-					<option value="{{variable}}"> {{variable}} </option>
+					<option value="{{variable[0]}}"> {{variable[1]}} </option>
 					{% endfor %}	
 				</select> 
 			</div>
 			<div style="margin-top: 10px;">
 				<label> Renglones </label>				
 				<select class="form-control" name="renglones" id="renglones" style="margin-bottom:7px;">	
-					<option selected="true" disabled="disabled">Seleccionar</option>
+					<option selected="true" disabled="disabled" value="None">Seleccionar</option>
 					{% for corte in cortes %}
-					<option value="{{corte}}"> {{corte}} </option>
+					<option value="{{corte[0]}}"> {{corte[1]}} </option>
 					{% endfor %}	
 				</select> 
 			</div>
 			<div style="margin-top: 10px;">
 				<label> Columnas </label>				
 				<select class="form-control" name="columnas" id="columnas" style="margin-bottom:7px;">
-					<option selected="true" disabled="disabled">Seleccionar</option>	
+					<option selected="true" disabled="disabled" value="None">Seleccionar</option>	
 					{% for corte in cortes %}
-					<option value="{{corte}}"> {{corte}} </option>
+					<option value="{{corte[0]}}"> {{corte[1]}} </option>
 					{% endfor %}	
 				</select> 
 			</div>
@@ -42,7 +42,7 @@
 		<div id="ChartLead">
 			<h1><span id="chart_lead"></span></h1>	
 		</div> 
-		<div id="chart_div" style="height:800px;"></div>
+		<div id="chart_div" style="height:500px;"></div>
 	</div>
 </div>	
 {% endblock %}

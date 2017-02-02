@@ -38,7 +38,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     $('#chart_lead').text(raw_data['title']);
 
     var options = {
-      chartArea:{height: 600},
+      chartArea:{height: 350},
       chart: {
         title: 'Company Performance',
         subtitle: 'Sales, Expenses, and Profit: 2014-2017',

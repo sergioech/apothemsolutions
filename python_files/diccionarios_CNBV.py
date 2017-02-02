@@ -10,8 +10,41 @@ def_tipo_valor = {
 	'21': 'Tasa de interés MN',
 	'22': 'Tasa de interés ME',
 	'23': 'Tasa de interés UDIS',
-	'51':'Plazo ponderado en meses (remanente)'
+	'51': 'Plazo ponderado en meses (remanente)'
 }
+
+cat_variables = {
+	'01': 'saldo_total',
+	'02': 'car_vigente',
+	'03': 'car_vencida',
+	'04': 'creditos',
+	'05': 'acreditados',
+	'21': 'tasa_i_mn',
+	'22': 'tasa_i_me',
+	'23': 'tasa_i_udis',
+	'51': 'plazo_ponderado'
+}
+
+def_variables  = {
+	'saldo_total': 'Cartera total'.decode('utf-8'),
+	'car_vigente': 'Cartera vigente'.decode('utf-8'),
+	'car_vencida': 'Cartera vencida'.decode('utf-8'),
+	'creditos': 'Número de créditos'.decode('utf-8'),
+	'acreditados': 'Número de acreditados'.decode('utf-8'),
+	'tasa_i_mn': 'Tasa de interés MN'.decode('utf-8'),
+	'tasa_i_me': 'Tasa de interés ME'.decode('utf-8'),
+	'tasa_i_udis': 'Tasa de interés UDIS'.decode('utf-8'),
+	'plazo_ponderado': 'Plazo ponderado en meses (remanente)'.decode('utf-8')
+}
+
+def_cortes = {
+	'periodo': 'Periodo'.decode('utf-8'),
+	'institucion': 'Banco'.decode('utf-8'),
+	'estado': 'Entidad Federativa'.decode('utf-8'),
+	'tec': 'Tamaño de Empresa'.decode('utf-8')
+}
+
+
 
 opc_tipo_valor = [
 	['01', 'Cartera total'],
@@ -220,11 +253,44 @@ opc_estado = [
 ]
 
 
+def_periodo = {
+	201601: '201601',
+	201602: '201602',
+	201603: '201603',
+	201604: '201604',
+	201605: '201605',
+	201606: '201606',
+	201607: '201607',
+	201608: '201608',
+	201609: '201609',
+	201610: '201610',
+	201611: '201611'
+}
+
+
+opc_periodo = [
+	[201601, 201601],
+	[201602, 201602],
+	[201603, 201603],
+	[201604, 201604],
+	[201605, 201605],
+	[201606, 201606],
+	[201607, 201607],
+	[201608, 201608],
+	[201609, 201609],
+	[201610, 201610],
+	[201611, 201611]
+]
+
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
 	'tec':def_tec,
-	'estado': def_estado, 
+	'estado': def_estado,
+	'periodo': def_periodo,
+	'variables': def_variables,
+	'cortes': def_cortes
 }
 
 
@@ -232,58 +298,11 @@ opciones = {
 	'tipo_valor': opc_tipo_valor,
 	'institucion': opc_institucion,
 	'tec': opc_tec,
-	'estado': opc_estado
+	'estado': opc_estado,
+	'periodo': opc_periodo
 }
 
 
-def options_to_chart_array(rows_options, column_options):
-	
-	array_headings = ['Rows title']
-	for column in column_options:
-		array_headings.append(column[0])
-
-	numero_columnas = len(array_headings)
-
-	chart_array = [array_headings]
-
-	for row in rows_options:
-		new_row = [row[0]]
-		for i in range(1, numero_columnas):
-			new_row.append(0)
-		chart_array.append(new_row)	
-
-	return chart_array
-
-
-def pimp_chart_array(chart_array,rows_definitions, col_definitions):
-	pimped_array = []
-
-	pimped_headings = [chart_array[0][0]]
-
-	for heading in chart_array[0][1:]:
-		pimped_headings.append(col_definitions[heading])
-
-	pimped_array.append(pimped_headings)
-
-	for row in chart_array[1:]:
-		pimped_row = [rows_definitions[row[0]]] + row[1:]
-		pimped_array.append(pimped_row)
-
-	return pimped_array
-
-
-
-# chart_array = options_to_chart_array(opc_tipo_valor, opc_tec)
-# print chart_array
-# print
-
-
-
-
-# pimped_array = pimp_chart_array(chart_array, def_tipo_valor, def_tec )
-# pimped_array[3][3] += 10
-# pimped_array[3][3] += 59 
-# print pimped_array
 
 
 #--- Catalogos CNBV ---
@@ -451,29 +470,11 @@ ejemplo_indice = [
 	]
 ]
 
-
-def generar_indice_CNBV(lista_tablas):
-	
-	indice_CNBV = []
-
-	campos_valores = ['valor', 'saldo_total', 'creditos', 'acreditados'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'tipo_valor']
-
-
-	for tabla in lista_tablas:
-		valores = []
-		cortes = []
-		tm = transformation_maps_CNBV[tabla]		
-		for key, value in tm.iteritems():
-			attr = value[0]
-			if attr in campos_valores:
-				valores.append(attr)
-			elif attr in campos_cortes:
-				cortes.append(attr)
-
-		indice_CNBV.append([tabla, valores, cortes])
-
-	return indice_CNBV
+detalles_tabla = {
+	'040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
+	'040_11l_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
+	'040_11l_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'}
+}
 
 
 tablas_CNBV = [
@@ -482,9 +483,38 @@ tablas_CNBV = [
 	'040_11l_R3'
 ]
 
-def definir_opciones_validas(indice_CNBV):
+
+def generar_indice_CNBV(lista_tablas):
+	
+	indice_CNBV = []
+
+	campos_variables = ['saldo_total', 'creditos', 'acreditados'] # tipo_valor
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado']
+
+	for tabla in lista_tablas:
+		variables = []
+		cortes = []
+		tm = transformation_maps_CNBV[tabla]		
+		for key, value in tm.iteritems():
+			attr = value[0]
+			if attr in campos_variables:
+				variables.append(attr)
+			elif attr in campos_cortes:
+				cortes.append(attr)
+			elif attr == 'tipo_valor':
+				for cve, detalle in value[1].iteritems():
+					variables.append(cat_variables[detalle[1]])
+
+		indice_CNBV.append([tabla, variables, cortes, detalles_tabla[tabla]['tipo_variables'], detalles_tabla[tabla]['perspectiva']])
+
+	return indice_CNBV
+
+
+def definir_opciones_iniciales(indice_CNBV):
 	variables = []
 	cortes = []
+	variables_output = []
+	cortes_output = []
 
 	for tabla in indice_CNBV:
 		variables_tabla = tabla[1]
@@ -492,13 +522,17 @@ def definir_opciones_validas(indice_CNBV):
 		for variable in variables_tabla:
 			if variable not in variables:
 				variables.append(variable)
+				variables_output.append((variable, def_variables[variable]))
+		
 		for corte in cortes_tabla:
+			print cortes_tabla
 			if corte not in cortes:
 				cortes.append(corte)
+				cortes_output.append((corte, def_cortes[corte]))
 
 	opciones_validas = {
-		'variables': variables,
-		'cortes': cortes
+		'variables': variables_output,
+		'cortes': cortes_output
 	}
 
 	return opciones_validas
@@ -506,8 +540,15 @@ def definir_opciones_validas(indice_CNBV):
 
 indice_inicial = generar_indice_CNBV(tablas_CNBV)
 
-opciones_iniciales = definir_opciones_validas(indice_inicial)
+opciones_iniciales = definir_opciones_iniciales(indice_inicial)
 
-# print indice_inicial
-# print opciones_iniciales
+
+def invert_dictionary(dictionary):
+	result = {}
+	for key, value in dictionary.iteritems():
+		result[value] = key
+	return result
+
+cat_invertida_variables = invert_dictionary(cat_variables)
+
 
