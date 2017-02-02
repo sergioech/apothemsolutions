@@ -87,9 +87,6 @@ class ChartViewer(Handler):
 		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']
 		if tipo_variable == 'indirectas':
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
-			print
-			print variable
-			print
 			datos_cnbv.filter(DatoCNBV.tipo_valor == variable)
 			variable = 'valor'
 
@@ -104,15 +101,6 @@ class ChartViewer(Handler):
 
 	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas):
 		
-		print 
-		print indice_tablas
-		print 'variable: ' + variable
-		print 'corte renglones: ' + corte_renglones
-		print 'corte columnas: '
-		print corte_columnas
-		print
-
-
 		if corte_columnas:
 			for tabla in indice_tablas:
 				variables_validas = tabla[1]
@@ -275,32 +263,16 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 	csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
 	original_attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
 
-	# attr_dic_cnbv = diccionarios_CNBV[str('attr_' + tabla_cnbv.nombre)]
 	tm = diccionarios_CNBV.transformation_maps_CNBV[tabla_cnbv.nombre]
 	
-	# print
-	# print 'Estos son los attributos originales'
-	# print original_attributes 
-	# print
-
 	attributes = []
 	values_map = {}
 
-	# for a in original_attributes:
-	# 	attributes.append(attr_dic_cnbv[a])
 	for a in original_attributes:
 		attr_map = tm[a]
 		attributes.append(attr_map[0])
 		if len(attr_map) == 2:
 			values_map[attr_map[0]] = attr_map[1]
-
-
-	# print
-	# print 'Estos son los attributos ajustados'
-	# print attributes
-	# print
-	# print 'Rows read when starting'
-	# print start_key
 
 
 	if start_key:
