@@ -353,7 +353,54 @@ cat_institucion = {
 	'040014': ['Santander', '53'],
 	'040307': ['Santander Vivienda', '54'],
 	'040044': ['Scotiabank', '55'],
-	'040113': ['Ve por Más', '56']
+	'040113': ['Ve por Más', '56'],
+
+	'40138': ['ABC Capital', '11'],
+	'40133': ['Actinver', '12'],
+	'40062': ['Afirme', '13'],
+	'40103': ['American Express', '14'],
+	'40128': ['Autofin', '15'],
+	'40002': ['Banamex', '16'],
+	'40042': ['Banca Mifel', '17'],
+	'40131': ['Banco Ahorro Famsa', '18'],
+	'40127': ['Banco Azteca', '19'],
+	'40152': ['Banco Bancrea', '20'],
+	'40145': ['Banco Base', '21'],
+	'40146': ['Banco Bicentenario', '22'],
+	'40126': ['Banco Credit Suisse', '23'],
+	'40030': ['Banco del Bajío', '24'],
+	'40156': ['Banco Sabadell', '25'],
+	'40134': ['Banco Wal-Mart', '26'],
+	'40137': ['BanCoppel', '27'],
+	'40106': ['Bank of America', '28'],
+	'40108': ['Bank of Tokyo-Mitsubishi UFJ', '29'],
+	'40147': ['Bankaool', '30'],
+	'40072': ['Banorte/Ixe', '31'],
+	'40058': ['Banregio', '32'],
+	'40060': ['Bansí', '33'],
+	'40012': ['BBVA Bancomer', '34'],
+	'40143': ['CIBanco', '35'],
+	'40140': ['Consubanco', '36'],
+	'40124': ['Deutsche Bank', '37'],
+	'40151': ['Dondé Banco', '38'],
+	'40154': ['Finterra', '39'],
+	'40021': ['HSBC', '40'],
+	'40155': ['ICBC', '41'],
+	'40036': ['Inbursa', '42'],
+	'40116': ['ING', '43'],
+	'40150': ['Inmobiliario Mexicano', '44'],
+	'40037': ['Interacciones', '45'],
+	'40136': ['Intercam Banco', '46'],
+	'40102': ['Investa Bank', '47'],
+	'40059': ['Invex', '48'],
+	'40032': ['Ixe', '49'],
+	'40110': ['J.P. Morgan', '50'],
+	'40112': ['Monex', '51'],
+	'40132': ['Multiva', '52'],
+	'40014': ['Santander', '53'],
+	'40307': ['Santander Vivienda', '54'],
+	'40044': ['Scotiabank', '55'],
+	'40113': ['Ve por Más', '56']
 }
 
 cat_dato = {
@@ -525,7 +572,7 @@ def definir_opciones_iniciales(indice_CNBV):
 				variables_output.append((variable, def_variables[variable]))
 		
 		for corte in cortes_tabla:
-			print cortes_tabla
+			# print cortes_tabla
 			if corte not in cortes:
 				cortes.append(corte)
 				cortes_output.append((corte, def_cortes[corte]))

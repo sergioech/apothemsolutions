@@ -80,18 +80,19 @@ class ChartViewer(Handler):
 		indice_tablas = diccionarios_CNBV.indice_inicial
 
 		nombre_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas)
+
 		key_tabla = TablaCNBV.query(TablaCNBV.nombre == nombre_tabla).get().key
 		datos_cnbv = DatoCNBV.query(DatoCNBV.tabla == key_tabla)		
 		
 		nombre_variable = variable
-		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']
+		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']		
+		
 		if tipo_variable == 'indirectas':
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
-			datos_cnbv.filter(DatoCNBV.tipo_valor == variable)
+			datos_cnbv = datos_cnbv.filter(DatoCNBV.tipo_valor == variable)
 			variable = 'valor'
 
 		datos_cnbv = datos_cnbv.fetch()
-
 		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas, nombre_variable)
 
 		self.response.out.write(json.dumps({
@@ -189,7 +190,7 @@ class ChartViewer(Handler):
 			for dp in query_result:
 				chart_array[rows_position[getattr(dp, corte_renglones)]][columns_position[getattr(dp, corte_columnas)]] += getattr(dp, variable) 
 		else:
-			for dp in query_result:
+			for dp in query_result:		
 				chart_array[rows_position[getattr(dp, corte_renglones)]][1] += getattr(dp, variable) 
 
 		chart_array = self.pimp_chart_array(chart_array, row_definitions, column_definitions)	
