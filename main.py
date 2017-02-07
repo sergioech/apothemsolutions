@@ -66,8 +66,6 @@ class ChartViewer(Handler):
 		variables = opciones_validas['variables']
 		cortes = opciones_validas['cortes'] 
 		opciones = diccionarios_CNBV.opciones
-		print
-		print opciones
 		self.print_html('ChartViewer.html', variables=variables, cortes=cortes, opciones=opciones)
 
 	def post(self):
@@ -230,7 +228,7 @@ class LoadCSV(Handler):
 	def get(self):
 		tabla_id = self.request.get('tabla_id')
 		csv_id = self.request.get('csv_id')
-		load_cnbv_csv(tabla_id, csv_id, start_key=None)
+		load_cnbv_csv(tabla_id, csv_id, 0, None, 0)
 		self.redirect('/')
 
 
@@ -253,7 +251,9 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 #--- Funciones ---
-def load_cnbv_csv(tabla_id, csv_id, start_key=None):
+def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far):
+
+	rows_per_iteration = 250
 
 	tabla_cnbv = TablaCNBV.get_by_id(int(tabla_id))
 	csv_cnbv = CsvCNBV.get_by_id(int(csv_id))
@@ -265,7 +265,7 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 
 	blob_reader = blobstore.BlobReader(blob_key)
 	csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
-	original_attributes = csv_f.next()[0].decode('utf-8-sig').split(',') #.decode('utf-8-sig').
+	original_attributes = csv_f.next()[0].decode('utf-8-sig').split(',') 
 
 	tm = diccionarios_CNBV.transformation_maps_CNBV[tabla_cnbv.nombre]
 	
@@ -278,46 +278,63 @@ def load_cnbv_csv(tabla_id, csv_id, start_key=None):
 		if len(attr_map) == 2:
 			values_map[attr_map[0]] = attr_map[1]
 
+	print
+	print 'Iterations so far:'
+	print iterations_so_far
+	print
+	
+	for i in range(0, start_key):
+		csv_f.next()
 
-	if start_key:
-		for i in range(0, start_key):
-			csv_f.next()
-	else:
-		start_key = 0
-
-	try:
-		rows_read = 0
-		for row in csv_f:
-			i = 0
-			new_dp = DatoCNBV(tabla=key_tabla, archivo_fuente=key_csv)
-			raw_dp = row[0].split(',')
-			for a_key in attributes:
-				a_val = raw_dp[i]
-
-				if a_key in ['institucion', 'tec', 'estado', 'tipo_valor']:
-					# setattr(new_dp, a_key, (a_val.decode('utf-8')).encode('utf-8'))
-					setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
-				elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados']:
-					setattr(new_dp, a_key, float(a_val))		
-				elif a_key in ['periodo']:
-					setattr(new_dp, a_key, int(a_val))
-				
-				i += 1							
-			new_dp.put()
-			rows_read += 1
+	rows_read = 0
+	for row in csv_f:
+		i = 0
+		new_dp = DatoCNBV(tabla=key_tabla, archivo_fuente=key_csv)
+		raw_dp = row[0].split(',')
+		for a_key in attributes:
+			a_val = raw_dp[i]
 			
-	except DeadlineExceededError:		
-		tabla_cnbv.registros += rows_read
-		csv_cnbv.rows_transfered += rows_read
-		tabla_cnbv.put()
-		csv_cnbv.put()
-		deferred.defer(load_cnbv_csv, tabla_id, csv_id, start_key + rows_read)
-		return
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor']:				
+				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
+			
+			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados']:
+				setattr(new_dp, a_key, float(a_val))		
+			
+			elif a_key in ['periodo']:
+				setattr(new_dp, a_key, int(a_val))
+			i += 1				
+		new_dp.put()
+		rows_read += 1
+		if rows_read > rows_per_iteration - 1:			
+			break
+	iterations_so_far += 1
+
+	renglones_pendientes = sum(1 for row in csv_f)
+
+	if not max_iterations:
+		max_iterations = ((renglones_pendientes + rows_read)/rows_per_iteration) + 2
+		print
+		print 'Max iterations:'
+		print max_iterations
+		print
+
+	need_extra_work = False
+	if renglones_pendientes > 0 and iterations_so_far < max_iterations:
+		need_extra_work = True
+
+	print
+	print 'Este es el numero de renglones que siguen pendientes'
+	print renglones_pendientes
+	print
 
 	tabla_cnbv.registros += rows_read
-	csv_cnbv.rows_transfered += rows_read
 	tabla_cnbv.put()
+
+	csv_cnbv.rows_transfered += rows_read
 	csv_cnbv.put()
+
+	if need_extra_work:
+		deferred.defer(load_cnbv_csv, tabla_id, csv_id, start_key + rows_read, max_iterations, iterations_so_far)
 
 	return
 
