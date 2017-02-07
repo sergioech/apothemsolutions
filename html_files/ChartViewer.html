@@ -4,37 +4,90 @@
 <div class="row"> 	
 	<div class="col-xs-3" style="background-color: rgb(240,247,253);">
 		<form method="post">
-			<div style="margin-top: 10px;">
-				<label>Variable </label>				
-				<select class="form-control" name="variable" id="variable" style="margin-bottom:7px;">	
-					<option selected="true" disabled="disabled">Seleccionar</option>
-					{% for variable in variables %}
-					<option value="{{variable[0]}}"> {{variable[1]}} </option>
-					{% endfor %}	
-				</select> 
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label>Variable </label>				
+					<select class="form-control" name="variable" id="variable" style="margin-bottom:7px;">	
+						<option selected="true" disabled="disabled">Seleccionar</option>
+						{% for variable in variables %}
+						<option value="{{variable[0]}}"> {{variable[1]}} </option>
+						{% endfor %}	
+					</select> 
+				</div>
 			</div>
-			<div style="margin-top: 10px;">
-				<label> Renglones </label>				
-				<select class="form-control" name="renglones" id="renglones" style="margin-bottom:7px;">	
-					<option selected="true" disabled="disabled" value="None">Seleccionar</option>
-					{% for corte in cortes %}
-					<option value="{{corte[0]}}"> {{corte[1]}} </option>
-					{% endfor %}	
-				</select> 
+
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label>Perspectiva</label><br>
+					<label class="radio-inline"><input type="radio" name="perpectiva" value="total" id=""> Portafolio Total </label>
+					<label class="radio-inline"><input type="radio" name="perpectiva" value="marginal" id=""> Marginal </label>
+				</div>
 			</div>
-			<div style="margin-top: 10px;">
-				<label> Columnas </label>				
-				<select class="form-control" name="columnas" id="columnas" style="margin-bottom:7px;">
-					<option selected="true" disabled="disabled" value="None">Seleccionar</option>	
-					{% for corte in cortes %}
-					<option value="{{corte[0]}}"> {{corte[1]}} </option>
-					{% endfor %}	
-				</select> 
+
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label> Intervalos</label><br>
+					<label class="radio-inline"><input type="radio" name="perpectiva" value="total" id=""> Meses </label>
+					<label class="radio-inline"><input type="radio" name="perpectiva" value="total" id=""> Trimestres </label>
+					<label class="radio-inline"><input type="radio" name="perpectiva" value="marginal" id=""> Años </label>
+				</div>
 			</div>
-			<div style="margin-bottom: 20px;">
-				<button type="button" class="btn btn-primary btn-sm UpdateChartButton" name="action_description" value='UpdateChart'> Graficar <span style="margin-left:2px;" class="glyphicon glyphicon-pencil"></span></button>
+
+
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label>Vista</label>
+				</div>
 			</div>
 			
+			{% for corte in cortes %}
+				<div class="row" style="margin-bottom: 5px;">
+					<div class="col-xs-12">
+						<div class="btn-group" role="group" aria-label="Vertical button group">										
+							<button type="button" class="btn btn-default" style="width: 220px; text-align: left;">{{corte[1]}}</button>
+							<button type="button" class="btn btn-default"><span style="margin-left:2px;" class="glyphicon glyphicon-plus"></span></button>	
+							<div id="opciones" style="margin-top: 5px;">
+								{% for opcion in opciones[corte[0]] %}
+									<div class="checkbox"><label><input type="checkbox" value="{{opcion[0]}}"> {{opcion[1]}}</label></div>
+								{% endfor %}	
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+
+			
+
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label> Renglones </label>				
+					<select class="form-control" name="renglones" id="renglones" style="margin-bottom:7px;">	
+						<option selected="true" disabled="disabled" value="None">Seleccionar</option>
+						{% for corte in cortes %}
+						<option value="{{corte[0]}}"> {{corte[1]}} </option>
+						{% endfor %}	
+					</select>
+				</div> 
+			</div>
+
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label> Columnas </label>				
+					<select class="form-control" name="columnas" id="columnas" style="margin-bottom:7px;">
+						<option selected="true" disabled="disabled" value="None">Seleccionar</option>	
+						{% for corte in cortes %}
+						<option value="{{corte[0]}}"> {{corte[1]}} </option>
+						{% endfor %}	
+					</select>
+				</div>	 
+			</div>
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<div style="margin-bottom: 20px;">
+						<button type="button" class="btn btn-primary btn-sm UpdateChartButton" name="action_description" value='UpdateChart'> Graficar <span style="margin-left:2px;" class="glyphicon glyphicon-pencil"></span></button>
+					</div>
+				</div>	
+			</div>
 		</form>
 	</div>	
 	<div class="col-xs-9" style="padding-left: 30px;">

@@ -45,6 +45,13 @@ def_cortes = {
 }
 
 
+def decode_options(options_list):
+	result = []
+	for opcion in options_list:
+		result.append([opcion[0].decode('utf-8'), opcion[1].decode('utf-8')])
+	return result
+
+
 
 opc_tipo_valor = [
 	['01', 'Cartera total'],
@@ -269,17 +276,17 @@ def_periodo = {
 
 
 opc_periodo = [
-	[201601, 201601],
-	[201602, 201602],
-	[201603, 201603],
-	[201604, 201604],
-	[201605, 201605],
-	[201606, 201606],
-	[201607, 201607],
-	[201608, 201608],
-	[201609, 201609],
-	[201610, 201610],
-	[201611, 201611]
+	['201601', '201601'],
+	['201602', '201602'],
+	['201603', '201603'],
+	['201604', '201604'],
+	['201605', '201605'],
+	['201606', '201606'],
+	['201607', '201607'],
+	['201608', '201608'],
+	['201609', '201609'],
+	['201610', '201610'],
+	['201611', '201611']
 ]
 
 
@@ -295,11 +302,11 @@ definiciones = {
 
 
 opciones = {
-	'tipo_valor': opc_tipo_valor,
-	'institucion': opc_institucion,
-	'tec': opc_tec,
-	'estado': opc_estado,
-	'periodo': opc_periodo
+	'tipo_valor': decode_options(opc_tipo_valor),
+	'institucion': decode_options(opc_institucion),
+	'tec': decode_options(opc_tec),
+	'estado': decode_options(opc_estado),
+	'periodo': decode_options(opc_periodo)
 }
 
 

@@ -65,7 +65,10 @@ class ChartViewer(Handler):
 		opciones_validas = diccionarios_CNBV.opciones_iniciales
 		variables = opciones_validas['variables']
 		cortes = opciones_validas['cortes'] 
-		self.print_html('ChartViewer.html', variables=variables, cortes=cortes)
+		opciones = diccionarios_CNBV.opciones
+		print
+		print opciones
+		self.print_html('ChartViewer.html', variables=variables, cortes=cortes, opciones=opciones)
 
 	def post(self):
 		chart_details = json.loads(self.request.body)
