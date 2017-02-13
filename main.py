@@ -80,7 +80,7 @@ class ChartViewer(Handler):
 		
 		indice_tablas = diccionarios_CNBV.indice_inicial
 
-		nombre_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas)
+		nombre_tabla, variables_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas)
 
 		key_tabla = TablaCNBV.query(TablaCNBV.nombre == nombre_tabla).get().key
 		datos_cnbv = DatoCNBV.query(DatoCNBV.tabla == key_tabla)		
@@ -94,11 +94,14 @@ class ChartViewer(Handler):
 			variable = 'valor'
 
 		datos_cnbv = datos_cnbv.fetch()
-		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas, nombre_variable)
+
+		datos_cnbv = self.filter_query(datos_cnbv, variables_tabla, chart_details['filtros'])
+
+		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas, nombre_variable, chart_details['filtros'])
 
 		self.response.out.write(json.dumps({
 			'chart_array': chart_array,
-			'title': 'Echeverria es puto'
+			'title': 'Lead'
 			}))
 
 	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas):
@@ -108,17 +111,17 @@ class ChartViewer(Handler):
 				variables_validas = tabla[1]
 				cortes_validos = tabla[2]
 				if variable in variables_validas and corte_renglones in cortes_validos and corte_columnas in cortes_validos:
-					return tabla[0]
+					return tabla[0], cortes_validos
 		else:
 			for tabla in indice_tablas:
 				variables_validas = tabla[1]
 				cortes_validos = tabla[2]
 				if variable in variables_validas and corte_renglones in cortes_validos:
-					return tabla[0]
-		return None
+					return tabla[0], cortes_validos
+		return None, None
 
 
-	def options_to_chart_array(self, rows_options, column_options, rows_title,  variable_name):
+	def options_to_chart_array(self, rows_options, column_options, rows_title,  variable_name, valid_row_options, valid_column_options):
 		
 		array_headings = [rows_title]
 		columns_position = {}
@@ -127,9 +130,10 @@ class ChartViewer(Handler):
 		if column_options:
 			col = 1
 			for column in column_options:
-				array_headings.append(column[0])
-				columns_position[column[0]] = col
-				col += 1
+				if str(column[0]) in valid_column_options:					
+					array_headings.append(column[0])
+					columns_position[column[0]] = col
+					col += 1
 		else:
 			array_headings.append(variable_name)
 
@@ -138,12 +142,13 @@ class ChartViewer(Handler):
 
 		reng = 1
 		for row in rows_options:
-			new_row = [row[0]]
-			rows_position[row[0]] = reng
-			reng += 1
-			for i in range(1, numero_columnas):
-				new_row.append(0)
-			chart_array.append(new_row)	
+			if str(row[0]) in valid_row_options:
+				new_row = [row[0]]
+				rows_position[row[0]] = reng
+				reng += 1
+				for i in range(1, numero_columnas):
+					new_row.append(0)
+				chart_array.append(new_row)	
 
 		return chart_array, rows_position, columns_position
 
@@ -169,23 +174,26 @@ class ChartViewer(Handler):
 		return pimped_array
 
 
-	def query_to_chart_array(self, query_result, variable, corte_renglones, corte_columnas, nombre_variable):
+	def query_to_chart_array(self, query_result, variable, corte_renglones, corte_columnas, nombre_variable, diccionario_filtros):
 
 		opciones = diccionarios_CNBV.opciones
 		definiciones =  diccionarios_CNBV.definiciones
 
 		row_options = opciones[corte_renglones]
+		valid_row_options = diccionario_filtros[corte_renglones]
 		row_definitions = definiciones[corte_renglones]
 		
 		column_options = None
+		valid_column_options = None
 		column_definitions = None
 
 		if corte_columnas:
 			column_options = opciones[corte_columnas]
+			valid_column_options = diccionario_filtros[corte_columnas]
 			column_definitions = definiciones[corte_columnas]
 		
 
-		chart_array, rows_position, columns_position = self.options_to_chart_array(row_options, column_options, definiciones['cortes'][corte_renglones], definiciones['variables'][nombre_variable])
+		chart_array, rows_position, columns_position = self.options_to_chart_array(row_options, column_options, definiciones['cortes'][corte_renglones], definiciones['variables'][nombre_variable], valid_row_options, valid_column_options)
 
 		if corte_columnas:
 			for dp in query_result:
@@ -197,6 +205,26 @@ class ChartViewer(Handler):
 		chart_array = self.pimp_chart_array(chart_array, row_definitions, column_definitions)	
 
 		return chart_array
+
+
+	def filter_query(self, query_result, variables_tabla, diccionario_filtros):
+		filtered_query = query_result
+		
+		for variable in variables_tabla:
+			opciones_validas = diccionario_filtros[variable]
+			print
+			print 'Estas son las opciones validas: '
+			print opciones_validas
+			print
+			output_filtro = []
+
+			for dp in filtered_query:
+				if str(getattr(dp, variable)) in opciones_validas:
+					output_filtro.append(dp)
+			
+			filtered_query = output_filtro
+
+		return filtered_query
 
 
 class NewTable(Handler):

@@ -3,9 +3,13 @@
 google.charts.load('current', {'packages':['corechart']});
 
 $(document).on('click', '.UpdateChartButton', function(){  
-  var variable = $('#variable option:selected').val()
-  var renglones = $('#renglones option:selected').val()
-  var columnas = $('#columnas option:selected').val()
+  var variable = $('#variable option:selected').val();
+  var renglones = $('#CorteRenglones').val();
+  var columnas = $('#CorteColumnas').val();
+
+  var cortes = jQuery('.corte');
+  var filtros = determinar_filtros(cortes);
+
 
   $.ajax({
     type: "POST",
@@ -15,12 +19,12 @@ $(document).on('click', '.UpdateChartButton', function(){
       'data_requested': 'TestDataCNBV', 
       'variable': variable,
       'renglones':renglones,
-      'columnas':columnas
+      'columnas':columnas,
+      'filtros':filtros
     })
   })
   .done(function(raw_data){
     var chart_array = raw_data['chart_array'];
-    console.log(chart_array);
 
     var chart_data = google.visualization.arrayToDataTable(chart_array)
 
@@ -40,3 +44,31 @@ $(document).on('click', '.UpdateChartButton', function(){
     chart.draw(chart_data, options);
   })
 });
+
+function determinar_filtros(cortes){
+  
+  var filtros = {}; 
+  var opciones_validas = [];
+
+  cortes.each(function(){
+    opciones = $(this).find('.opcion')
+    
+    opciones_validas = []
+
+    opciones.each(function(){
+      if ($(this).is(':checked')){
+        opciones_validas.push($(this).val())
+      };
+    });
+    filtros[$(this).attr("value")] = opciones_validas
+  });
+  return filtros;
+}
+
+
+
+
+
+
+
+
