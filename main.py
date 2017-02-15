@@ -278,6 +278,10 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 
+
+
+
+
 #--- Funciones ---
 def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far):
 
@@ -381,6 +385,9 @@ def adjust_post_details(post_details):
 		if value and value!='' and value!='None':
 			details[attribute] = value
 	return details
+
+
+
 
 
 
