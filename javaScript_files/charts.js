@@ -35,13 +35,15 @@ $(document).on('click', '.UpdateChartButton', function(){
       chart: {
         title: 'Company Performance',
         subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+        isStacked: true
       },
       bars: 'horizontal', // Required for Material Bar Charts.
-      
+      isStacked: true
+
     };
 
     var chart = new google.charts.Bar(document.getElementById('chart_div'));
-    chart.draw(chart_data, options);
+    chart.draw(chart_data,  google.charts.Bar.convertOptions(options));
   })
 });
 
