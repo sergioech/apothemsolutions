@@ -37,12 +37,32 @@ def_variables  = {
 	'plazo_ponderado': 'Plazo ponderado en meses (remanente)'.decode('utf-8')
 }
 
+opc_variables = [
+	'saldo_total',
+	'car_vigente',
+	'car_vencida',
+	'creditos',
+	'acreditados',
+	'tasa_i_mn',
+	'tasa_i_me',
+	'tasa_i_udis',
+	'plazo_ponderado'
+]
+
 def_cortes = {
 	'periodo': 'Periodo'.decode('utf-8'),
 	'institucion': 'Banco'.decode('utf-8'),
 	'estado': 'Entidad Federativa'.decode('utf-8'),
 	'tec': 'Tamaño de Empresa'.decode('utf-8')
 }
+
+opc_cortes = [
+	'periodo',
+	'institucion',
+	'estado',
+	'tec'
+]
+
 
 
 def decode_options(options_list):
@@ -576,13 +596,18 @@ def definir_opciones_iniciales(indice_CNBV):
 		for variable in variables_tabla:
 			if variable not in variables:
 				variables.append(variable)
-				variables_output.append((variable, def_variables[variable]))
-		
+				
 		for corte in cortes_tabla:
-			# print cortes_tabla
 			if corte not in cortes:
-				cortes.append(corte)
-				cortes_output.append((corte, def_cortes[corte]))
+				cortes.append(corte)				
+
+	for variable in opc_variables:
+		if variable in variables:
+			variables_output.append((variable, def_variables[variable]))
+
+	for corte in opc_cortes:
+		if corte in cortes:
+			cortes_output.append((corte, def_cortes[corte]))
 
 	opciones_validas = {
 		'variables': variables_output,
@@ -590,7 +615,7 @@ def definir_opciones_iniciales(indice_CNBV):
 	}
 
 	return opciones_validas
-
+# xx
 
 indice_inicial = generar_indice_CNBV(tablas_CNBV)
 

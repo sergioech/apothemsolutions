@@ -13,9 +13,8 @@
 				<div class="col-xs-12">
 					<label>Variable </label>				
 					<select class="form-control" name="variable" id="variable" style="margin-bottom:7px;">	
-						<option selected="true" disabled="disabled">Seleccionar</option>
 						{% for variable in variables %}
-						<option value="{{variable[0]}}"> {{variable[1]}} </option>
+							<option value="{{variable[0]}}"> {{variable[1]}} </option>
 						{% endfor %}	
 					</select> 
 				</div>
