@@ -212,10 +212,6 @@ class ChartViewer(Handler):
 		
 		for variable in variables_tabla:
 			opciones_validas = diccionario_filtros[variable]
-			print
-			print 'Estas son las opciones validas: '
-			print opciones_validas
-			print
 			output_filtro = []
 
 			for dp in filtered_query:
@@ -284,6 +280,10 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 #--- Funciones ---
 def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far):
+	print
+	print 'Vamos a ver si se llama a load_cnbv_csv cuando no se deberia'
+	print
+
 
 	rows_per_iteration = 250
 
@@ -309,11 +309,6 @@ def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far
 		attributes.append(attr_map[0])
 		if len(attr_map) == 2:
 			values_map[attr_map[0]] = attr_map[1]
-
-	print
-	print 'Iterations so far:'
-	print iterations_so_far
-	print
 	
 	for i in range(0, start_key):
 		csv_f.next()
@@ -345,19 +340,10 @@ def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far
 
 	if not max_iterations:
 		max_iterations = ((renglones_pendientes + rows_read)/rows_per_iteration) + 2
-		print
-		print 'Max iterations:'
-		print max_iterations
-		print
 
 	need_extra_work = False
 	if renglones_pendientes > 0 and iterations_so_far < max_iterations:
 		need_extra_work = True
-
-	print
-	print 'Este es el numero de renglones que siguen pendientes'
-	print renglones_pendientes
-	print
 
 	tabla_cnbv.registros += rows_read
 	tabla_cnbv.put()
