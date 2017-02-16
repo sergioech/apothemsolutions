@@ -88,6 +88,10 @@ class ChartViewer(Handler):
 		nombre_variable = variable
 		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']		
 		
+		rango_periodos = self.determinar_rango_periodos(chart_details['filtros']['periodo'])
+
+		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo >= rango_periodos[0], DatoCNBV.periodo <= rango_periodos[1])
+
 		if tipo_variable == 'indirectas':
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
 			datos_cnbv = datos_cnbv.filter(DatoCNBV.tipo_valor == variable)
@@ -103,6 +107,13 @@ class ChartViewer(Handler):
 			'chart_array': chart_array,
 			'title': 'Lead'
 			}))
+
+
+	def determinar_rango_periodos(self, periodos_seleccionados):
+		lista_numerica = []
+		for periodo in periodos_seleccionados:
+			lista_numerica.append(int(periodo))
+		return [min(lista_numerica), max(lista_numerica)]
 
 	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas):
 		
