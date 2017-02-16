@@ -65,10 +65,15 @@ opc_cortes = [
 
 
 
-def decode_options(options_list):
+# def decode_options(options_list):
+def decode_options(options_list, corte):	
 	result = []
-	for opcion in options_list:
-		result.append([opcion[0].decode('utf-8'), opcion[1].decode('utf-8')])
+	if corte == 'periodo':
+		for opcion in options_list:
+			result.append([int(opcion[0]), opcion[1].decode('utf-8')])
+	else:	
+		for opcion in options_list:
+			result.append([opcion[0].decode('utf-8'), opcion[1].decode('utf-8')])
 	return result
 
 
@@ -321,7 +326,6 @@ def_periodo = {
 	201612: '201612'
 }
 
-
 opc_periodo = [
 
 	['201612', '201612'],
@@ -364,6 +368,49 @@ opc_periodo = [
 	['201401', '201401']		
 ]
 
+# opc_periodo = [
+
+# 	[201612, '201612'],
+# 	[201611, '201611'],	
+# 	[201610, '201610'],
+# 	[201609, '201609'],
+# 	[201608, '201608'],
+# 	[201607, '201607'],
+# 	[201606, '201606'],
+# 	[201605, '201605'],
+# 	[201604, '201604'],
+# 	[201603, '201603'],
+# 	[201602, '201602'],
+# 	[201601, '201601'],
+
+# 	['201512', '201512'],
+# 	['201511', '201511'],	
+# 	['201510', '201510'],
+# 	['201509', '201509'],
+# 	['201508', '201508'],
+# 	['201507', '201507'],
+# 	['201506', '201506'],
+# 	['201505', '201505'],
+# 	['201504', '201504'],
+# 	['201503', '201503'],
+# 	['201502', '201502'],
+# 	['201501', '201501'],
+
+# 	['201412', '201412'],
+# 	['201411', '201411'],	
+# 	['201410', '201410'],
+# 	['201409', '201409'],
+# 	['201408', '201408'],
+# 	['201407', '201407'],
+# 	['201406', '201406'],
+# 	['201405', '201405'],
+# 	['201404', '201404'],
+# 	['201403', '201403'],
+# 	['201402', '201402'],
+# 	['201401', '201401']		
+# ]
+
+
 
 definiciones = {
 	'tipo_valor':def_tipo_valor,
@@ -377,13 +424,21 @@ definiciones = {
 
 
 opciones = {
-	'tipo_valor': decode_options(opc_tipo_valor),
-	'institucion': decode_options(opc_institucion),
-	'tec': decode_options(opc_tec),
-	'estado': decode_options(opc_estado),
-	'periodo': decode_options(opc_periodo)
+	'tipo_valor': decode_options(opc_tipo_valor, 'tipo_valor'),
+	'institucion': decode_options(opc_institucion, 'institucion'),
+	'tec': decode_options(opc_tec, 'tec'),
+	'estado': decode_options(opc_estado, 'estado'),
+	'periodo': decode_options(opc_periodo, 'periodo')
 }
 
+
+# opciones = {
+# 	'tipo_valor': decode_options(opc_tipo_valor),
+# 	'institucion': decode_options(opc_institucion),
+# 	'tec': decode_options(opc_tec),
+# 	'estado': decode_options(opc_estado),
+# 	'periodo': decode_options(opc_periodo)
+# }
 
 
 
@@ -670,7 +725,7 @@ def definir_opciones_iniciales(indice_CNBV):
 	}
 
 	return opciones_validas
-# xx
+
 
 indice_inicial = generar_indice_CNBV(tablas_CNBV)
 

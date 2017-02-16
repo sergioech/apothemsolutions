@@ -132,7 +132,7 @@ class ChartViewer(Handler):
 		return None, None
 
 
-	def options_to_chart_array(self, rows_options, column_options, rows_title,  variable_name, valid_row_options, valid_column_options):
+	def options_to_chart_array(self, rows_options, column_options, rows_title,  variable_name, valid_row_options, valid_column_options): #, corte_columnas, corte_renglones
 		
 		array_headings = [rows_title]
 		columns_position = {}
@@ -141,7 +141,8 @@ class ChartViewer(Handler):
 		if column_options:
 			col = 1
 			for column in column_options:
-				if str(column[0]) in valid_column_options:					
+				# if column[0] in valid_column_options:
+				if str(column[0]) in valid_column_options:
 					array_headings.append(column[0])
 					columns_position[column[0]] = col
 					col += 1
@@ -153,6 +154,7 @@ class ChartViewer(Handler):
 
 		reng = 1
 		for row in rows_options:
+			# if row[0] in valid_row_options:
 			if str(row[0]) in valid_row_options:
 				new_row = [row[0]]
 				rows_position[row[0]] = reng
@@ -160,6 +162,14 @@ class ChartViewer(Handler):
 				for i in range(1, numero_columnas):
 					new_row.append(0)
 				chart_array.append(new_row)	
+		# xx
+		print
+		print 'Rows positions'
+		print rows_options
+		print
+		print 'Columns positions'
+		print columns_position
+		print
 
 		return chart_array, rows_position, columns_position
 
@@ -203,7 +213,7 @@ class ChartViewer(Handler):
 			valid_column_options = diccionario_filtros[corte_columnas]
 			column_definitions = definiciones[corte_columnas]
 		
-
+			 # valid_column_options, corte_columnas, corte_renglones xx
 		chart_array, rows_position, columns_position = self.options_to_chart_array(row_options, column_options, definiciones['cortes'][corte_renglones], definiciones['variables'][nombre_variable], valid_row_options, valid_column_options)
 
 		if corte_columnas:
