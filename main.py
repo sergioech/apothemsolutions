@@ -99,13 +99,16 @@ class ChartViewer(Handler):
 
 		datos_cnbv = datos_cnbv.fetch()
 
+		total_dps = len(datos_cnbv)
+
 		datos_cnbv = self.filter_query(datos_cnbv, variables_tabla, chart_details['filtros'])
 
 		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas, nombre_variable, chart_details['filtros'])
 
 		self.response.out.write(json.dumps({
 			'chart_array': chart_array,
-			'title': 'Lead'
+			'title': 'Lead',
+			'total_dps': total_dps
 			}))
 
 

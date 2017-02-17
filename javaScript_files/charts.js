@@ -1,6 +1,8 @@
 var seconds = 0, minutes = 0, hours = 0,
     t;
 
+var start_time;
+
 function add() {
     seconds++;
     if (seconds >= 60) {
@@ -51,6 +53,7 @@ $(document).on('click', '.UpdateChartButton', function(){
   var cortes = jQuery('.corte');
   var filtros = determinar_filtros(cortes);
 
+  start_time = new Date()
   timer()
 
   $.ajax({
@@ -89,6 +92,15 @@ $(document).on('click', '.UpdateChartButton', function(){
     clearTimeout(t);
     seconds = 0; minutes = 0; hours = 0;
 
+    var milliseconds_since_start = new Date().valueOf() - start_time
+    var m  = new Date(milliseconds_since_start)
+    
+    console.log('    ')
+    console.log('Chart generado')
+    console.log('A Echeverría le gusta dar beso negro')
+    console.log('Total de data points en query: ' + raw_data['total_dps'])
+    console.log('Total de tiempo requerido para generar chart: '+m.getMinutes()+":"+m.getSeconds())
+    console.log('    ')
 
   })
 });
