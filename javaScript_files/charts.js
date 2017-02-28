@@ -22,31 +22,14 @@ function timer() {
     t = setTimeout(add, 1000);
 }
 
-// timer();
-
-
-/* Start button */
-// start.onclick = timer;
-
-/* Stop button */
-// stop.onclick = function() {
-//     clearTimeout(t);
-// }
-
-// /* Clear button */
-// clear.onclick = function() {
-//     h1.textContent = "00:00:00";
-//     seconds = 0; minutes = 0; hours = 0;
-// }
-
-
-
 
 // Load the Visualization API and the corechart package.
 google.charts.load('current', {'packages':['corechart']});
 
 $(document).on('click', '.UpdateChartButton', function(){  
   var variable = $('#variable option:selected').val();
+  var show_value_as = $('input:radio[name=show_value_as]:checked').val();
+
   var renglones = $('#CorteRenglones').val();
   var columnas = $('#CorteColumnas').val();
 
@@ -63,6 +46,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     data: JSON.stringify({
       'data_requested': 'TestDataCNBV', 
       'variable': variable,
+      'show_value_as': show_value_as,
       'renglones':renglones,
       'columnas':columnas,
       'filtros':filtros

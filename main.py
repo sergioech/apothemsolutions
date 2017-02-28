@@ -71,12 +71,31 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
+		print 
+		print 'This are the chart details:'
+		print chart_details
+		# for key, value in chart_details.iteritems():			
+		# 	print key + ': ' + value
+		print	
+
 		variable = chart_details['variable']
 		corte_renglones = chart_details['renglones']
 		
 		corte_columnas = chart_details['columnas']
 		if corte_columnas == 'None':
 			corte_columnas = None
+ 
+		#xx
+		if variable == 'concentracion_cartera':
+			show_value_as = chart_details['show_value_as']
+			if show_value_as == 'money':
+				variable = 'saldo_acum'
+			elif show_value_as == 'percentage':
+				variable = 'porc_acum'
+			
+			corte_renglones = 'cliente'
+			corte_columnas = 'periodo_y'
+
 		
 		indice_tablas = diccionarios_CNBV.indice_inicial
 
@@ -91,6 +110,10 @@ class ChartViewer(Handler):
 		rango_periodos = self.determinar_rango_periodos(chart_details['filtros']['periodo'])
 
 		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo >= rango_periodos[0], DatoCNBV.periodo <= rango_periodos[1])
+
+		## XX 'To be deleted'
+		if chart_details['variable'] == 'concentracion_cartera':
+			datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion == '040002')
 
 		if tipo_variable == 'indirectas':
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
@@ -144,7 +167,6 @@ class ChartViewer(Handler):
 		if column_options:
 			col = 1
 			for column in column_options:
-				# if column[0] in valid_column_options:
 				if str(column[0]) in valid_column_options:
 					array_headings.append(column[0])
 					columns_position[column[0]] = col
@@ -157,7 +179,6 @@ class ChartViewer(Handler):
 
 		reng = 1
 		for row in rows_options:
-			# if row[0] in valid_row_options:
 			if str(row[0]) in valid_row_options:
 				new_row = [row[0]]
 				rows_position[row[0]] = reng
@@ -165,13 +186,10 @@ class ChartViewer(Handler):
 				for i in range(1, numero_columnas):
 					new_row.append(0)
 				chart_array.append(new_row)	
-		# xx
+
 		print
-		print 'Rows positions'
-		print rows_options
-		print
-		print 'Columns positions'
-		print columns_position
+		print 'This is the cart array: '
+		print chart_array
 		print
 
 		return chart_array, rows_position, columns_position
@@ -197,7 +215,7 @@ class ChartViewer(Handler):
 
 		return pimped_array
 
-
+	#xx
 	def query_to_chart_array(self, query_result, variable, corte_renglones, corte_columnas, nombre_variable, diccionario_filtros):
 
 		opciones = diccionarios_CNBV.opciones
@@ -216,7 +234,7 @@ class ChartViewer(Handler):
 			valid_column_options = diccionario_filtros[corte_columnas]
 			column_definitions = definiciones[corte_columnas]
 		
-			 # valid_column_options, corte_columnas, corte_renglones xx
+
 		chart_array, rows_position, columns_position = self.options_to_chart_array(row_options, column_options, definiciones['cortes'][corte_renglones], definiciones['variables'][nombre_variable], valid_row_options, valid_column_options)
 
 		if corte_columnas:
