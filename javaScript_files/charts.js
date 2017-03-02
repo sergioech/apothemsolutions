@@ -156,22 +156,36 @@ function transpose_matrix(matrix){
 
 
 $('input[type=radio][name=chart_type]').on('change',function(){
-  console.log('Si detecto que quiere hacer cambio de chart_type')
+  // console.log('Si detecto que quiere hacer cambio de chart_type')
   if(chart_array != undefined){
     chart_type = $('input:radio[name=chart_type]:checked').val();
     draw_chart(chart_array, chart_type);
-    console.log('Si dibujo el chart sin tener que hacer el AJAX request')
+    // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
   }
 });  
 
 $('#transpose_button').on('click',function(){
-  console.log('Si detecto que quiero transponer los datos')
+  // console.log('Si detecto que quiero transponer los datos')
   if(chart_array != undefined){
     chart_type = $('input:radio[name=chart_type]:checked').val();
     chart_array = transpose_matrix(chart_array);
     draw_chart(chart_array, chart_type);
-    console.log('Si dibujo el chart sin tener que hacer el AJAX request')
+    // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
   }  
 });
+
+
+$(document).on('change', '.select_all_checkbox', function(){
+  
+  var checked_option = $(this).is(':checked')
+  var target_section = $(this).attr('target_section');
+  var opciones = $(target_section).find('.opcion');  
+
+  opciones.each(function(){
+    $(this).prop('checked', checked_option);
+  });
+
+});
+
 
 

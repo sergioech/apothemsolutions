@@ -65,6 +65,11 @@
 					<div class="row" style="margin-bottom: 5px;">
 						<div class="col-xs-12">									
 							<div id="{{corte[0]}}" style="margin-top: 5px;" class="hidden">																
+								<div class="checkbox">
+									<label>
+										<input class="select_all_checkbox" type="checkbox" checked='checked' target_section="#{{corte[0]}}"> Seleccionar todo
+									</label>
+								</div>																				
 								{% for opcion in opciones[corte[0]] %}
 									<div class="checkbox">
 										<label>
@@ -109,7 +114,6 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<button type="button" class="btn btn-primary btn-sm" id="transpose_button"> Transponer <span style="margin-left:2px;" class="glyphicon glyphicon-retweet"></span></button>
-
 			</div>			
 		</div>	
 	</div>
