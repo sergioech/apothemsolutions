@@ -1,7 +1,9 @@
 var seconds = 0, minutes = 0, hours = 0,
-    t;
+    start_time,
+    t,
+    chart_array,
+    chart_type;
 
-var start_time;
 
 function add() {
     seconds++;
@@ -21,6 +23,9 @@ function add() {
 function timer() {
     t = setTimeout(add, 1000);
 }
+
+
+
 
 
 // Load the Visualization API and the corechart package.
@@ -53,50 +58,18 @@ $(document).on('click', '.UpdateChartButton', function(){
     })
   })
   .done(function(raw_data){
-    
-    var options;
-    var chart;
-    var chart_array = raw_data['chart_array'];
-    var chart_data = google.visualization.arrayToDataTable(chart_array)
-
+        
     $('#chart_lead').text(raw_data['title']);
 
-    var chart_type = $('input:radio[name=chart_type]:checked').val();
+    chart_array = raw_data['chart_array'];
+    chart_type = $('input:radio[name=chart_type]:checked').val();
+    draw_chart(chart_array, chart_type)
 
-    if ( chart_type == 'bar_chart'){
-      options = {
-        chartArea:{height: 350},
-        chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          isStacked: true
-        },
-      bars: 'horizontal', // Required for Material Bar Charts.
-      isStacked: true
-      };
-
-      chart = new google.charts.Bar(document.getElementById('chart_div'));
-      chart.draw(chart_data,  google.charts.Bar.convertOptions(options));
-
-    } else if (chart_type == 'line_chart'){
-
-      options = {
-        title: 'Company Performance',
-        curveType: 'function',
-        legend: { position: 'bottom' }
-      };
-
-      chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      chart.draw(chart_data, options);
-
-    };
-    
     clearTimeout(t);
     seconds = 0; minutes = 0; hours = 0;
-
+    
     var milliseconds_since_start = new Date().valueOf() - start_time
     var m  = new Date(milliseconds_since_start)
-    
     console.log('    ')
     console.log('Chart generado')
     console.log('A Echeverría le gusta dar beso negro')
@@ -106,6 +79,41 @@ $(document).on('click', '.UpdateChartButton', function(){
 
   })
 });
+
+// function draw_chart(chart_data, chart_type, chart_options, chart_details){
+function draw_chart(chart_array, chart_type){
+
+  var chart_data = google.visualization.arrayToDataTable(chart_array),
+    options,
+    chart;
+
+  if ( chart_type == 'bar_chart'){
+    options = {
+      chartArea:{height: 350},
+      chart: {
+        title: 'Company Performance',
+        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+        isStacked: true
+      },
+    bars: 'horizontal', // Required for Material Bar Charts.
+    isStacked: true
+    };
+
+    chart = new google.charts.Bar(document.getElementById('chart_div'));
+    chart.draw(chart_data,  google.charts.Bar.convertOptions(options));
+
+  } else if (chart_type == 'line_chart'){
+
+    options = {
+      title: 'Company Performance',
+      curveType: 'function',
+      legend: { position: 'bottom' }
+    };
+    chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(chart_data, options);
+  };
+};
+
 
 function determinar_filtros(cortes){
   
@@ -128,9 +136,42 @@ function determinar_filtros(cortes){
 }
 
 
+function transpose_matrix(matrix){
+  var newArray = [],
+    origArrayLength = matrix.length,
+    arrayLength = matrix[0].length,
+    i;
+  
+  for(i = 0; i < arrayLength; i++){
+      newArray.push([]);
+  };
+
+  for(i = 0; i < origArrayLength; i++){
+      for(var j = 0; j < arrayLength; j++){
+          newArray[j].push(matrix[i][j]);
+      };
+  };
+  return newArray  
+};
 
 
+$('input[type=radio][name=chart_type]').on('change',function(){
+  console.log('Si detecto que quiere hacer cambio de chart_type')
+  if(chart_array != undefined){
+    chart_type = $('input:radio[name=chart_type]:checked').val();
+    draw_chart(chart_array, chart_type);
+    console.log('Si dibujo el chart sin tener que hacer el AJAX request')
+  }
+});  
 
-
+$('#transpose_button').on('click',function(){
+  console.log('Si detecto que quiero transponer los datos')
+  if(chart_array != undefined){
+    chart_type = $('input:radio[name=chart_type]:checked').val();
+    chart_array = transpose_matrix(chart_array);
+    draw_chart(chart_array, chart_type);
+    console.log('Si dibujo el chart sin tener que hacer el AJAX request')
+  }  
+});
 
 
