@@ -36,6 +36,9 @@ def_variables  = {
 	'tasa_i_udis': 'Tasa de interés UDIS'.decode('utf-8'),
 	'plazo_ponderado': 'Plazo ponderado en meses (remanente)'.decode('utf-8'),
 	'concentracion_cartera': 'Concentración de cartera por cliente'.decode('utf-8'),
+	'saldo_acum': 'Saldo acumulado por cliente en $'.decode('utf-8'),
+	'porc_acum': 'Saldo acumulado por cliente en %'.decode('utf-8')
+
 }
 
 opc_variables = [
@@ -55,7 +58,9 @@ def_cortes = {
 	'periodo': 'Periodo'.decode('utf-8'),
 	'institucion': 'Banco'.decode('utf-8'),
 	'estado': 'Entidad Federativa'.decode('utf-8'),
-	'tec': 'Tamaño de Empresa'.decode('utf-8')
+	'tec': 'Tamaño de Empresa'.decode('utf-8'),
+	'cliente': 'Cliente'.decode('utf-8'),
+	'periodo_y': 'Periodo'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -285,6 +290,33 @@ opc_estado = [
 
 
 def_periodo = {
+
+	201201: '201201',
+	201202: '201202',
+	201203: '201203',
+	201204: '201204',
+	201205: '201205',
+	201206: '201206',
+	201207: '201207',
+	201208: '201208',
+	201209: '201209',
+	201210: '201210',
+	201211: '201211',
+	201212: '201212',
+
+	201301: '201301',
+	201302: '201302',
+	201303: '201303',
+	201304: '201304',
+	201305: '201305',
+	201306: '201306',
+	201307: '201307',
+	201308: '201308',
+	201309: '201309',
+	201310: '201310',
+	201311: '201311',
+	201312: '201312',
+
 	201401: '201401',
 	201402: '201402',
 	201403: '201403',
@@ -737,8 +769,9 @@ definiciones = {
 	'estado': def_estado,
 	'periodo': def_periodo,
 	'variables': def_variables,
-	'cortes': def_cortes,
-	'cliente': def_cliente
+	'cortes': def_cortes, #!
+	'cliente': def_cliente,
+	'periodo_y': def_periodo, #dummy
 }
 
 #xx
@@ -748,7 +781,7 @@ opciones = {
 	'tec': decode_options(opc_tec, 'tec'),
 	'estado': decode_options(opc_estado, 'estado'),
 	'periodo': decode_options(opc_periodo, 'periodo'),
-	'periodo_y': decode_options(opc_periodo_y, 'periodo'),
+	'periodo_y': decode_options(opc_periodo_y, 'periodo_y'),
 	'cliente': decode_options(opc_cliente, 'cliente'),
 }
 
@@ -1234,7 +1267,8 @@ tm_040_11A_R1 = {
 	'Concentracion':['cliente', cat_concentracion ],
 	'Monto_Acumulado':['saldo_acum'],
 	'Participacion_Acumulada':['porc_acum'],
-	'concentracion_cartera':['concentracion_cartera'] #Dummy field
+	'concentracion_cartera':['concentracion_cartera'], #Dummy field
+	'periodo_y': ['periodo_y'] #Dummy field
 }
 
 
@@ -1323,7 +1357,7 @@ def generar_indice_CNBV(lista_tablas):
 	indice_CNBV = []
 
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'periodo_y']
 
 	for tabla in lista_tablas:
 		variables = []

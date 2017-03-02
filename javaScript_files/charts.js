@@ -53,25 +53,43 @@ $(document).on('click', '.UpdateChartButton', function(){
     })
   })
   .done(function(raw_data){
+    
+    var options;
+    var chart;
     var chart_array = raw_data['chart_array'];
-
     var chart_data = google.visualization.arrayToDataTable(chart_array)
 
     $('#chart_lead').text(raw_data['title']);
 
-    var options = {
-      chartArea:{height: 350},
-      chart: {
-        title: 'Company Performance',
-        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-        isStacked: true
-      },
+    var chart_type = $('input:radio[name=chart_type]:checked').val();
+
+    if ( chart_type == 'bar_chart'){
+      options = {
+        chartArea:{height: 350},
+        chart: {
+          title: 'Company Performance',
+          subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+          isStacked: true
+        },
       bars: 'horizontal', // Required for Material Bar Charts.
       isStacked: true
-    };
+      };
 
-    var chart = new google.charts.Bar(document.getElementById('chart_div'));
-    chart.draw(chart_data,  google.charts.Bar.convertOptions(options));
+      chart = new google.charts.Bar(document.getElementById('chart_div'));
+      chart.draw(chart_data,  google.charts.Bar.convertOptions(options));
+
+    } else if (chart_type == 'line_chart'){
+
+      options = {
+        title: 'Company Performance',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(chart_data, options);
+
+    };
     
     clearTimeout(t);
     seconds = 0; minutes = 0; hours = 0;

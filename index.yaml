@@ -17,6 +17,12 @@ indexes:
 
 - kind: DatoCNBV
   properties:
+  - name: institucion
+  - name: tabla
+  - name: periodo
+
+- kind: DatoCNBV
+  properties:
   - name: tabla
   - name: tipo_valor
   - name: periodo

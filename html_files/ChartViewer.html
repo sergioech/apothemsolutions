@@ -87,12 +87,25 @@
 			</div>
 		</form>
 	</div>	
-	<div class="col-xs-9" style="padding-left: 30px;">
+	<div class="col-xs-8" style="padding-left: 30px;">
 		
 		<div id="ChartLead">
 			<h1><span id="chart_lead"></span></h1>	
 		</div> 
 		<div id="chart_div" style="height:500px;"></div>
+	</div>
+	<div class="col-xs-1" style="background-color: rgb(240,247,253);">
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-xs-12">
+				<label>Tipo de gráfica</label><br>
+				<div class="radio">
+					<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="" checked="checked"> Linea </label>	
+				</div>
+				<div class="radio">
+					<label class="radio-inline"><input type="radio" name="chart_type" value="bar_chart" id=""> Barras </label>
+				</div>
+			</div>
+		</div>	
 	</div>
 </div>	
 {% endblock %}
