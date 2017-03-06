@@ -101,12 +101,14 @@ class ChartViewer(Handler):
 		key_tabla = TablaCNBV.query(TablaCNBV.nombre == nombre_tabla).get().key
 		datos_cnbv = DatoCNBV.query(DatoCNBV.tabla == key_tabla)		
 		
+
 		nombre_variable = variable
 		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']		
 		
-		rango_periodos = self.determinar_rango_periodos(chart_details['filtros']['periodo'])
 
-		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo >= rango_periodos[0], DatoCNBV.periodo <= rango_periodos[1])
+		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo.IN(self.determinar_rango_periodos(chart_details['filtros']['periodo'])))
+		
+		datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion.IN(chart_details['filtros']['institucion']))
 
 		if chart_details['variable'] == 'concentracion_cartera':
 			datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion == '16')
@@ -131,12 +133,13 @@ class ChartViewer(Handler):
 			'total_dps': total_dps
 			}))
 
+	def determinar_rango_periodos(self, opciones_periodos):
+		result = []
+		for opcion in opciones_periodos:
+			result.append(int(opcion))
 
-	def determinar_rango_periodos(self, periodos_seleccionados):
-		lista_numerica = []
-		for periodo in periodos_seleccionados:
-			lista_numerica.append(int(periodo))
-		return [min(lista_numerica), max(lista_numerica)]
+		return result
+
 
 	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas):
 		
