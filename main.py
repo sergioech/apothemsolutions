@@ -78,32 +78,28 @@ class ChartViewer(Handler):
 		corte_columnas = chart_details['columnas']
 		if corte_columnas == 'None':
 			corte_columnas = None
- 
+ 		
+ 		#xx
 		if variable == 'concentracion_cartera':
 			corte_renglones = 'cliente'
-			corte_columnas =  'periodo_y'
+			corte_columnas =  'periodo'
+			
+			show_value_as = chart_details['show_value_as']
+			if show_value_as == 'money':
+				variable = 'saldo_acum'
+			elif show_value_as == 'percentage':
+				variable = 'porc_acum'
+
+			chart_details['filtros']['cliente'] = self.generar_opciones_de_filtro(diccionarios_CNBV.opciones['cliente'])
+			chart_details['filtros']['periodo'] = self.generar_opciones_de_filtro(diccionarios_CNBV.opciones['periodo_y'])
 
 		
 		indice_tablas = diccionarios_CNBV.indice_inicial
 
 		nombre_tabla, variables_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas)
 
-		print
-		print 'Nombre tabla: ' + nombre_tabla
-		print
-
 		key_tabla = TablaCNBV.query(TablaCNBV.nombre == nombre_tabla).get().key
 		datos_cnbv = DatoCNBV.query(DatoCNBV.tabla == key_tabla)		
-
-		if variable == 'concentracion_cartera':
-			show_value_as = chart_details['show_value_as']
-			if show_value_as == 'money':
-				variable = 'saldo_acum'
-			elif show_value_as == 'percentage':
-				variable = 'porc_acum'
-			opciones = diccionarios_CNBV.opciones	
-			chart_details['filtros']['cliente'] = self.generar_opciones_de_filtro(opciones['cliente'])
-			chart_details['filtros']['periodo_y'] = self.generar_opciones_de_filtro(opciones['periodo_y'])
 		
 		nombre_variable = variable
 		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']		
@@ -158,23 +154,19 @@ class ChartViewer(Handler):
 					return tabla[0], cortes_validos
 		return None, None
 
-	#xx
+
 	def options_to_chart_array(self, rows_options, column_options, rows_title,  variable_name, valid_row_options, valid_column_options, corte_columnas, corte_renglones): #, corte_columnas, corte_renglones
 		
 		array_headings = [rows_title]
 		columns_position = {}
 		rows_position = {}
-		
-		print
-		print 'This are the valid column options: ' + str(valid_column_options)
-		print 'This are the column options: ' + str(column_options)
-		print
+
 
 		if column_options:
 			col = 1
 			for column in column_options:
 				if str(column[0]) in valid_column_options:
-					if corte_columnas in ['periodo', 'periodo_y']:
+					if corte_columnas == 'periodo':
 						array_headings.append(int(column[0]))
 						columns_position[int((column[0]))] = col
 					else:
@@ -189,7 +181,7 @@ class ChartViewer(Handler):
 		reng = 1
 		for row in rows_options:
 			if str(row[0]) in valid_row_options:
-				if corte_renglones in ['periodo', 'periodo_y']:
+				if corte_renglones == 'periodo':
 					new_row = [int(row[0])]
 					rows_position[int(row[0])] = reng
 				else:
@@ -201,11 +193,6 @@ class ChartViewer(Handler):
 				for i in range(1, numero_columnas):
 					new_row.append(0)
 				chart_array.append(new_row)	
-
-		print
-		print 'This is the chart array: '
-		print chart_array
-		print
 
 		return chart_array, rows_position, columns_position
 
@@ -230,7 +217,6 @@ class ChartViewer(Handler):
 
 		return pimped_array
 
-	#xx
 	def query_to_chart_array(self, query_result, variable, corte_renglones, corte_columnas, nombre_variable, diccionario_filtros):
 
 		opciones = diccionarios_CNBV.opciones
@@ -252,62 +238,32 @@ class ChartViewer(Handler):
 
 		chart_array, rows_position, columns_position = self.options_to_chart_array(row_options, column_options, definiciones['cortes'][corte_renglones], definiciones['variables'][nombre_variable], valid_row_options, valid_column_options, corte_columnas, corte_renglones)
 
-		print
-		print 'Esta es la variable que va a entrar:'
-		print variable
-		print corte_columnas		
-		print corte_renglones
-		print
-
-		if corte_renglones == 'periodo_y':
-			corte_renglones = 'periodo'
-
-		if corte_columnas == 'periodo_y':
-			corte_columnas = 'periodo'
-
-
 		if corte_columnas:
-			print
-			print 'Hasta aqui ya llegamos'
-			print
 			for dp in query_result:
-				print
-				print 'Variable: ' + str(getattr(dp, variable))
-				print dp.periodo
-				print dp.cliente
-				print
 				chart_array[rows_position[getattr(dp, corte_renglones)]][columns_position[getattr(dp, corte_columnas)]] += getattr(dp, variable) 
 		else:
 			for dp in query_result:		
 				chart_array[rows_position[getattr(dp, corte_renglones)]][1] += getattr(dp, variable) 
 
-		print
-		print 'This is the chart array: '
-		print chart_array
-		print
 
 		chart_array = self.pimp_chart_array(chart_array, row_definitions, column_definitions)	
 
 		return chart_array
 
 
-	def filter_query(self, query_result, variables_tabla, diccionario_filtros):
-		campos_a_excluir = ['periodo_y', 'cliente']
+	def filter_query(self, query_result, campos_tabla, diccionario_filtros):
 
 		filtered_query = query_result
 		
-		for variable in variables_tabla:
-			if variable not in campos_a_excluir:				
-				opciones_validas = diccionario_filtros[variable]
-				output_filtro = []
-				# if variable == 'periodo_y':
-				# 	variable = 'periodo'
+		for campo in campos_tabla:				
+			opciones_validas = diccionario_filtros[campo]
+			output_filtro = []
 
-				for dp in filtered_query:
-					if str(getattr(dp, variable)) in opciones_validas:
-						output_filtro.append(dp)
-				
-				filtered_query = output_filtro
+			for dp in filtered_query:
+				if str(getattr(dp, campo)) in opciones_validas:
+					output_filtro.append(dp)
+			
+			filtered_query = output_filtro
 
 		return filtered_query
 
@@ -375,10 +331,6 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 #--- Funciones ---
 def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far):
-	print
-	print 'Vamos a ver si se llama a load_cnbv_csv cuando no se deberia'
-	print
-
 
 	rows_per_iteration = 250
 

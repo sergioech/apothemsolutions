@@ -60,7 +60,6 @@ def_cortes = {
 	'estado': 'Entidad Federativa'.decode('utf-8'),
 	'tec': 'Tamaño de Empresa'.decode('utf-8'),
 	'cliente': 'Cliente'.decode('utf-8'),
-	'periodo_y': 'Periodo'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -397,7 +396,34 @@ opc_periodo = [
 	['201404', '201404'],
 	['201403', '201403'],
 	['201402', '201402'],
-	['201401', '201401']		
+	['201401', '201401'],
+
+	['201312', '201312'],
+	['201311', '201311'],	
+	['201310', '201310'],
+	['201309', '201309'],
+	['201308', '201308'],
+	['201307', '201307'],
+	['201306', '201306'],
+	['201305', '201305'],
+	['201304', '201304'],
+	['201303', '201303'],
+	['201302', '201302'],
+	['201301', '201301'],
+
+	['201212', '201212'],
+	['201211', '201211'],	
+	['201210', '201210'],
+	['201209', '201209'],
+	['201208', '201208'],
+	['201207', '201207'],
+	['201206', '201206'],
+	['201205', '201205'],
+	['201204', '201204'],
+	['201203', '201203'],
+	['201202', '201202'],
+	['201201', '201201']	
+
 ]
 
 opc_periodo_y = [
@@ -716,7 +742,7 @@ def_cliente = {
 	'000': 'Cliente Ultimo'
 }
 
-#xx
+
 opc_cliente = [
 	['001', 'Cliente 1'],
 	['002', 'Cliente 2'],
@@ -771,7 +797,6 @@ definiciones = {
 	'variables': def_variables,
 	'cortes': def_cortes, #!
 	'cliente': def_cliente,
-	'periodo_y': def_periodo, #dummy
 }
 
 #xx
@@ -1268,7 +1293,6 @@ tm_040_11A_R1 = {
 	'Monto_Acumulado':['saldo_acum'],
 	'Participacion_Acumulada':['porc_acum'],
 	'concentracion_cartera':['concentracion_cartera'], #Dummy field
-	'periodo_y': ['periodo_y'] #Dummy field
 }
 
 
@@ -1356,8 +1380,9 @@ def generar_indice_CNBV(lista_tablas):
 	
 	indice_CNBV = []
 
-	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'periodo_y']
+
+	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum'] # tipo_valor
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente']
 
 	for tabla in lista_tablas:
 		variables = []
