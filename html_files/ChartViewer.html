@@ -53,7 +53,7 @@
 			</div>
 			
 			{% for corte in cortes %}
-				<div name="corte" value="{{corte[0]}}" class="corte">	
+				<div name="corte" value="{{corte[0]}}" class="corte" id="Corte">	
 					<div class="row" style="">
 						<div class="col-xs-12">
 							<div class="btn-group" role="group" aria-label="Vertical button group">										
@@ -67,13 +67,13 @@
 							<div id="{{corte[0]}}" style="margin-top: 5px;" class="hidden">																
 								<div class="checkbox">
 									<label>
-										<input class="select_all_checkbox" type="checkbox" checked='checked' target_section="#{{corte[0]}}"> Seleccionar todo
+										<input class="select_all_checkbox" type="checkbox" target_section="#{{corte[0]}}"> Seleccionar todo
 									</label>
-								</div>																				
+								</div>																
 								{% for opcion in opciones[corte[0]] %}
 									<div class="checkbox">
 										<label>
-											<input class="opcion" type="checkbox" value="{{opcion[0]}}" checked='checked'> {{opcion[1]}}
+											<input class="opcion" type="checkbox" value="{{opcion[0]}}"> {{opcion[1]}}
 										</label>
 									</div>
 								{% endfor %}								

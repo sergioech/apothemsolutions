@@ -188,4 +188,25 @@ $(document).on('change', '.select_all_checkbox', function(){
 });
 
 
+$('input.opcion').on('change', function() {
+  var nombre_corte = $(this).closest('#Corte').attr("value"),
+    opciones_seleccionadas = $(this).closest('#Corte').find('.opcion').filter(':checked').length,
+    limit;
+
+  if (nombre_corte == 'institucion'){
+    limit = 7
+  } else if(nombre_corte == 'periodo') {
+    limit = 20
+  } else {
+    limit = 50
+  }
+  
+   if(opciones_seleccionadas > limit) {
+       this.checked = false;
+   }
+});
+
+
+
+
 
