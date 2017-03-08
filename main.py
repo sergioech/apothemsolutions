@@ -82,7 +82,11 @@ class ChartViewer(Handler):
  		#xx
 		if variable == 'concentracion_cartera':
 			corte_renglones = 'cliente'
-			corte_columnas =  'periodo'
+			
+			if chart_details['perspectiva_institucion'] == 'varios_bancos':
+				corte_columnas = 'institucion'
+			else:
+				corte_columnas =  'periodo'
 			
 			show_value_as = chart_details['show_value_as']
 			if show_value_as == 'money':
@@ -91,7 +95,7 @@ class ChartViewer(Handler):
 				variable = 'porc_acum'
 
 			chart_details['filtros']['cliente'] = self.generar_opciones_de_filtro(diccionarios_CNBV.opciones['cliente'])
-			chart_details['filtros']['periodo'] = self.generar_opciones_de_filtro(diccionarios_CNBV.opciones['periodo_y'])
+			# chart_details['filtros']['periodo'] = self.generar_opciones_de_filtro(diccionarios_CNBV.opciones['periodo_y'])
 
 		
 		indice_tablas = diccionarios_CNBV.indice_inicial
@@ -105,13 +109,8 @@ class ChartViewer(Handler):
 		nombre_variable = variable
 		tipo_variable = diccionarios_CNBV.detalles_tabla[nombre_tabla]['tipo_variables']		
 		
-
-		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo.IN(self.determinar_rango_periodos(chart_details['filtros']['periodo'])))
-		
+		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo.IN(self.determinar_rango_periodos(chart_details['filtros']['periodo'])))		
 		datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion.IN(chart_details['filtros']['institucion']))
-
-		if chart_details['variable'] == 'concentracion_cartera':
-			datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion == '16')
 
 		if tipo_variable == 'indirectas':
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
@@ -258,15 +257,16 @@ class ChartViewer(Handler):
 
 		filtered_query = query_result
 		
-		for campo in campos_tabla:				
-			opciones_validas = diccionario_filtros[campo]
-			output_filtro = []
+		for campo in campos_tabla:
+			if campo not in ['periodo', 'institucion']:				
+				opciones_validas = diccionario_filtros[campo]
+				output_filtro = []
 
-			for dp in filtered_query:
-				if str(getattr(dp, campo)) in opciones_validas:
-					output_filtro.append(dp)
-			
-			filtered_query = output_filtro
+				for dp in filtered_query:
+					if str(getattr(dp, campo)) in opciones_validas:
+						output_filtro.append(dp)
+				
+				filtered_query = output_filtro
 
 		return filtered_query
 

@@ -4,7 +4,6 @@ var seconds = 0, minutes = 0, hours = 0,
     chart_array,
     chart_type;
 
-
 function add() {
     seconds++;
     if (seconds >= 60) {
@@ -23,9 +22,6 @@ function add() {
 function timer() {
     t = setTimeout(add, 1000);
 }
-
-
-
 
 
 // Load the Visualization API and the corechart package.
@@ -51,6 +47,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     data: JSON.stringify({
       'data_requested': 'TestDataCNBV', 
       'variable': variable,
+      'perspectiva_institucion':$('input:radio[name=perspectiva_institucion]:checked').val(),
       'show_value_as': show_value_as,
       'renglones':renglones,
       'columnas':columnas,
@@ -93,7 +90,8 @@ function draw_chart(chart_array, chart_type){
       chart: {
         title: 'Company Performance',
         subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-        isStacked: true
+        isStacked: true,
+        explorer:{}
       },
     bars: 'horizontal', // Required for Material Bar Charts.
     isStacked: true
@@ -156,11 +154,9 @@ function transpose_matrix(matrix){
 
 
 $('input[type=radio][name=chart_type]').on('change',function(){
-  // console.log('Si detecto que quiere hacer cambio de chart_type')
   if(chart_array != undefined){
     chart_type = $('input:radio[name=chart_type]:checked').val();
     draw_chart(chart_array, chart_type);
-    // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
   }
 });  
 
@@ -207,6 +203,103 @@ $('input.opcion').on('change', function() {
 });
 
 
+var grupo_totalBancaMultiple = [
+  '#institucion_00'
+]
+
+var grupo_top7 = [
+  '#institucion_16', //Banamex
+  '#institucion_31', //Banorte/Ixe
+  '#institucion_34', //BBVA Bancomer
+  '#institucion_40', //HSBC
+  '#institucion_42', //Inbursa
+  '#institucion_53', //Santande
+  '#institucion_55', //Scotiabank
+]
 
 
+var grupo_ultimoPeriodo = [
+  '#periodo_201612'
+]
+
+
+var grupo_anos = [
+  '#periodo_201612',
+  '#periodo_201512',
+  '#periodo_201412',
+  '#periodo_201312',
+  '#periodo_201212',
+]
+
+
+
+function select_group(lista_ids){
+  
+  var opciones = $(lista_ids[0]).closest('#Corte').find('.opcion');
+  
+  opciones.each(function(){
+    $(this).prop('checked', false);
+  });
+
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).prop('checked', true)
+  }
+};
+
+
+function limpiar_corte(id_corte){
+  var opciones = $(id_corte).find('.opcion');  
+  opciones.each(function(){
+    $(this).prop('checked', false);
+  });
+}
+
+
+$('input[type=radio][name=perspectiva_institucion]').on('change',function(){
+  var perspectiva = $('input:radio[name=perspectiva_institucion]:checked').val()
+
+  if(perspectiva == 'varios_bancos'){
+    select_group(grupo_ultimoPeriodo);
+    select_group(grupo_top7);
+  
+  } else if(perspectiva == 'varios_periodos'){
+    select_group(grupo_anos);
+    select_group(grupo_totalBancaMultiple);
+  }
+});
+
+
+var menus_visibles = {
+  'concentracion_cartera':['#boton_graficar', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
+}
+
+
+var seleccion_default = {
+  'concentracion_cartera':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7)]
+}
+
+
+function unhide_group(lista_ids){
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).removeClass('hidden') 
+  }
+};
+
+
+function seleccionar_default(variable){
+  var lista_funciones = seleccion_default[variable]
+
+  for( miembro in lista_funciones){
+    lista_funciones[miembro]
+  };
+};  
+
+
+$('#variable').on('change', function(){
+  console.log('Si detecto que esta cambiando la variable');  
+  
+  var variable = $(this).val();  
+  unhide_group(menus_visibles[variable]);
+  seleccionar_default(variable);
+});
 
