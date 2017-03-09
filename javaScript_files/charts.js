@@ -28,6 +28,9 @@ function timer() {
 google.charts.load('current', {'packages':['corechart']});
 
 $(document).on('click', '.UpdateChartButton', function(){  
+
+  $('#chart_loader').removeClass('hidden');
+
   var variable = $('#variable option:selected').val();
   var show_value_as = $('input:radio[name=show_value_as]:checked').val();
 
@@ -55,7 +58,8 @@ $(document).on('click', '.UpdateChartButton', function(){
     })
   })
   .done(function(raw_data){
-        
+    $('#chart_loader').addClass('hidden');
+
     $('#chart_lead').text(raw_data['title']);
     $('#chart_units').text(raw_data['chart_units']);
 
@@ -280,7 +284,7 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'concentracion_cartera':['#boton_graficar', '#tipo_de_grafica', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
+  'concentracion_cartera':['#boton_graficar', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
 }
 
 
