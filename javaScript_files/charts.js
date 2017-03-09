@@ -29,6 +29,9 @@ google.charts.load('current', {'packages':['corechart']});
 
 $(document).on('click', '.UpdateChartButton', function(){  
 
+  $('#chart_lead').addClass('hidden');
+  $('#chart_units').addClass('hidden');
+  $('#chart_div').addClass('hidden');
   $('#chart_loader').removeClass('hidden');
 
   var variable = $('#variable option:selected').val();
@@ -59,6 +62,10 @@ $(document).on('click', '.UpdateChartButton', function(){
   })
   .done(function(raw_data){
     $('#chart_loader').addClass('hidden');
+    $('#chart_lead').removeClass('hidden');
+    $('#chart_units').removeClass('hidden');
+    $('#chart_div').removeClass('hidden');
+    
 
     $('#chart_lead').text(raw_data['title']);
     $('#chart_units').text(raw_data['chart_units']);
