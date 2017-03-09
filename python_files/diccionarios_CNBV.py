@@ -36,8 +36,8 @@ def_variables  = {
 	'tasa_i_udis': 'Tasa de interés UDIS'.decode('utf-8'),
 	'plazo_ponderado': 'Plazo ponderado en meses (remanente)'.decode('utf-8'),
 	'concentracion_cartera': 'Concentración de cartera por cliente'.decode('utf-8'),
-	'saldo_acum': 'Saldo acumulado por cliente en $'.decode('utf-8'),
-	'porc_acum': 'Saldo acumulado por cliente en %'.decode('utf-8')
+	'saldo_acum': 'Saldo acumulado por cliente'.decode('utf-8'),
+	'porc_acum': 'Saldo acumulado por cliente'.decode('utf-8')
 
 }
 

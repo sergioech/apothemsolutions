@@ -128,9 +128,40 @@ class ChartViewer(Handler):
 
 		self.response.out.write(json.dumps({
 			'chart_array': chart_array,
-			'title': 'Lead',
+			'title': self.generate_lead(variable, chart_details['filtros']['institucion'], chart_details['filtros']['periodo'], []),
 			'total_dps': total_dps
 			}))
+
+		return
+
+
+
+
+	def generate_lead(self, variable, bancos, periodos, cortes):
+		definiciones = diccionarios_CNBV.definiciones
+		
+		variable_lead = definiciones['variables'][variable]
+		banco_lead = definiciones['institucion'][bancos[0]]
+		
+		if len(bancos) > 1:
+			if len(bancos) == 2:
+				banco_lead += ' y ' + definiciones['institucion'][bancos[1]]
+			else:
+				banco_lead += ' y otras ' + str(len(bancos) - 1) + ' instituciones ' 
+		
+	
+		periodo_lead =  definiciones['periodo'][int(periodos[0])]
+
+		if len(periodos) == 2:
+			periodo_lead += ' y ' + definiciones['periodo'][int(periodo[1])]
+		elif len(periodos) > 2:
+			periodo_lead += ' y otros ' + str(len(periodos) - 1) + ' periodos ' 
+
+		lead = variable_lead + ' de ' + banco_lead + ' durante ' + periodo_lead
+		return lead	
+
+
+
 
 	def determinar_rango_periodos(self, opciones_periodos):
 		result = []

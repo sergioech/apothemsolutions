@@ -96,11 +96,28 @@
 				</div>
 			{% endfor %}
 
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xs-12">
+					<label>Tipo de gráfica</label><br>
+					<div class="radio">
+						<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="" checked="checked"> Linea </label>	
+					</div>
+					<div class="radio">
+						<label class="radio-inline"><input type="radio" name="chart_type" value="bar_chart" id=""> Barras </label>
+					</div>
+				</div>
+			</div>
+
+
 			<div class="row hidden" style="margin-top: 10px;" id="boton_graficar">
 				<div class="col-xs-12">
 					<div style="margin-bottom: 20px;">
 						<button type="button" class="btn btn-primary btn-sm UpdateChartButton" name="action_description" value='UpdateChart'> Graficar <span style="margin-left:2px;" class="glyphicon glyphicon-pencil"></span></button>
 					</div>
+					<div class="hidden" id="boton_transponer">
+						<button type="button" class="btn btn-primary btn-sm" id="transpose_button"> Transponer <span style="margin-left:2px;" class="glyphicon glyphicon-retweet"></span></button>						
+					</div>
+
 				</div>	
 			</div>
 		</form>
@@ -108,30 +125,19 @@
 		<br>
 		<br>
 	</div>	
-	<div class="col-xs-8" style="padding-left: 30px;">
-		
-		<div id="ChartLead">
-			<h1><span id="chart_lead"></span></h1>	
-		</div> 
-		<div id="chart_div" style="height:500px;"></div>
-	</div>
-	<div class="col-xs-1" style="background-color: rgb(240,247,253);">
-		<div class="row" style="margin-top: 10px;">
-			<div class="col-xs-12">
-				<label>Tipo de gráfica</label><br>
-				<div class="radio">
-					<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="" checked="checked"> Linea </label>	
-				</div>
-				<div class="radio">
-					<label class="radio-inline"><input type="radio" name="chart_type" value="bar_chart" id=""> Barras </label>
-				</div>
+	<div class="col-xs-9" style="padding-left: 30px;"> 
+		<div class="SlideDisplaySection">
+			<div id="ChartLead" style="margin-right: 15px; margin-left: 15px;">
+				<span id="chart_lead" class="ChartLead"></span>	
 			</div>
-		</div>
-		<div class="row hidden" id="boton_transponer">
-			<div class="col-xs-12">
-				<button type="button" class="btn btn-primary btn-sm" id="transpose_button"> Transponer <span style="margin-left:2px;" class="glyphicon glyphicon-retweet"></span></button>
-			</div>			
-		</div>	
+
+			<div id="chart_div" style="height:500px;"></div>	
+		</div>		
 	</div>
 </div>	
 {% endblock %}
+
+
+
+
+
