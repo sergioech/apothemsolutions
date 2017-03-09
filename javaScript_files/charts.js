@@ -57,6 +57,7 @@ $(document).on('click', '.UpdateChartButton', function(){
   .done(function(raw_data){
         
     $('#chart_lead').text(raw_data['title']);
+    $('#chart_units').text(raw_data['chart_units']);
 
     chart_array = raw_data['chart_array'];
     chart_type = $('input:radio[name=chart_type]:checked').val();
@@ -88,18 +89,16 @@ function draw_chart(chart_array, chart_type){
 
   if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
     axis_format = 'percent'
-    chart_subtitle = '%'
   } else {
     axis_format = 'short'
-    chart_subtitle = 'Pesos (MXN)'
   }
 
   if ( chart_type == 'bar_chart'){
     options = {
       chartArea:{height: 350},
       chart: {
-        title: 'Company Performance',
-        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+        // title: 'Company Performance',
+        // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
         isStacked: true,
         explorer:{}
       },
@@ -112,12 +111,9 @@ function draw_chart(chart_array, chart_type){
 
   } else if (chart_type == 'line_chart'){
 
-    options = {
-      subtitle: 'in millions of dollars (USD)',
-      chart:{ title: 'Box Office Earnings in First Two Weeks of Opening', subtitle: 'in millions of dollars (USD)'},
+    options = {      
       chartArea:{height: '75%', width: '87%'},
-      // title: 'Company Performance',
-      curveType: 'function',
+      // curveType: 'function',
       legend: { position: 'top', maxLines:2},      
       vAxis: { format: axis_format}
     };
@@ -284,7 +280,7 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'concentracion_cartera':['#boton_graficar', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
+  'concentracion_cartera':['#boton_graficar', '#tipo_de_grafica', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
 }
 
 

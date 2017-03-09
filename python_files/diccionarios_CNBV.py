@@ -38,8 +38,25 @@ def_variables  = {
 	'concentracion_cartera': 'Concentración de cartera por cliente'.decode('utf-8'),
 	'saldo_acum': 'Saldo acumulado por cliente'.decode('utf-8'),
 	'porc_acum': 'Saldo acumulado por cliente'.decode('utf-8')
+}
+
+
+def_variables_unidades  = {
+	'saldo_total': 'Pesos ($MXN)'.decode('utf-8'),
+	'car_vigente': 'Pesos ($MXN)'.decode('utf-8'),
+	'car_vencida': 'Pesos ($MXN)'.decode('utf-8'),
+	'creditos': 'Creditos (Número)'.decode('utf-8'),
+	'acreditados': 'Acreditados (Número)'.decode('utf-8'),
+	'tasa_i_mn': 'Porcentaje (%)'.decode('utf-8'),
+	'tasa_i_me': 'Porcentaje (%)'.decode('utf-8'),
+	'tasa_i_udis': 'Porcentaje (%)'.decode('utf-8'),
+	'plazo_ponderado': 'Meses (Número)'.decode('utf-8'),
+	'concentracion_cartera': 'Concentración de cartera por cliente'.decode('utf-8'),
+	'saldo_acum': 'Pesos ($MXN)'.decode('utf-8'),
+	'porc_acum': 'Porcentaje (%)'.decode('utf-8')
 
 }
+
 
 opc_variables = [
 	'saldo_total',

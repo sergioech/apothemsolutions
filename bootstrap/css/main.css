@@ -20,7 +20,7 @@
 
 .ChartUnits{
     font-size: 22px;
-    color: #D3D3D3;
+    color: #A9A9A9;
 }
 
 
@@ -30,12 +30,9 @@
   border-style: solid;  
   border-color: #0000ff;
   
-  width: 800;
+  width: 800px;
   height: 600px;
 
-  /*max-width: 502px;  */
-  /*min-height: 100px;*/
-  /*margin: 8px auto;*/
   margin-bottom:8px;
   margin-right:5px;
   margin-left:5px;
