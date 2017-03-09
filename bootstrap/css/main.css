@@ -15,7 +15,12 @@
 }
 
 .ChartLead {
-    font-size: 26px;
+    font-size: 22px;
+}
+
+.ChartUnits{
+    font-size: 22px;
+    color: #D3D3D3;
 }
 
 

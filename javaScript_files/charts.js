@@ -79,10 +79,20 @@ $(document).on('click', '.UpdateChartButton', function(){
 
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
-
+  
   var chart_data = google.visualization.arrayToDataTable(chart_array),
     options,
+    axis_format,
+    chart_subtitle, 
     chart;
+
+  if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
+    axis_format = 'percent'
+    chart_subtitle = '%'
+  } else {
+    axis_format = 'short'
+    chart_subtitle = 'Pesos (MXN)'
+  }
 
   if ( chart_type == 'bar_chart'){
     options = {
@@ -103,9 +113,13 @@ function draw_chart(chart_array, chart_type){
   } else if (chart_type == 'line_chart'){
 
     options = {
-      title: 'Company Performance',
+      subtitle: 'in millions of dollars (USD)',
+      chart:{ title: 'Box Office Earnings in First Two Weeks of Opening', subtitle: 'in millions of dollars (USD)'},
+      chartArea:{height: '75%', width: '87%'},
+      // title: 'Company Performance',
       curveType: 'function',
-      legend: { position: 'bottom' }
+      legend: { position: 'top', maxLines:2},      
+      vAxis: { format: axis_format}
     };
     chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(chart_data, options);
