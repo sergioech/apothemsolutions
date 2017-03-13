@@ -25,7 +25,7 @@ function timer() {
 
 
 // Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {'packages':['corechart', 'bar']});
 
 $(document).on('click', '.UpdateChartButton', function(){  
 
@@ -75,10 +75,10 @@ $(document).on('click', '.UpdateChartButton', function(){
     draw_chart(chart_array, chart_type)
 
     clearTimeout(t);
-    seconds = 0; minutes = 0; hours = 0;
-    
+    seconds = 0; minutes = 0; hours = 0;  
     var milliseconds_since_start = new Date().valueOf() - start_time
     var m  = new Date(milliseconds_since_start)
+    
     console.log('    ')
     console.log('Chart generado')
     console.log('A Echeverría le gusta dar beso negro')
@@ -88,6 +88,7 @@ $(document).on('click', '.UpdateChartButton', function(){
 
   })
 });
+
 
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
@@ -106,30 +107,40 @@ function draw_chart(chart_array, chart_type){
 
   if ( chart_type == 'bar_chart'){
     options = {
-      chartArea:{height: 350},
-      chart: {
-        // title: 'Company Performance',
-        // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-        isStacked: true,
-        explorer:{}
-      },
-    bars: 'horizontal', // Required for Material Bar Charts.
-    isStacked: true
+      // chartArea:{height: '80%', width: '80%'},
+      chartArea:{height: '90%', width: '65%'},
+      // legend: { position: 'top', maxLines:3}, 
+      hAxis: {title:'', format: axis_format},
+      isStacked: true
     };
 
-    chart = new google.charts.Bar(document.getElementById('chart_div'));
-    chart.draw(chart_data,  google.charts.Bar.convertOptions(options));
+    chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+    chart.draw(chart_data, options);
+
 
   } else if (chart_type == 'line_chart'){
 
     options = {      
       chartArea:{height: '75%', width: '87%'},
-      // curveType: 'function',
       legend: { position: 'top', maxLines:2},      
       vAxis: { format: axis_format}
+      // curveType: 'function',
     };
     chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(chart_data, options);
+  
+  } else if(chart_type == 'column_chart') {
+    options = {
+      chartArea:{height: '75%', width: '87%'},
+      legend: { position: 'top', maxLines:2},
+      vAxis: { format: axis_format},
+      isStacked: true
+    };
+    var view = new google.visualization.DataView(chart_data);
+    // view.setColumns()
+    chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(chart_data, options);
+
   };
 };
 
@@ -291,11 +302,13 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'concentracion_cartera':['#boton_graficar', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
+  'saldo_total':['#boton_graficar','[value=periodo]', '[value=institucion]'],
+  'concentracion_cartera':['#boton_graficar', '#vista','#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica']
 }
 
 
 var seleccion_default = {
+  'saldo_total':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7)],
   'concentracion_cartera':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7)]
 }
 
