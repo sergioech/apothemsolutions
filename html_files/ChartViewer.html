@@ -23,13 +23,19 @@
 
 			<div class="row hidden" style="margin-top: 10px;" id="perspectiva_institucion">
 				<div class="col-xs-12">
-					<label>Perspectiva Institucion</label><br>
+					<label>Comparativa</label><br>
 					<div>
 						<label class="radio-inline"><input type="radio" name="perspectiva_institucion" value="varios_bancos" checked="checked"> Varias instituciones en un periodo </label>
 					</div>
 					<div>
 						<label class="radio-inline"><input type="radio" name="perspectiva_institucion" value="varios_periodos"> Una institución en varios periodos </label>	
-					</div>					
+					</div>
+					
+					<div>
+						<label class="radio-inline"><input type="radio" name="perspectiva_institucion" value="varias_varios"> Varias instituciones en varios periodos</label>	
+					</div>	
+
+
 				</div>
 			</div>
 
@@ -97,10 +103,12 @@
 			{% endfor %}
 
 			<div class="row hidden" style="margin-top: 10px;" id="tipo_de_grafica">
+				
 				<div class="col-xs-12">
-					<label>Tipo de gráfica</label><br>
+					
+					<label style="margin-top: 10px; margin-bottom: 0px;">Tipo de gráfica</label>
 					<div class="radio">
-						<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="" checked="checked"> Linea </label>	
+						<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="" checked="checked"> Lineas </label>	
 					</div>
 
 					<div class="radio">
@@ -111,20 +119,27 @@
 						<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
 					</div>
 
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="is_stacked"> Stack
+						</label>
+					</div>
+
 				</div>
 			</div>
 
 
 			<div class="row hidden" style="margin-top: 10px;" id="boton_graficar">
-				<div class="col-xs-12">
+				<div class="col-xs-6">
 					<div style="margin-bottom: 20px;">
 						<button type="button" class="btn btn-primary btn-sm UpdateChartButton" name="action_description" value='UpdateChart'> Graficar <span style="margin-left:2px;" class="glyphicon glyphicon-pencil"></span></button>
 					</div>
+				</div>
+				<div class="col-xs-6">
 					<div class="hidden" id="boton_transponer">
-						<button type="button" class="btn btn-primary btn-sm" id="transpose_button"> Transponer <span style="margin-left:2px;" class="glyphicon glyphicon-retweet"></span></button>						
+						<button type="button" class="btn btn-primary btn-sm" id="transpose_button"> Invertir <span style="margin-left:2px;" class="glyphicon glyphicon-retweet"></span></button>						
 					</div>
-
-				</div>	
+				</div>		
 			</div>
 		</form>
 		<br>
@@ -136,7 +151,7 @@
 			<div id="ChartLead" style="margin-right: 15px; margin-left: 15px;">
 				<div class="row"><div class="col-xs-12"><span id="chart_lead" class="ChartLead"></span></div></div>
 				<div class="row"><div class="col-xs-12"><span id="chart_units" class="ChartUnits"></span></div></div>					
-				<hr style="margin-top:5px; margin-bottom: 5px;">
+				<hr style="margin-top:5px; margin-bottom: 0px;">
 			</div>
 			<div class="loader hidden" style="margin-left: 300px; margin-top: 200px;" id="chart_loader"></div>
 			<div class="row" style=""><div class="col-xs-12"><div id="chart_div" style="margin-left: 10px; height:490px;"></div></div></div>				

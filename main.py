@@ -71,6 +71,7 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
+		# chart_details['filtros']['periodo'] = list(reversed(chart_details['filtros']['periodo']))
 
 		variable = chart_details['variable']
 		corte_renglones = chart_details['renglones']
@@ -79,7 +80,6 @@ class ChartViewer(Handler):
 		if corte_columnas == 'None':
 			corte_columnas = None
  		
- 		#xx
 		if variable == 'concentracion_cartera':
 			corte_renglones = 'cliente'
 			
@@ -112,6 +112,9 @@ class ChartViewer(Handler):
 		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo.IN(self.determinar_rango_periodos(chart_details['filtros']['periodo'])))		
 		datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion.IN(chart_details['filtros']['institucion']))
 
+		chart_lead = self.generate_lead(variable, chart_details['filtros']['institucion'], chart_details['filtros']['periodo'], [])
+		chart_units = diccionarios_CNBV.def_variables_unidades[variable]
+
 		if tipo_variable == 'indirectas':
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
 			datos_cnbv = datos_cnbv.filter(DatoCNBV.tipo_valor == variable)
@@ -128,8 +131,8 @@ class ChartViewer(Handler):
 
 		self.response.out.write(json.dumps({
 			'chart_array': chart_array,
-			'title': self.generate_lead(variable, chart_details['filtros']['institucion'], chart_details['filtros']['periodo'], []),
-			'chart_units': diccionarios_CNBV.def_variables_unidades[variable],
+			'title': chart_lead,
+			'chart_units': chart_units,
 			'total_dps': total_dps
 			}))
 
@@ -137,7 +140,7 @@ class ChartViewer(Handler):
 
 
 
-
+	# xx
 	def generate_lead(self, variable, bancos, periodos, cortes):
 		definiciones = diccionarios_CNBV.definiciones
 		
@@ -154,7 +157,8 @@ class ChartViewer(Handler):
 		periodo_lead =  definiciones['periodo'][int(periodos[0])]
 
 		if len(periodos) == 2:
-			periodo_lead += ' y ' + definiciones['periodo'][int(periodo[1])]
+			periodo_lead += ' y ' + definiciones['periodo'][int(periodos[1])]
+		
 		elif len(periodos) > 2:
 			periodo_lead += ' y otros ' + str(len(periodos) - 1) + ' periodos ' 
 
