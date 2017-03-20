@@ -144,7 +144,8 @@ class ChartViewer(Handler):
 	def generate_lead(self, variable, bancos, periodos, cortes):
 		definiciones = diccionarios_CNBV.definiciones
 		
-		variable_lead = definiciones['variables'][variable].decode('utf-8')
+		variable_lead = definiciones['variables'][variable]
+		# variable_lead = definiciones['variables'][variable].decode('utf-8')
 		banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8')
 		
 		if len(bancos) > 1:

@@ -378,13 +378,29 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 var menus_visibles = {
   'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]']
+  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+
+  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+
+
 }
 
 
 var seleccion_default = {
   'saldo_total':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'concentracion_cartera':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7)]
+  'concentracion_cartera':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7)],
+
+  'creditos':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
+  'acreditados':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
+  'tasa_i_mn':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
+  'tasa_i_me':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
+  'tasa_i_udis':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
+  'plazo_ponderado':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')]
 }
 
 
