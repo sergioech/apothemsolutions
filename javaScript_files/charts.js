@@ -309,7 +309,7 @@ var grupo_top7 = [
   '#institucion_34', //BBVA Bancomer
   '#institucion_40', //HSBC
   '#institucion_42', //Inbursa
-  '#institucion_53', //Santande
+  '#institucion_53', //Santander
   '#institucion_55', //Scotiabank
 ]
 
@@ -377,17 +377,19 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica'],
+  
+  'car_vigente':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
+  'car_vencida':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
 
-  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
+  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
   'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
   'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
   'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
   'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
 
-
+  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
 }
 
 

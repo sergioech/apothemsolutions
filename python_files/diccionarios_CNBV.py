@@ -816,7 +816,7 @@ definiciones = {
 	'cliente': def_cliente,
 }
 
-#xx
+
 opciones = {
 	'tipo_valor': decode_options(opc_tipo_valor, 'tipo_valor'),
 	'institucion': decode_options(opc_institucion, 'institucion'),
@@ -1382,14 +1382,14 @@ detalles_tabla = {
 	'040_11l_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'}
 }
 
-
+#xx
 tablas_CNBV = [
 	'040_11A_R1',
 	'040_11A_R4',
 	# '040_11A_R8',
 	
-	# '040_11L_R0',
-	# '040_11l_R3'
+	'040_11L_R0',
+	'040_11l_R3'
 ]
 
 
