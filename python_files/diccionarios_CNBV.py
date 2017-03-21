@@ -1337,7 +1337,7 @@ tm_040_11L_R0 = {
 }
 
 
-tm_040_11l_R3 = {
+tm_040_11L_R3 = {
 	'cve_periodo': ['periodo'],
 	'cve_institucion': ['institucion', cat_institucion],
 	'cve_estado': ['estado', cat_estado],
@@ -1353,7 +1353,7 @@ transformation_maps_CNBV = {
 
 	'040_11A_R4': tm_040_11A_R4,
 	'040_11L_R0': tm_040_11L_R0,
-	'040_11l_R3': tm_040_11l_R3
+	'040_11L_R3': tm_040_11L_R3
 }
 
 #--- Database Contents
@@ -1379,7 +1379,7 @@ detalles_tabla = {
 
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
-	'040_11l_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'}
+	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'}
 }
 
 #xx
@@ -1389,7 +1389,7 @@ tablas_CNBV = [
 	# '040_11A_R8',
 	
 	'040_11L_R0',
-	'040_11l_R3'
+	'040_11L_R3'
 ]
 
 
