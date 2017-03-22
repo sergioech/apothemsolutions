@@ -389,20 +389,77 @@ var menus_visibles = {
   'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
   'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
 
-  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
 }
 
 
 var seleccion_default = {
-  'saldo_total':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'concentracion_cartera':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7)],
 
-  'creditos':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'acreditados':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'tasa_i_mn':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'tasa_i_me':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'tasa_i_udis':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')],
-  'plazo_ponderado':[select_group(grupo_ultimoPeriodo), select_group(grupo_top7), seleccionar_cortes_iniciales('periodo', 'institucion'), seleccionar_grafica_inicial('bar_chart')]
+  'saldo_total':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'creditos':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'acreditados':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'tasa_i_mn':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'tasa_i_me':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'tasa_i_udis':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'plazo_ponderado':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'concentracion_cartera':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'line_chart'
+  }
+
+
 }
 
 
@@ -421,7 +478,7 @@ function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
 
 function seleccionar_grafica_inicial(chart_type){  
   $('input:radio[name=chart_type]').attr('checked',false)
-  // $('#chart_type_bar_chart').prop('checked', true)
+  console.log('Si se dio cuenta de que deberia de seleccionar la grafica de tipo: ' + chart_type)
   $('input[type=radio][name=chart_type][value=' + chart_type +']' ).prop('checked', true)
 };
 
@@ -436,17 +493,22 @@ function unhide_group(lista_ids){
 
 
 function seleccionar_default(variable){
-  var lista_funciones = seleccion_default[variable]
 
-  for( miembro in lista_funciones){
-    lista_funciones[miembro]
-  };
-};  
+  var seleccion_inicial = seleccion_default[variable]
+
+  select_group(seleccion_inicial['periodos']);
+  select_group(seleccion_inicial['instituciones']);
+  seleccionar_cortes_iniciales(seleccion_inicial['corte_renglones'], seleccion_inicial['corte_columnas']);
+  seleccionar_grafica_inicial(seleccion_inicial['grafica']);
+
+}; 
+
+
 
 
 $('#variable').on('change', function(){
   console.log('Si detecto que esta cambiando la variable');  
-  
+
   var variable = $(this).val();  
   unhide_group(menus_visibles[variable]);
   seleccionar_default(variable);
