@@ -1393,6 +1393,35 @@ tablas_CNBV = [
 ]
 
 
+demo_version_details = {
+	'040_11A_R1': {
+		'descripcion':'Cartera actividad empresarial: concentracion del portafolio total por numero de acreditados', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'040_11A_R4': {
+		'descripcion':'Cartera actuvidad empresarial: tasa de interes promedio ponderada, portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+	
+	'040_11L_R0': {
+		'descripcion':'Numero de creditos, acreditados y saldo por tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	
+	'040_11L_R3': {
+		'descripcion':'Distribucion geografica del numero de creditos, acreditados y saldo por tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	}
+}
+
+
+
 def generar_indice_CNBV(lista_tablas):
 	
 	indice_CNBV = []

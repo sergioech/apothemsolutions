@@ -148,8 +148,6 @@ class ChartViewer(Handler):
 		return
 
 
-
-	# xx
 	def generate_lead(self, variable, bancos, periodos, cortes):
 		definiciones = diccionarios_CNBV.definiciones
 		
@@ -341,6 +339,61 @@ class NewTable(Handler):
 		self.redirect('/TableViewer')
 
 
+class PopulateDemoVersion(Handler):
+
+	def get(self):
+
+		tablas = diccionarios_CNBV.tablas_CNBV 
+		detalles_demo_tablas = diccionarios_CNBV.demo_version_details
+
+		for tabla in tablas:
+			detalles_tabla = detalles_demo_tablas[tabla]
+			
+			new_table = TablaCNBV(
+				nombre = tabla,
+				descripcion = detalles_tabla['descripcion'],
+				registros = detalles_tabla['registros'],
+				url_fuente = detalles_tabla['url_fuente'])
+			
+			new_table.put()
+
+			test_table = new_table
+		
+			csv_file = CsvCNBV(
+				blob_key=blobstore.blobstore.BlobKey('Ql1fkAqvduYHWhJgXoNKZQ=='),
+				Key_TablaCNBV = new_table.key,
+				nombre=tabla + '.csv',
+				nombre_tablaCNBV=tabla)
+			csv_file.put()
+
+			test_csv = csv_file
+			load_cnbv_csv(new_table, csv_file, 'from_hard_csv', 0, None, 0)
+
+		self.redirect('/TableViewer')
+
+
+class CreateAllTables(Handler):
+
+	def get(self):
+
+		tablas = diccionarios_CNBV.tablas_CNBV 
+		detalles_demo_tablas = diccionarios_CNBV.demo_version_details
+
+		for tabla in tablas:
+			detalles_tabla = detalles_demo_tablas[tabla]
+			
+			new_table = TablaCNBV(
+				nombre = tabla,
+				descripcion = detalles_tabla['descripcion'],
+				registros = detalles_tabla['registros'],
+				url_fuente = detalles_tabla['url_fuente'])
+			new_table.put()
+
+		self.redirect('/TableViewer')
+
+
+
+
 class TableViewer(Handler):
 	def get(self):
 		tablas_cnbv = TablaCNBV.query().fetch()
@@ -354,7 +407,11 @@ class LoadCSV(Handler):
 	def get(self):
 		tabla_id = self.request.get('tabla_id')
 		csv_id = self.request.get('csv_id')
-		load_cnbv_csv(tabla_id, csv_id, 0, None, 0)
+
+		tabla_cnbv = TablaCNBV.get_by_id(int(tabla_id))
+		csv_cnbv = CsvCNBV.get_by_id(int(csv_id))
+
+		load_cnbv_csv(tabla_cnbv, csv_cnbv, 'from_blob', 0, None, 0)
 		self.redirect('/')
 
 
@@ -381,20 +438,23 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 #--- Funciones ---
-def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far):
-
+def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, iterations_so_far):
 	rows_per_iteration = 250
-
-	tabla_cnbv = TablaCNBV.get_by_id(int(tabla_id))
-	csv_cnbv = CsvCNBV.get_by_id(int(csv_id))
 
 	key_tabla = tabla_cnbv.key
 	key_csv = csv_cnbv.key
 
-	blob_key = csv_cnbv.blob_key
+	if file_source == 'from_blob':
+		blob_key = csv_cnbv.blob_key
+		blob_reader = blobstore.BlobReader(blob_key)
+		csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
 
-	blob_reader = blobstore.BlobReader(blob_key)
-	csv_f = csv.reader(blob_reader, dialect=csv.excel_tab)
+	elif file_source == 'from_hard_csv':	
+		csv_path = os.path.join(os.path.dirname(__file__), 'csv_files', tabla_cnbv.nombre + '.csv')
+		f = open(csv_path, 'rU')
+		f.close
+		csv_f = csv.reader(f, dialect=csv.excel_tab)
+
 	original_attributes = csv_f.next()[0].decode('utf-8-sig').split(',') 
 
 	tm = diccionarios_CNBV.transformation_maps_CNBV[tabla_cnbv.nombre]
@@ -450,9 +510,10 @@ def load_cnbv_csv(tabla_id, csv_id, start_key, max_iterations, iterations_so_far
 	csv_cnbv.put()
 
 	if need_extra_work:
-		deferred.defer(load_cnbv_csv, tabla_id, csv_id, start_key + rows_read, max_iterations, iterations_so_far)
+		deferred.defer(load_cnbv_csv, tabla_cnbv, csv_cnbv, file_source, start_key + rows_read, max_iterations, iterations_so_far)
 
 	return
+
 
 
 def get_post_details(self):
@@ -473,8 +534,6 @@ def adjust_post_details(post_details):
 
 
 
-
-
 app = webapp2.WSGIApplication([
     ('/', ChartViewer),
     ('/CNBVQueries',ChartViewer),
@@ -482,7 +541,9 @@ app = webapp2.WSGIApplication([
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),
-    ('/upload_csv', CsvUploadHandler)
+    ('/upload_csv', CsvUploadHandler),
+    ('/LoadDemoTables', PopulateDemoVersion),
+    ('/CreateAllTables', CreateAllTables)
 ], debug=True)
 
 
