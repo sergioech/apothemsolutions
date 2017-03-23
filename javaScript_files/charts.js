@@ -393,6 +393,19 @@ var menus_visibles = {
 }
 
 
+var to_be_hidden = [
+  '#show_value_as',
+  '#perspectiva_institucion', 
+  '#vista', 
+  '[value=periodo]', 
+  '[value=institucion]', 
+  '[value=tec]', 
+  '[value=estado]', 
+  '#tipo_de_grafica',
+  '#boton_graficar'
+]
+
+
 var seleccion_default = {
 
   'saldo_total':{
@@ -464,6 +477,18 @@ var seleccion_default = {
 
 
 function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
+// xx
+  var cortes = jQuery('.corte');
+  
+  cortes.each(function(){
+    var boton_corte = $(this).find('.SeleccionarCorte')[0]
+
+    $(boton_corte).find('#OkGlyphicon').addClass('hidden'); 
+    $(boton_corte).removeClass('btn-primary');
+    $(boton_corte).addClass('btn-default');
+    $(boton_corte).attr("corte_activo", "No");  
+  });
+
   if (CorteRenglones){
     $('#CorteRenglones').val(CorteRenglones)
     flipear_boton_corte($('#boton_' + CorteRenglones));
@@ -492,6 +517,13 @@ function unhide_group(lista_ids){
 };
 
 
+function hide_group(lista_ids){
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).addClass('hidden') 
+  }
+};
+
+
 function seleccionar_default(variable){
 
   var seleccion_inicial = seleccion_default[variable]
@@ -504,11 +536,9 @@ function seleccionar_default(variable){
 }; 
 
 
-
-
 $('#variable').on('change', function(){
   console.log('Si detecto que esta cambiando la variable');  
-
+  hide_group(to_be_hidden);
   var variable = $(this).val();  
   unhide_group(menus_visibles[variable]);
   seleccionar_default(variable);

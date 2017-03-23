@@ -71,10 +71,10 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
-		# print
-		# print 'This are the chart details: '
-		# print chart_details
-		# print
+		print
+		print 'This are the chart details: '
+		print chart_details
+		print
 
 		# chart_details['filtros']['periodo'] = list(reversed(chart_details['filtros']['periodo']))
 
@@ -133,10 +133,10 @@ class ChartViewer(Handler):
 
 		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas, nombre_variable, chart_details['filtros'])
 
-		# print
-		# print 'This is the chart array'
-		# print chart_array
-		# print
+		print
+		print 'This is the chart array'
+		print chart_array
+		print
 
 		self.response.out.write(json.dumps({
 			'chart_array': chart_array,
