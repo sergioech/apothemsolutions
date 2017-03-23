@@ -54,13 +54,17 @@ $('.SeleccionarCorte').on('click', function(){
       CorteColumnas.val(CorteSeleccionado.val());
       $('#NumeroCortesSeleccionados').val(2);   
 
-    } else {
-      flipear_boton_corte($('#boton_' + CorteRenglones.val()));
-      flipear_boton_corte($('#boton_' + CorteColumnas.val()));
+    } else if (CortesActivos == 2){
 
-      CorteRenglones.val(CorteSeleccionado.val())   
-      CorteColumnas.val('');
-      $('#NumeroCortesSeleccionados').val(1);
+      flipear_boton_corte($('#boton_' + CorteRenglones.val()));
+      CorteRenglones.val(CorteColumnas.val())
+      CorteColumnas.val(CorteSeleccionado.val())   
+
+      console.log('This is the current corte columnas')
+      console.log(CorteColumnas.val())
+      console.log('This is the current corte renglones')
+      console.log(CorteRenglones.val())
+      
     }
 
   }
