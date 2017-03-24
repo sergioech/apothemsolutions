@@ -1350,8 +1350,9 @@ tm_040_11L_R3 = {
 
 transformation_maps_CNBV = {
 	'040_11A_R1': tm_040_11A_R1,
-
 	'040_11A_R4': tm_040_11A_R4,
+	'040_11A_R8': tm_040_11A_R8,
+
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R3': tm_040_11L_R3
 }
@@ -1375,7 +1376,7 @@ detalles_tabla = {
 
 	'040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total', 'unidades': 'K_MXN'},
 	
-	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal', 'unidades': 'K_MXN'},
+	'040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal', 'unidades': 'K_MXN'},
 
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
@@ -1386,7 +1387,7 @@ detalles_tabla = {
 tablas_CNBV = [
 	'040_11A_R1',
 	'040_11A_R4',
-	# '040_11A_R8',
+	'040_11A_R8',
 	
 	'040_11L_R0',
 	'040_11L_R3'
@@ -1401,11 +1402,19 @@ demo_version_details = {
 	},
 
 	'040_11A_R4': {
-		'descripcion':'Cartera actuvidad empresarial: tasa de interes promedio ponderada, portafolio total', 
+		'descripcion':'Cartera actividad empresarial: tasa de interes promedio ponderada, portafolio total', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
-	
+
+
+	'040_11A_R8': {
+		'descripcion':'Cartera actividad empresarial: Caracteristicas promedio de los creditos dispuestos marginalmente', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+
 	'040_11L_R0': {
 		'descripcion':'Numero de creditos, acreditados y saldo por tamano de empresa', 
 		'url_fuente': 'Un URL',

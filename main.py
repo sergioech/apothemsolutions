@@ -71,15 +71,16 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
-		# print
-		# print 'This are the chart details: '
-		# print chart_details
-		# print
+		print
+		print 'This are the chart details: '
+		print chart_details
+		print
 
 		# chart_details['filtros']['periodo'] = list(reversed(chart_details['filtros']['periodo']))
 
 		variable = chart_details['variable']
 		corte_renglones = chart_details['renglones']
+		perspectiva_portafolio = chart_details['perspectiva_portafolio']
 		
 		corte_columnas = chart_details['columnas']
 		if corte_columnas == 'None':
@@ -105,7 +106,13 @@ class ChartViewer(Handler):
 		
 		indice_tablas = diccionarios_CNBV.indice_inicial
 
-		nombre_tabla, variables_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas)
+
+		print
+		print 'This is the indice tablas'
+		print indice_tablas
+		print
+
+		nombre_tabla, variables_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas, perspectiva_portafolio)
 
 		key_tabla = TablaCNBV.query(TablaCNBV.nombre == nombre_tabla).get().key
 		datos_cnbv = DatoCNBV.query(DatoCNBV.tabla == key_tabla)		
@@ -186,8 +193,23 @@ class ChartViewer(Handler):
 		return result
 
 		#xx
-	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas):
-		
+	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas, perspectiva_portafolio):
+
+		new_indice_tablas = []
+
+		for tabla in indice_tablas:
+			print
+			print 'Tabla ' + tabla[0] + ' perspectiva: ' + tabla[4]
+			print
+			if tabla[4] == perspectiva_portafolio:
+				new_indice_tablas.append(tabla)
+
+		indice_tablas = new_indice_tablas
+		print
+		print 'Esto es el indice filtrado'
+		print indice_tablas
+		print
+
 		if corte_columnas:
 			for tabla in indice_tablas:
 				variables_validas = tabla[1]

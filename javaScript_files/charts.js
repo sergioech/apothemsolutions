@@ -119,6 +119,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     data: JSON.stringify({
       'data_requested': 'TestDataCNBV', 
       'variable': variable,
+      'perspectiva_portafolio': $('input:radio[name=perspectiva_portafolio]:checked').val(),
       'perspectiva_institucion':$('input:radio[name=perspectiva_institucion]:checked').val(),
       'show_value_as': show_value_as,
       'renglones':renglones,
@@ -381,17 +382,17 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica'],
+  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica'],
   
   'car_vigente':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
   'car_vencida':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
 
-  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
-  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
-  'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
+  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
+  'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
 
   'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
 }
@@ -399,7 +400,8 @@ var menus_visibles = {
 
 var to_be_hidden = [
   '#show_value_as',
-  '#perspectiva_institucion', 
+  '#perspectiva_institucion',
+  '#perspectiva_portafolio',
   '#vista', 
   '[value=periodo]', 
   '[value=institucion]', 
@@ -429,6 +431,22 @@ var seleccion_default = {
   },
 
   'acreditados':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+
+  'car_vigente':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
+    'grafica': 'bar_chart'
+  },
+  
+  'car_vencida':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
     'corte_renglones':'periodo',
@@ -531,6 +549,10 @@ function hide_group(lista_ids){
 function seleccionar_default(variable){
 
   var seleccion_inicial = seleccion_default[variable]
+
+  console.log(' ')
+  console.log('Esta es la seleccion inicial')
+  console.log(seleccion_inicial)
 
   select_group(seleccion_inicial['periodos']);
   select_group(seleccion_inicial['instituciones']);
