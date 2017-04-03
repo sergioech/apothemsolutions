@@ -105,20 +105,37 @@
 			<div class="row hidden" style="margin-top: 10px;" id="tipo_de_grafica">
 				
 				<div class="col-xs-12">
-					
 					<label style="margin-top: 10px; margin-bottom: 0px;">Tipo de gráfica</label>
-					<div class="radio">
-						<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="chart_type_line_chart" checked="checked"> Lineas </label>	
-					</div>
+					<div class="row">
+						<div class="col-xs-4">
+							<div class="radio">
+								<label class="radio-inline"><input type="radio" name="chart_type" value="bar_chart" id="chart_type_bar_chart"> Barras </label>
+							</div>
+						</div>		
+					
+						<div class="col-xs-4" style="padding-left: 5px;">
+							<div class="radio">
+								<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
+							</div>
+						</div>	
+						<div class="col-xs-4">
+							<div class="radio">
+								<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="chart_type_line_chart" checked="checked"> Lineas </label>	
+							</div>
+						</div>
 
-					<div class="radio">
-						<label class="radio-inline"><input type="radio" name="chart_type" value="bar_chart" id="chart_type_bar_chart"> Barras </label>
 					</div>
+					<div class="row">					
+					</div>	
+				</div>				
+			</div>
 
-					<div class="radio">
-						<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
-					</div>
 
+			<div class="row hidden" style="margin-top: 10px;" id="opciones_visuales">
+				
+				<div class="col-xs-12">
+					
+					<label style="margin-bottom: 0px;">Opciones Visuales</label>
 					<div class="checkbox">
 						<label>
 							<input type="checkbox" id="is_stacked"> Stack
@@ -127,6 +144,8 @@
 
 				</div>
 			</div>
+
+
 
 
 			<div class="row hidden" style="margin-top: 10px;" id="boton_graficar">

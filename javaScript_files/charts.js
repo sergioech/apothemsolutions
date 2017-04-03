@@ -176,9 +176,7 @@ function draw_chart(chart_array, chart_type){
   if ( chart_type == 'bar_chart'){
     options = {
       bar: { groupWidth: '80%'}, 
-      // chartArea:{height: '80%', width: '80%'},
       chartArea:{height: '85%', width: '65%'},
-      // legend: { position: 'top', maxLines:3}, 
       hAxis: {title:'', format: axis_format},
       isStacked: is_stacked
     };
@@ -269,6 +267,12 @@ $('#transpose_button').on('click',function(){
     draw_chart(chart_array, chart_type);
     // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
   }  
+});
+
+// xx
+$('#is_stacked').on('change', function(){
+  chart_type = $('input:radio[name=chart_type]:checked').val();  
+  draw_chart(chart_array, chart_type);
 });
 
 
@@ -382,17 +386,17 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica'],
+  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
   
-  'car_vigente':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
-  'car_vencida':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
+  'car_vigente':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
+  'car_vencida':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
 
-  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
-  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica'],
-  'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
-  'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica'],
+  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
+  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
+  'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
+  'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
+  'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
+  'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
 
   'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
 }
@@ -499,7 +503,7 @@ var seleccion_default = {
 
 
 function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
-// xx
+
   var cortes = jQuery('.corte');
   
   cortes.each(function(){
