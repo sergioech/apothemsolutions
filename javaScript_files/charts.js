@@ -158,6 +158,10 @@ $(document).on('click', '.UpdateChartButton', function(){
 
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
+
+    console.log(' ')
+    console.log(' This is the chart array')
+    console.log(chart_array)
   
   var chart_data = google.visualization.arrayToDataTable(chart_array),
     options,
@@ -182,8 +186,20 @@ function draw_chart(chart_array, chart_type){
     };
 
     chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-    chart.draw(chart_data, options);
 
+    chart_data = new google.visualization.DataView(chart_data);
+
+    
+    if($('#value_labels').is(':checked')){
+      chart_data.setColumns([0, 1,
+                         { calc: "stringify",
+                           sourceColumn: 1,
+                           type: "string",
+                           role: "annotation" },
+                         ]);
+    }
+
+    chart.draw(chart_data, options);
 
   } else if (chart_type == 'line_chart'){
 
@@ -252,6 +268,20 @@ function transpose_matrix(matrix){
 };
 
 
+//Oculta y muestra las etiquetas
+$('input[type=radio][name=perspectiva_institucion]').on('change',function(){
+  var perspectiva = $(this).val()
+  
+  if(perspectiva == 'varias_varios'){
+    $('#value_labels').prop('checked', false)
+    $('#value_labels_div').addClass('hidden')
+  } else {
+    $('#value_labels_div').removeClass('hidden')
+  }
+
+}); 
+
+
 $('input[type=radio][name=chart_type]').on('change',function(){
   if(chart_array != undefined){
     chart_type = $('input:radio[name=chart_type]:checked').val();
@@ -269,11 +299,18 @@ $('#transpose_button').on('click',function(){
   }  
 });
 
-// xx
+// xx Consolidemos con una clase que sea quick chart update
 $('#is_stacked').on('change', function(){
   chart_type = $('input:radio[name=chart_type]:checked').val();  
   draw_chart(chart_array, chart_type);
 });
+
+
+$('#value_labels').on('change', function(){
+  chart_type = $('input:radio[name=chart_type]:checked').val();  
+  draw_chart(chart_array, chart_type);
+});
+
 
 
 $(document).on('change', '.select_all_checkbox', function(){
@@ -421,80 +458,80 @@ var seleccion_default = {
   'saldo_total':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'creditos':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'acreditados':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'car_vigente':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
   
   'car_vencida':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_mn':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_me':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_udis':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'plazo_ponderado':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 
   'concentracion_cartera':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'periodo',
-    'corte_columnas': 'institucion',
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'line_chart'
   }
 
