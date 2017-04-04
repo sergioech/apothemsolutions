@@ -144,13 +144,21 @@
 						<div class="col-xs-6" style="padding-left: 0px;" id="value_labels_div">
 							<div class="checkbox"><label><input type="checkbox" id="value_labels"> Mostrar valores</label></div>
 						</div>
-
 					</div>											
 
+					<div class="row">						
+						<div class="col-xs-6">							
+							<span>Denominador</span>
+							<select class="form-control" name="" id="denominador" style="margin-bottom:7px;">															
+								<option value="1" unidades_denominador="">1</option>
+								<option value="1000" unidades_denominador="Miles de ">1,000</option>
+								<option value="1000000" unidades_denominador="Millones de ">1,000,000</option>
+								<option value="1000000000" unidades_denominador="Miles de Millones de ">1,000,000,000</option>
+							</select> 
+						</div>
+					</div>
 				</div>				
 			</div>
-
-
 
 
 			<div class="row hidden" style="margin-top: 10px;" id="boton_graficar">
@@ -174,7 +182,7 @@
 		<div class="SlideDisplaySection">
 			<div id="ChartLead" style="margin-right: 15px; margin-left: 15px;">
 				<div class="row"><div class="col-xs-12"><span id="chart_lead" class="ChartLead"></span></div></div>
-				<div class="row"><div class="col-xs-12"><span id="chart_units" class="ChartUnits"></span></div></div>					
+				<div class="row"><div class="col-xs-12"><span id="unidades_denominador" class="ChartUnits"></span><span id="chart_units" class="ChartUnits"></span></div></div>					
 				<hr style="margin-top:5px; margin-bottom: 0px;">
 			</div>
 			<div class="loader hidden" style="margin-left: 300px; margin-top: 200px;" id="chart_loader"></div>

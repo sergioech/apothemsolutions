@@ -1,4 +1,4 @@
-var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_instituciones = 7,        
+var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_instituciones = 7, denominador_actual = 1,   
     start_time,
     t,
     chart_array,
@@ -89,13 +89,15 @@ function flipear_boton_corte(boton_corte) {
 
 
 
-
+// xx
 // Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart', 'bar']});
+// google.charts.load('current', {'packages':['corechart', 'bar']});
+// google.charts.load('current', {'packages':['corechart'], 'language': 'ja'});
 
 $(document).on('click', '.UpdateChartButton', function(){  
 
   $('#chart_lead').addClass('hidden');
+  $('#unidades_denominador').addClass('hidden');
   $('#chart_units').addClass('hidden');
   $('#chart_div').addClass('hidden');
   $('#chart_loader').removeClass('hidden');
@@ -130,13 +132,15 @@ $(document).on('click', '.UpdateChartButton', function(){
   .done(function(raw_data){
     $('#chart_loader').addClass('hidden');
     $('#chart_lead').removeClass('hidden');
+    $('#unidades_denominador').removeClass('hidden');
     $('#chart_units').removeClass('hidden');
     $('#chart_div').removeClass('hidden');
     $('#boton_transponer').removeClass('hidden');
     
     $('#chart_lead').text(raw_data['title']);
+    $('#unidades_denominador').text($('#denominador').find(':selected').attr('unidades_denominador'));
     $('#chart_units').text(raw_data['chart_units']);
-
+    
     chart_array = raw_data['chart_array'];
 
     if (chart_array.length == 2){
@@ -146,6 +150,8 @@ $(document).on('click', '.UpdateChartButton', function(){
 
     
     chart_type = $('input:radio[name=chart_type]:checked').val();
+    denominador_actual = 1
+    chart_array = divide_matrix(chart_array, $('#denominador').val())
     draw_chart(chart_array, chart_type)
 
     clearTimeout(t);
@@ -186,7 +192,9 @@ function draw_chart(chart_array, chart_type){
   if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
     axis_format = 'percent'
   } else {
-    axis_format = 'short'
+    // axis_format = 'short'
+    // axis_format = 'long'
+    axis_format = 'decimal'
   }
 
   if ( chart_type == 'bar_chart'){
@@ -644,7 +652,6 @@ function seleccionar_default(variable){
 
 }; 
 
-
 $('#variable').on('change', function(){
   // console.log('Si detecto que esta cambiando la variable');  
   hide_group(to_be_hidden);
@@ -652,4 +659,41 @@ $('#variable').on('change', function(){
   unhide_group(menus_visibles[variable]);
   seleccionar_default(variable);
 });
+
+$('#denominador').on('change', function(){  
+  var denominador = $(this).val();  
+  chart_array = divide_matrix(chart_array, denominador)
+  chart_type = $('input:radio[name=chart_type]:checked').val();  
+  $('#unidades_denominador').text($(this).find(':selected').attr('unidades_denominador'));
+
+  draw_chart(chart_array, chart_type);
+});
+
+
+function divide_matrix(matrix, denominador){
+  
+  var newArray = [matrix[0]],
+    renglonesMatriz = matrix.length,
+    columnasMatriz = matrix[0].length,
+    k,
+    i;
+ 
+  for(k = 1; k < renglonesMatriz; k++){
+      newArray.push([matrix[k][0]]);
+  };
+  
+  for(i = 1; i < renglonesMatriz; i++){
+      for(var j = 1; j < columnasMatriz; j++){
+          newArray[i].push(matrix[i][j]/parseInt(denominador)*denominador_actual);
+      };
+  };
+
+  denominador_actual = denominador
+
+  return newArray
+
+};
+
+
+
 
