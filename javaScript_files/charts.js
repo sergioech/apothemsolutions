@@ -60,10 +60,10 @@ $('.SeleccionarCorte').on('click', function(){
       CorteRenglones.val(CorteColumnas.val())
       CorteColumnas.val(CorteSeleccionado.val())   
 
-      console.log('This is the current corte columnas')
-      console.log(CorteColumnas.val())
-      console.log('This is the current corte renglones')
-      console.log(CorteRenglones.val())
+      // console.log('This is the current corte columnas')
+      // console.log(CorteColumnas.val())
+      // console.log('This is the current corte renglones')
+      // console.log(CorteRenglones.val())
       
     }
 
@@ -140,11 +140,11 @@ $(document).on('click', '.UpdateChartButton', function(){
     chart_array = raw_data['chart_array'];
 
     if (chart_array.length == 2){
-      console.log('Si fue necesario transponer')
+      // console.log('Si fue necesario transponer')
       chart_array = transpose_matrix(chart_array)
     }
 
-
+    
     chart_type = $('input:radio[name=chart_type]:checked').val();
     draw_chart(chart_array, chart_type)
 
@@ -166,9 +166,14 @@ $(document).on('click', '.UpdateChartButton', function(){
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
 
-    console.log(' ')
-    console.log(' This is the chart array')
-    console.log(chart_array)
+    // console.log(' ')
+    // console.log(' This is the chart array')
+    // console.log(chart_array)
+  
+    if ( chart_type == 'column_chart' || chart_type == 'line_chart'){
+      console.log('Invirtiendo dentro de draw chart...')
+      chart_array = invertir_renglones(chart_array)      
+    }
   
   var chart_data = google.visualization.arrayToDataTable(chart_array),
     options,
@@ -275,6 +280,35 @@ function transpose_matrix(matrix){
 };
 
 
+function invertir_renglones(matrix){
+
+  console.log(' ')
+  console.log('Orden antes de invertir: ' + $('#orden_matriz').val())
+  console.log('Invirtiendo renglones...')
+
+  var newArray = [matrix[0]],
+    arrayLength = matrix.length,
+    i;
+  
+  for(i = 1; i < arrayLength; i++){
+      newArray.push(matrix[arrayLength - i]);
+  };
+
+  if($('#orden_matriz').val() == 'original'){
+    $('#orden_matriz').val('invertido')
+  } else {
+    $('#orden_matriz').val('original')
+  }
+
+  console.log('Orden despues de invertir: ' + $('#orden_matriz').val())
+  console.log(' ')
+
+  return newArray  
+
+};
+
+
+
 //Oculta y muestra las etiquetas
 $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
   var perspectiva = $(this).val()
@@ -292,6 +326,7 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 $('input[type=radio][name=chart_type]').on('change',function(){
   if(chart_array != undefined){
     chart_type = $('input:radio[name=chart_type]:checked').val();
+  
     draw_chart(chart_array, chart_type);
   }
 });  
@@ -306,7 +341,7 @@ $('#transpose_button').on('click',function(){
   }  
 });
 
-// xx Consolidemos con una clase que sea quick chart update
+//Por consolidemos con una clase que sea quick chart update
 $('#is_stacked').on('change', function(){
   chart_type = $('input:radio[name=chart_type]:checked').val();  
   draw_chart(chart_array, chart_type);
@@ -573,7 +608,7 @@ function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
 
 function seleccionar_grafica_inicial(chart_type){  
   $('input:radio[name=chart_type]').attr('checked',false)
-  console.log('Si se dio cuenta de que deberia de seleccionar la grafica de tipo: ' + chart_type)
+  // console.log('Si se dio cuenta de que deberia de seleccionar la grafica de tipo: ' + chart_type)
   $('input[type=radio][name=chart_type][value=' + chart_type +']' ).prop('checked', true)
 };
 
@@ -598,9 +633,9 @@ function seleccionar_default(variable){
 
   var seleccion_inicial = seleccion_default[variable]
 
-  console.log(' ')
-  console.log('Esta es la seleccion inicial')
-  console.log(seleccion_inicial)
+  // console.log(' ')
+  // console.log('Esta es la seleccion inicial')
+  // console.log(seleccion_inicial)
 
   select_group(seleccion_inicial['periodos']);
   select_group(seleccion_inicial['instituciones']);
@@ -611,7 +646,7 @@ function seleccionar_default(variable){
 
 
 $('#variable').on('change', function(){
-  console.log('Si detecto que esta cambiando la variable');  
+  // console.log('Si detecto que esta cambiando la variable');  
   hide_group(to_be_hidden);
   var variable = $(this).val();  
   unhide_group(menus_visibles[variable]);
