@@ -138,6 +138,13 @@ $(document).on('click', '.UpdateChartButton', function(){
     $('#chart_units').text(raw_data['chart_units']);
 
     chart_array = raw_data['chart_array'];
+
+    if (chart_array.length == 2){
+      console.log('Si fue necesario transponer')
+      chart_array = transpose_matrix(chart_array)
+    }
+
+
     chart_type = $('input:radio[name=chart_type]:checked').val();
     draw_chart(chart_array, chart_type)
 
