@@ -56,7 +56,7 @@ $('.SeleccionarCorte').on('click', function(){
 
     } else if (CortesActivos == 2){
 
-      flipear_boton_corte($('#boton_' + CorteRenglones.val()));
+      flipear_boton_corte(CorteRenglones.val())
       CorteRenglones.val(CorteColumnas.val())
       CorteColumnas.val(CorteSeleccionado.val())   
 
@@ -69,12 +69,15 @@ $('.SeleccionarCorte').on('click', function(){
 
   }
 
-  flipear_boton_corte(CorteSeleccionado);
+  flipear_boton_corte(CorteSeleccionado.val());
 
 });
 
 
-function flipear_boton_corte(boton_corte) {
+
+function flipear_boton_corte(nombre_corte) {
+  var boton_corte = $('#boton_' + nombre_corte);
+
   boton_corte.find('#OkGlyphicon').toggleClass('hidden'); 
   boton_corte.toggleClass('btn-primary');
   boton_corte.toggleClass('btn-default');
@@ -85,14 +88,12 @@ function flipear_boton_corte(boton_corte) {
     boton_corte.attr("corte_activo", "Si");
   }
 
+  var boton_PlusMinus = $('#boton_' + nombre_corte + '_PlusMinus')
+  boton_PlusMinus.toggleClass('btn-primary');
+  boton_PlusMinus.toggleClass('btn-default');
+
 };
 
-
-
-// xx
-// Load the Visualization API and the corechart package.
-// google.charts.load('current', {'packages':['corechart', 'bar']});
-// google.charts.load('current', {'packages':['corechart'], 'language': 'ja'});
 
 $(document).on('click', '.UpdateChartButton', function(){  
 
@@ -113,6 +114,12 @@ $(document).on('click', '.UpdateChartButton', function(){
 
   start_time = new Date()
   timer()
+
+  $("#left_options_bar").animate({ scrollTop: 0 }, "fast");
+  
+  $('.opciones_corte').addClass('hidden');
+  $('.glyphicon_boton').removeClass('glyphicon-minus');
+  $('.glyphicon_boton').addClass('glyphicon-plus');
 
   $.ajax({
     type: "POST",
@@ -604,12 +611,12 @@ function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
 
   if (CorteRenglones){
     $('#CorteRenglones').val(CorteRenglones)
-    flipear_boton_corte($('#boton_' + CorteRenglones));
+    flipear_boton_corte(CorteRenglones);
   }
 
   if (CorteColumnas){
     $('#CorteColumnas').val(CorteColumnas);
-    flipear_boton_corte($('#boton_' + CorteColumnas));
+    flipear_boton_corte(CorteColumnas);
   }
 }
 
