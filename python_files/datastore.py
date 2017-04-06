@@ -33,6 +33,7 @@ class DatoCNBV(ndb.Model):
 	tec = ndb.StringProperty()
 	estado = ndb.StringProperty()	
 	cliente = ndb.StringProperty()
+	moneda = ndb.StringProperty()
 	
 	#Formato vertical
 	tipo_valor = ndb.StringProperty()
@@ -42,6 +43,8 @@ class DatoCNBV(ndb.Model):
 	saldo_total = ndb.FloatProperty()
 	creditos = ndb.FloatProperty()
 	acreditados = ndb.FloatProperty()
+	tasa = ndb.FloatProperty()
+	plazo = ndb.FloatProperty()
 
 	saldo_acum = ndb.FloatProperty()
 	porc_acum = ndb.FloatProperty()

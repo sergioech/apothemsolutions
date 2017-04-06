@@ -130,6 +130,7 @@ $(document).on('click', '.UpdateChartButton', function(){
       'variable': variable,
       'perspectiva_portafolio': $('input:radio[name=perspectiva_portafolio]:checked').val(),
       'perspectiva_institucion':$('input:radio[name=perspectiva_institucion]:checked').val(),
+      'moneda':$('input:radio[name=moneda]:checked').val(),
       'show_value_as': show_value_as,
       'renglones':renglones,
       'columnas':columnas,
@@ -493,6 +494,8 @@ var menus_visibles = {
   'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
 
   'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
+  'plazo':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
+  'tasa':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'], 
 }
 
 
@@ -506,7 +509,8 @@ var to_be_hidden = [
   '[value=tec]', 
   '[value=estado]', 
   '#tipo_de_grafica',
-  '#boton_graficar'
+  '#boton_graficar',
+  '#tipo_moneda',
 ]
 
 
@@ -590,12 +594,28 @@ var seleccion_default = {
     'corte_renglones':'institucion',
     'corte_columnas': 'periodo',
     'grafica': 'line_chart'
-  }
+  },
+
+  'tasa':{
+    'periodos': ['#periodo_201610'],
+    'instituciones': grupo_top7,
+    'corte_renglones':'institucion',
+    'corte_columnas': 'tec',
+    'grafica': 'bar_chart'
+  },
+
+  'plazo':{
+    'periodos': ['#periodo_201610'],
+    'instituciones': grupo_top7,
+    'corte_renglones':'institucion',
+    'corte_columnas': 'tec',
+    'grafica': 'bar_chart'
+  },
 
 
 }
 
-
+// xx
 function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
 
   var cortes = jQuery('.corte');
@@ -606,7 +626,12 @@ function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
     $(boton_corte).find('#OkGlyphicon').addClass('hidden'); 
     $(boton_corte).removeClass('btn-primary');
     $(boton_corte).addClass('btn-default');
-    $(boton_corte).attr("corte_activo", "No");  
+    $(boton_corte).attr("corte_activo", "No");
+
+    var boton_PlusMinus = $(this).find('.ExpandColapseSection')[0]
+    $(boton_PlusMinus).removeClass('btn-primary');
+    $(boton_PlusMinus).addClass('btn-default');
+
   });
 
   if (CorteRenglones){

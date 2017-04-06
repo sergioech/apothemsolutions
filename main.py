@@ -71,10 +71,10 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
-		print
-		print 'This are the chart details: '
-		print chart_details
-		print
+		# print
+		# print 'This are the chart details: '
+		# print chart_details
+		# print
 
 		# chart_details['filtros']['periodo'] = list(reversed(chart_details['filtros']['periodo']))
 
@@ -107,12 +107,16 @@ class ChartViewer(Handler):
 		indice_tablas = diccionarios_CNBV.indice_inicial
 
 
-		print
-		print 'This is the indice tablas'
-		print indice_tablas
-		print
+		# print
+		# print 'This is the indice tablas'
+		# print indice_tablas
+		# print
 
 		nombre_tabla, variables_tabla = self.seleccionar_tabla(variable, corte_renglones, corte_columnas, indice_tablas, perspectiva_portafolio)
+
+		print
+		print 'Esta es la tabla seleccionada: ' + nombre_tabla
+		print
 
 		key_tabla = TablaCNBV.query(TablaCNBV.nombre == nombre_tabla).get().key
 		datos_cnbv = DatoCNBV.query(DatoCNBV.tabla == key_tabla)		
@@ -131,6 +135,9 @@ class ChartViewer(Handler):
 			variable = diccionarios_CNBV.cat_invertida_variables[variable]
 			datos_cnbv = datos_cnbv.filter(DatoCNBV.tipo_valor == variable)
 			variable = 'valor'
+
+		if variable in ['tasa', 'plazo']:
+			datos_cnbv = datos_cnbv.filter(DatoCNBV.moneda == chart_details['moneda'])
 
 		datos_cnbv = datos_cnbv.fetch()
 
@@ -198,17 +205,10 @@ class ChartViewer(Handler):
 		new_indice_tablas = []
 
 		for tabla in indice_tablas:
-			print
-			print 'Tabla ' + tabla[0] + ' perspectiva: ' + tabla[4]
-			print
 			if tabla[4] == perspectiva_portafolio:
 				new_indice_tablas.append(tabla)
 
 		indice_tablas = new_indice_tablas
-		print
-		print 'Esto es el indice filtrado'
-		print indice_tablas
-		print
 
 		if corte_columnas:
 			for tabla in indice_tablas:
@@ -222,6 +222,7 @@ class ChartViewer(Handler):
 				cortes_validos = tabla[2]
 				if variable in variables_validas and corte_renglones in cortes_validos:
 					return tabla[0], cortes_validos
+
 		return None, None
 
 
@@ -310,6 +311,8 @@ class ChartViewer(Handler):
 
 		if corte_columnas:
 			for dp in query_result:
+				print
+				print dp
 				chart_array[rows_position[getattr(dp, corte_renglones)]][columns_position[getattr(dp, corte_columnas)]] += getattr(dp, variable) 
 		else:
 			for dp in query_result:		
@@ -501,10 +504,12 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 		for a_key in attributes:
 			a_val = raw_dp[i]
 			
-			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente']:				
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
-			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum']:
+			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo']:
+				if a_val == '':
+					a_val = '0'
 				setattr(new_dp, a_key, float(a_val))		
 			
 			elif a_key in ['periodo']:

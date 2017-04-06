@@ -18,7 +18,7 @@ cat_variables = {
 	'02': 'car_vigente',
 	'03': 'car_vencida',
 	'04': 'creditos',
-	'05': 'acreditados',
+	'05': 'acreditados',	
 	'21': 'tasa_i_mn',
 	'22': 'tasa_i_me',
 	'23': 'tasa_i_udis',
@@ -37,7 +37,9 @@ def_variables  = {
 	'plazo_ponderado': 'Plazo ponderado en meses (remanente)'.decode('utf-8'),
 	'concentracion_cartera': 'Concentración de cartera por cliente'.decode('utf-8'),
 	'saldo_acum': 'Saldo acumulado por cliente'.decode('utf-8'),
-	'porc_acum': 'Saldo acumulado por cliente'.decode('utf-8')
+	'porc_acum': 'Saldo acumulado por cliente'.decode('utf-8'),
+	'tasa': 'Tasa de interes ponderada'.decode('utf-8'),
+	'plazo': 'Plazo ponderado (remanente)'.decode('utf-8')
 }
 
 
@@ -53,7 +55,9 @@ def_variables_unidades  = {
 	'plazo_ponderado': 'Meses (Número)'.decode('utf-8'),
 	'concentracion_cartera': 'Concentración de cartera por cliente'.decode('utf-8'),
 	'saldo_acum': 'Pesos ($MXN)'.decode('utf-8'),
-	'porc_acum': 'Porcentaje (%)'.decode('utf-8')
+	'porc_acum': 'Porcentaje (%)'.decode('utf-8'),
+	'tasa': 'Porcentaje (%)'.decode('utf-8'),
+	'plazo': 'Meses (Número)'.decode('utf-8'),
 
 }
 
@@ -64,10 +68,12 @@ opc_variables = [
 	'car_vencida',
 	'creditos',
 	'acreditados',
-	'tasa_i_mn',
-	'tasa_i_me',
-	'tasa_i_udis',
-	'plazo_ponderado',
+	'tasa',
+	'plazo',
+	# 'tasa_i_mn',
+	# 'tasa_i_me',
+	# 'tasa_i_udis',
+	# 'plazo_ponderado',
 	'concentracion_cartera'
 ]
 
@@ -805,6 +811,14 @@ opc_cliente = [
 	['999', 'Cliente 1000']
 ]
 
+
+def_moneda = {
+	'00':'Nacional',
+	'01':'Extranjera',
+	'02':'UDIS'
+}
+
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
@@ -1300,7 +1314,11 @@ cat_concentracion = {
 	'Cliente Ultimo': ['Cliente Ultimo', '000']
 }
 
-
+cat_moneda = {
+	'0':['Nacional', '00'],
+	'1':['Extranjera', '01'],
+	'2':['UDIS', '02']
+}
 
 #--- trasformation maps ---
 tm_040_11A_R1 = {
@@ -1337,6 +1355,19 @@ tm_040_11L_R0 = {
 }
 
 
+tm_040_11L_R2 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+	'cve_TEC': ['tec', cat_TEC],
+
+	'tasa': ['tasa'],
+	'responsabilidad':['saldo_total'],
+	'plazo':['plazo']
+}
+
+
+
 tm_040_11L_R3 = {
 	'cve_periodo': ['periodo'],
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1354,6 +1385,7 @@ transformation_maps_CNBV = {
 	'040_11A_R8': tm_040_11A_R8,
 
 	'040_11L_R0': tm_040_11L_R0,
+	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3
 }
 
@@ -1374,22 +1406,25 @@ transformation_maps_CNBV = {
 detalles_tabla = {
 	'040_11A_R1': {'tipo_variables': 'semi_directas', 'perspectiva': 'total', 'unidades': 'K_MXN'},
 
-	'040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total', 'unidades': 'K_MXN'},
+	# '040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total', 'unidades': 'K_MXN'},
 	
-	'040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal', 'unidades': 'K_MXN'},
+	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal', 'unidades': 'K_MXN'}, #Por lo pronto solo queda fuera de forma temporal.
 
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
+	'040_11L_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'}
 }
 
 #xx
 tablas_CNBV = [
 	'040_11A_R1',
-	'040_11A_R4',
-	'040_11A_R8',
+	# '040_11A_R4',
+	# '040_11A_R8',
 	
 	'040_11L_R0',
+	'040_11L_R2',
 	'040_11L_R3'
 ]
 
@@ -1421,6 +1456,12 @@ demo_version_details = {
 		'registros': 0
 	},
 
+	'040_11L_R2': {
+		'descripcion':'Cartera actividad empresarial: tasas de interes, plazos y saldo por tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 	
 	'040_11L_R3': {
 		'descripcion':'Distribucion geografica del numero de creditos, acreditados y saldo por tamano de empresa', 
@@ -1436,7 +1477,7 @@ def generar_indice_CNBV(lista_tablas):
 	indice_CNBV = []
 
 
-	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum'] # tipo_valor
+	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo'] # tipo_valor
 	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente']
 
 	for tabla in lista_tablas:
@@ -1456,6 +1497,8 @@ def generar_indice_CNBV(lista_tablas):
 		indice_CNBV.append([tabla, variables, cortes, detalles_tabla[tabla]['tipo_variables'], detalles_tabla[tabla]['perspectiva']])
 
 	return indice_CNBV
+
+
 
 
 def definir_opciones_iniciales(indice_CNBV):
@@ -1494,7 +1537,6 @@ def definir_opciones_iniciales(indice_CNBV):
 indice_inicial = generar_indice_CNBV(tablas_CNBV)
 
 opciones_iniciales = definir_opciones_iniciales(indice_inicial)
-
 
 def invert_dictionary(dictionary):
 	result = {}
