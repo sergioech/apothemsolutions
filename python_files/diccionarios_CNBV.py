@@ -1366,6 +1366,17 @@ tm_040_11L_R2 = {
 	'plazo':['plazo']
 }
 
+tm_040_11L_R12 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+	'cve_TEC': ['tec', cat_TEC],
+
+	'tasa': ['tasa'],
+	'MDMC':['saldo_total'],
+	'plazo':['plazo']
+}
+
 
 
 tm_040_11L_R3 = {
@@ -1386,7 +1397,8 @@ transformation_maps_CNBV = {
 
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
-	'040_11L_R3': tm_040_11L_R3
+	'040_11L_R3': tm_040_11L_R3,
+	'040_11L_R12': tm_040_11L_R12
 }
 
 #--- Database Contents
@@ -1414,7 +1426,9 @@ detalles_tabla = {
 	
 	'040_11L_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
-	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'}
+	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'040_11L_R12': {'tipo_variables': 'directas', 'perspectiva': 'marginal'}
 }
 
 #xx
@@ -1425,7 +1439,8 @@ tablas_CNBV = [
 	
 	'040_11L_R0',
 	'040_11L_R2',
-	'040_11L_R3'
+	'040_11L_R3',
+	'040_11L_R12'
 ]
 
 
@@ -1467,7 +1482,16 @@ demo_version_details = {
 		'descripcion':'Distribucion geografica del numero de creditos, acreditados y saldo por tamano de empresa', 
 		'url_fuente': 'Un URL',
 		'registros': 0
+	},
+
+
+	'040_11L_R12': {
+		'descripcion':'Cartera actividad empresarial: tasas de interes, plazos y saldo por tamano de empresa [Marginal]', 
+		'url_fuente': 'Un URL',
+		'registros': 0
 	}
+
+
 }
 
 
