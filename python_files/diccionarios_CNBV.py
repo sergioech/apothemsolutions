@@ -1366,6 +1366,27 @@ tm_040_11L_R2 = {
 	'plazo':['plazo']
 }
 
+tm_040_11L_R3 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_estado': ['estado', cat_estado],
+	'cve_TEC': ['tec', cat_TEC],
+	'dat_id_credito_met_cnbv': ['creditos'],
+	'dat_rfc': ['acreditados'],
+	'dat_responsabilidad_total': ['saldo_total']
+}
+
+
+tm_040_11L_R11 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_TEC': ['tec', cat_TEC],
+	'creditos': ['creditos'],
+	'acreditados': ['acreditados'],
+	'monto_dispuesto': ['saldo_total']
+}
+
+
 tm_040_11L_R12 = {
 	'cve_periodo': ['periodo'],
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1379,17 +1400,6 @@ tm_040_11L_R12 = {
 
 
 
-tm_040_11L_R3 = {
-	'cve_periodo': ['periodo'],
-	'cve_institucion': ['institucion', cat_institucion],
-	'cve_estado': ['estado', cat_estado],
-	'cve_TEC': ['tec', cat_TEC],
-	'dat_id_credito_met_cnbv': ['creditos'],
-	'dat_rfc': ['acreditados'],
-	'dat_responsabilidad_total': ['saldo_total']
-}
-
-
 transformation_maps_CNBV = {
 	'040_11A_R1': tm_040_11A_R1,
 	'040_11A_R4': tm_040_11A_R4,
@@ -1398,21 +1408,10 @@ transformation_maps_CNBV = {
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
+	'040_11L_R11': tm_040_11L_R11,
 	'040_11L_R12': tm_040_11L_R12
 }
 
-#--- Database Contents
-# ejemplo_indice = [
-# 	['nombre_tabla_1',
-# 		['valor_1', 'valor_n'],
-# 		['corte_1', 'corte_n']
-# 	],
-
-# 	['nombre_tabla_n',
-# 		['valor_1', 'valor_n'],
-# 		['corte_1', 'corte_n']
-# 	]
-# ]
 
 
 detalles_tabla = {
@@ -1428,10 +1427,12 @@ detalles_tabla = {
 
 	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
+	'040_11L_R11': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
+
 	'040_11L_R12': {'tipo_variables': 'directas', 'perspectiva': 'marginal'}
 }
 
-#xx
+
 tablas_CNBV = [
 	'040_11A_R1',
 	# '040_11A_R4',
@@ -1440,6 +1441,7 @@ tablas_CNBV = [
 	'040_11L_R0',
 	'040_11L_R2',
 	'040_11L_R3',
+	'040_11L_R11',
 	'040_11L_R12'
 ]
 
@@ -1484,6 +1486,11 @@ demo_version_details = {
 		'registros': 0
 	},
 
+	'040_11L_R11': {
+		'descripcion':'Numero de creditos, acreditados y monto por tamano de empresa. Creditos dispuestos marginalmente.', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
 
 	'040_11L_R12': {
 		'descripcion':'Cartera actividad empresarial: tasas de interes, plazos y saldo por tamano de empresa [Marginal]', 
