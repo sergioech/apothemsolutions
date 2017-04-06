@@ -311,8 +311,6 @@ class ChartViewer(Handler):
 
 		if corte_columnas:
 			for dp in query_result:
-				print
-				print dp
 				chart_array[rows_position[getattr(dp, corte_renglones)]][columns_position[getattr(dp, corte_columnas)]] += getattr(dp, variable) 
 		else:
 			for dp in query_result:		
