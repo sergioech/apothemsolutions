@@ -486,16 +486,19 @@ var menus_visibles = {
   'car_vigente':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
   'car_vencida':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
 
-  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
-  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
+  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
+  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
+  
+  
+  'plazo':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
+  'tasa':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'], 
+  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
+
+
   'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
   'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
   'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
   'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
-
-  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
-  'plazo':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
-  'tasa':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'], 
 }
 
 

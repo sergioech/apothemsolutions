@@ -1398,6 +1398,15 @@ tm_040_11L_R12 = {
 	'plazo':['plazo']
 }
 
+tm_040_11L_R13 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_estado': ['estado', cat_estado],
+	'cve_TEC': ['tec', cat_TEC],
+	'dat_id_credito_met_cnbv': ['creditos'],
+	'dat_rfc': ['acreditados'],
+	'MDMC': ['saldo_total']
+}
 
 
 transformation_maps_CNBV = {
@@ -1409,17 +1418,18 @@ transformation_maps_CNBV = {
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
 	'040_11L_R11': tm_040_11L_R11,
-	'040_11L_R12': tm_040_11L_R12
+	'040_11L_R12': tm_040_11L_R12,
+	'040_11L_R13': tm_040_11L_R13,
 }
 
 
 
 detalles_tabla = {
-	'040_11A_R1': {'tipo_variables': 'semi_directas', 'perspectiva': 'total', 'unidades': 'K_MXN'},
+	'040_11A_R1': {'tipo_variables': 'semi_directas', 'perspectiva': 'total'},
 
-	# '040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total', 'unidades': 'K_MXN'},
+	# '040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
-	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal', 'unidades': 'K_MXN'}, #Por lo pronto solo queda fuera de forma temporal.
+	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal'}, #Por lo pronto solo queda fuera de forma temporal.
 
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
@@ -1429,7 +1439,9 @@ detalles_tabla = {
 
 	'040_11L_R11': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
-	'040_11L_R12': {'tipo_variables': 'directas', 'perspectiva': 'marginal'}
+	'040_11L_R12': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
+
+	'040_11L_R13': {'tipo_variables': 'directas', 'perspectiva': 'marginal'}
 }
 
 
@@ -1442,7 +1454,8 @@ tablas_CNBV = [
 	'040_11L_R2',
 	'040_11L_R3',
 	'040_11L_R11',
-	'040_11L_R12'
+	'040_11L_R12',
+	'040_11L_R13'
 ]
 
 
@@ -1496,9 +1509,13 @@ demo_version_details = {
 		'descripcion':'Cartera actividad empresarial: tasas de interes, plazos y saldo por tamano de empresa [Marginal]', 
 		'url_fuente': 'Un URL',
 		'registros': 0
+	},
+
+	'040_11L_R13': {
+		'descripcion':' Distribucion geografica del numero de creditos, acreditados y monto por tamano de empresa. [Marginal]', 
+		'url_fuente': 'Un URL',
+		'registros': 0
 	}
-
-
 }
 
 
