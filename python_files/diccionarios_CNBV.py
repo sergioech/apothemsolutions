@@ -1566,18 +1566,18 @@ demo_version_details = {
 		'registros': 0
 	},
 
-	'040_11A_R4': {
-		'descripcion':'Cartera actividad empresarial: tasa de interes promedio ponderada, portafolio total', 
-		'url_fuente': 'Un URL',
-		'registros': 0
-	},
+	# '040_11A_R4': {
+	# 	'descripcion':'Cartera actividad empresarial: tasa de interes promedio ponderada, portafolio total', 
+	# 	'url_fuente': 'Un URL',
+	# 	'registros': 0
+	# },
 
 
-	'040_11A_R8': {
-		'descripcion':'Cartera actividad empresarial: Caracteristicas promedio de los creditos dispuestos marginalmente', 
-		'url_fuente': 'Un URL',
-		'registros': 0
-	},
+	# '040_11A_R8': {
+	# 	'descripcion':'Cartera actividad empresarial: Caracteristicas promedio de los creditos dispuestos marginalmente', 
+	# 	'url_fuente': 'Un URL',
+	# 	'registros': 0
+	# },
 
 	'040_11F_R1': {
 		'descripcion':'Cartera actividad empresarial: tasa de interés por intervalo de plazo. Creditos dispuestos marginalmente', 
