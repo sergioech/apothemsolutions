@@ -147,10 +147,10 @@ class ChartViewer(Handler):
 
 		chart_array = self.query_to_chart_array(datos_cnbv, variable, corte_renglones, corte_columnas, nombre_variable, chart_details['filtros'])
 
-		# print
-		# print 'This is the chart array'
-		# print chart_array
-		# print
+		print
+		print 'This is the chart array'
+		print chart_array
+		print
 
 		self.response.out.write(json.dumps({
 			'chart_array': chart_array,
@@ -419,7 +419,7 @@ class CreateAllTables(Handler):
 
 class TableViewer(Handler):
 	def get(self):
-		tablas_cnbv = TablaCNBV.query().fetch()
+		tablas_cnbv = TablaCNBV.query().order(TablaCNBV.nombre).fetch()
 		upload_url = blobstore.create_upload_url('/upload_csv')
 		blob_file_input = "{0}".format(upload_url)
 		self.print_html('TableViewer.html', tablas_cnbv=tablas_cnbv, blob_file_input=blob_file_input)
@@ -502,7 +502,7 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 		for a_key in attributes:
 			a_val = raw_dp[i]
 			
-			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda']:				
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
 			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo']:

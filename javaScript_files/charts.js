@@ -33,11 +33,15 @@ $('.ExpandColapseSection').on('click', function(){
   GlaphiconDiv.toggleClass('glyphicon-plus'); 
 });
 
+// xx
 $('.SeleccionarCorte').on('click', function(){
+  
   var CorteSeleccionado = $(this)
   var CortesActivos = parseInt($('#NumeroCortesSeleccionados').val());
   var CorteRenglones = $('#CorteRenglones');
   var CorteColumnas = $('#CorteColumnas');
+
+  validar_compatibilidad(CorteSeleccionado, CorteColumnas);
 
   if (CorteSeleccionado.attr("corte_activo") == "Si") {
     $('#NumeroCortesSeleccionados').val(CortesActivos - 1);
@@ -481,25 +485,78 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 
 
 var menus_visibles = {
-  'saldo_total':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
-  
-  'car_vigente':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
-  'car_vencida':['#boton_graficar', '#vista', '#perspectiva_institucion', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
 
-  'creditos':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
-  'acreditados':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
-  
-  
-  'plazo':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
-  'tasa':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'], 
-  'concentracion_cartera':['#boton_graficar', '#vista', '#perspectiva_institucion', '#show_value_as', '[value=periodo]', '[value=institucion]'],
+  'siempre':['#boton_graficar', '#vista','#perspectiva_institucion', '[value=periodo]', '[value=institucion]'],
 
+  'siempre_variable': {
+    'concentracion_cartera':[ '#show_value_as'],
+    'saldo_total':[ '#perspectiva_portafolio', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
+  
+    'car_vigente':['[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
+    'car_vencida':['[value=tec]', '#tipo_de_grafica', '#opciones_visuales'],
 
-  'tasa_i_mn':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
-  'tasa_i_me':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
-  'tasa_i_udis':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
-  'plazo_ponderado':['#boton_graficar', '#vista', '#perspectiva_institucion', '#perspectiva_portafolio', '[value=periodo]', '[value=institucion]', '#tipo_de_grafica', '#opciones_visuales'],
+    'creditos':['#perspectiva_portafolio', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
+    'acreditados':['#perspectiva_portafolio', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
+    
+    'plazo':['#perspectiva_portafolio', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
+    'tasa':['#perspectiva_portafolio', '[value=tec]',  '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'], 
+  },
+
+  'total':{
+    'concentracion_cartera':[],
+    'saldo_total':[],
+  
+    'car_vigente':[],
+    'car_vencida':[],
+
+    'creditos':[],
+    'acreditados':[],
+    
+    'plazo':[],
+    'tasa':[],
+  },
+
+  'marginal':{
+    'concentracion_cartera':[],
+    'saldo_total':['[value=intervalo]', '[value=moneda]'],
+  
+    'car_vigente':[],
+    'car_vencida':[],
+
+    'creditos':['[value=intervalo]', '[value=moneda]'],
+    'acreditados':[],
+    
+    'plazo':[],
+    'tasa':['[value=intervalo]'],
+  }
 }
+
+
+var cortes_incompatibles = {
+  'periodo':[],
+  'institucion':[],
+  'estado':['moneda', 'estado'],
+  'tec':['intervalo', 'moneda'],
+  'intervalo':['tec', 'estado'],
+  'moneda':['estado', 'tec']  
+}
+
+
+function validar_compatibilidad(corte_seleccionado, corte_activo){
+
+
+  if(jQuery.inArray(corte_seleccionado.val(), cortes_incompatibles[corte_activo.val()]) == -1  ){      
+    $('.SeleccionarCorte').popover('hide');
+    return true
+
+  } else {
+    corte_activo = boton_corte = $('#boton_' + corte_activo.val())   
+    var popover_content = 'No será posible mostrar información para la combinacion de vistas: ' + corte_seleccionado.text() + ' y ' + corte_activo.text() +'. Por favor, modifique su selección';    
+    corte_seleccionado.attr('data-content', popover_content);    
+    corte_seleccionado.popover('show');
+    return false
+  }  
+};
 
 
 var to_be_hidden = [
@@ -510,10 +567,12 @@ var to_be_hidden = [
   '[value=periodo]', 
   '[value=institucion]', 
   '[value=tec]', 
-  '[value=estado]', 
+  '[value=estado]',
+  '[value=intervalo]',  
   '#tipo_de_grafica',
   '#boton_graficar',
   '#tipo_moneda',
+  '[value=moneda]'
 ]
 
 
@@ -618,7 +677,7 @@ var seleccion_default = {
 
 }
 
-// xx
+
 function seleccionar_cortes_iniciales(CorteRenglones, CorteColumnas){
 
   var cortes = jQuery('.corte');
@@ -688,12 +747,33 @@ function seleccionar_default(variable){
 }; 
 
 $('#variable').on('change', function(){
-  // console.log('Si detecto que esta cambiando la variable');  
+
   hide_group(to_be_hidden);
   var variable = $(this).val();  
-  unhide_group(menus_visibles[variable]);
+  var grupo_visible = menus_visibles['siempre'].concat(menus_visibles['siempre_variable'][variable], menus_visibles[$('input:radio[name=perspectiva_portafolio]:checked').val()][variable]);
+  // console.log(' ')
+  // console.log('Este es el grupo de menus visibles')
+  // console.log(grupo_visible)
+
+  unhide_group(grupo_visible);
   seleccionar_default(variable);
 });
+
+$('#perspectiva_portafolio').on('change',function(){
+  var variable = $('#variable').val();  
+  var perspectiva_portafolio = $('input:radio[name=perspectiva_portafolio]:checked').val();
+  var menus_total = menus_visibles['total'][variable];
+  var menus_marginal = menus_visibles['marginal'][variable];
+
+  if ( perspectiva_portafolio == 'total'){
+    hide_group(menus_marginal);
+    unhide_group(menus_total);
+  } else {
+    hide_group(menus_total);
+    unhide_group(menus_marginal);
+  }
+});
+
 
 $('#denominador').on('change', function(){  
   var denominador = $(this).val();  
@@ -728,6 +808,13 @@ function divide_matrix(matrix, denominador){
   return newArray
 
 };
+
+
+
+
+
+
+
 
 
 

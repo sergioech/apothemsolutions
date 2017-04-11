@@ -26,7 +26,7 @@ cat_variables = {
 }
 
 def_variables  = {
-	'saldo_total': 'Cartera total'.decode('utf-8'),
+	'saldo_total': 'Monto dispuesto'.decode('utf-8'),
 	'car_vigente': 'Cartera vigente'.decode('utf-8'),
 	'car_vencida': 'Cartera vencida'.decode('utf-8'),
 	'creditos': 'Número de créditos'.decode('utf-8'),
@@ -61,7 +61,6 @@ def_variables_unidades  = {
 
 }
 
-
 opc_variables = [
 	'saldo_total',
 	'car_vigente',
@@ -83,13 +82,17 @@ def_cortes = {
 	'estado': 'Entidad Federativa'.decode('utf-8'),
 	'tec': 'Tamaño de Empresa'.decode('utf-8'),
 	'cliente': 'Cliente'.decode('utf-8'),
+	'intervalo': 'Intervalo de Plazo'.decode('utf-8'),
+	'moneda': 'Moneda'.decode('utf-8')
 }
 
 opc_cortes = [
 	'periodo',
 	'institucion',
 	'estado',
-	'tec'
+	'tec',
+	'intervalo',
+	'moneda',
 ]
 
 
@@ -811,12 +814,55 @@ opc_cliente = [
 	['999', 'Cliente 1000']
 ]
 
+def_intervalo = {
+	'00': 'Menos de 1 mes',
+	'01': '1 mes',
+	'02': '2 meses',
+	'03': '3 meses',
+	'04': '4 meses',
+	'05': '5 meses',
+	'06': '6 meses',
+	'07': '7 a 12 meses',
+	'08': '13 a 18 meses',
+	'09': '19 a 24 meses',
+	'10': '25 a 36 meses',
+	'11': '37 a 48 meses',
+	'12': '49 a 60 meses',
+	'13': '61 a 120 meses',
+	'14': 'más de 120',
+}
+
+opc_intervalo = [
+	# ['00', 'Menos de 1 mes'],
+	['01', '1 mes'],
+	['02', '2 meses'],
+	['03', '3 meses'],
+	['04', '4 meses'],
+	['05', '5 meses'],
+	['06', '6 meses'],
+	['07', '7 a 12 meses'],
+	['08', '13 a 18 meses'],
+	['09', '19 a 24 meses'],
+	['10', '25 a 36 meses'],
+	['11', '37 a 48 meses'],
+	['12', '49 a 60 meses'],
+	['13', '61 a 120 meses'],
+	['14', 'más de 120']
+]
+
 
 def_moneda = {
 	'00':'Nacional',
 	'01':'Extranjera',
 	'02':'UDIS'
 }
+
+
+opc_moneda = [
+	['00', 'Nacional'],
+	['01', 'Extranjera'],
+	['02', 'UDIS']
+]
 
 
 definiciones = {
@@ -828,6 +874,8 @@ definiciones = {
 	'variables': def_variables,
 	'cortes': def_cortes, #!
 	'cliente': def_cliente,
+	'moneda': def_moneda,
+	'intervalo': def_intervalo,
 }
 
 
@@ -839,8 +887,9 @@ opciones = {
 	'periodo': decode_options(opc_periodo, 'periodo'),
 	'periodo_y': decode_options(opc_periodo_y, 'periodo_y'),
 	'cliente': decode_options(opc_cliente, 'cliente'),
+	'intervalo': decode_options(opc_intervalo, 'intervalo'),
+	'moneda': decode_options(opc_moneda, 'moneda'),
 }
-
 
 
 #--- Catalogos CNBV ---
@@ -1314,6 +1363,25 @@ cat_concentracion = {
 	'Cliente Ultimo': ['Cliente Ultimo', '000']
 }
 
+cat_intervalo = {
+	'0': ['Menos de 1 mes', '00'],
+	'1': ['1 mes', '01'],
+	'2': ['2 meses', '02'],
+	'3': ['3 meses', '03'],
+	'4': ['4 meses', '04'],
+	'5': ['5 meses', '05'],
+	'6': ['6 meses', '06'],
+	'7': ['7 a 12 meses', '07'],
+	'8': ['13 a 18 meses', '08'],
+	'9': ['19 a 24 meses', '09'],
+	'10': ['25 a 36 meses', '10'],
+	'11': ['37 a 48 meses', '11'],
+	'12': ['49 a 60 meses', '12'],
+	'13': ['61 a 120 meses', '13'],
+	'14': ['más de 120', '14']
+}
+
+
 cat_moneda = {
 	'0':['Nacional', '00'],
 	'1':['Extranjera', '01'],
@@ -1345,6 +1413,28 @@ tm_040_11A_R8 = {
 	'cve_concepto': ['tipo_valor', cat_concepto],
 	'dato': ['valor']
 }
+
+
+tm_040_11F_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+
+	'id':['intervalo', cat_intervalo],
+	'tasa': ['tasa']	
+}
+
+
+tm_040_11F_R2 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+
+	'id':['intervalo', cat_intervalo],
+	'creditos': ['creditos'],	
+	'monto_dispuesto': ['saldo_total']
+}
+
 
 tm_040_11L_R0 = {
 	'cve_periodo': ['periodo'],
@@ -1414,6 +1504,9 @@ transformation_maps_CNBV = {
 	'040_11A_R4': tm_040_11A_R4,
 	'040_11A_R8': tm_040_11A_R8,
 
+	'040_11F_R1': tm_040_11F_R1,
+	'040_11F_R2': tm_040_11F_R2,
+
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
@@ -1430,6 +1523,10 @@ detalles_tabla = {
 	# '040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
 	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal'}, #Por lo pronto solo queda fuera de forma temporal.
+
+	'040_11F_R1': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
+
+	'040_11F_R2': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
@@ -1450,6 +1547,9 @@ tablas_CNBV = [
 	# '040_11A_R4',
 	# '040_11A_R8',
 	
+	'040_11F_R1',
+	'040_11F_R2',
+
 	'040_11L_R0',
 	'040_11L_R2',
 	'040_11L_R3',
@@ -1479,6 +1579,17 @@ demo_version_details = {
 		'registros': 0
 	},
 
+	'040_11F_R1': {
+		'descripcion':'Cartera actividad empresarial: tasa de interés por intervalo de plazo. Creditos dispuestos marginalmente', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'040_11F_R2': {
+		'descripcion':'Creditos y saldos por intervalo de plazo. Creditos dispuestos marginalmente', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
 
 	'040_11L_R0': {
 		'descripcion':'Numero de creditos, acreditados y saldo por tamano de empresa', 
@@ -1526,7 +1637,7 @@ def generar_indice_CNBV(lista_tablas):
 
 
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'moneda']
 
 	for tabla in lista_tablas:
 		variables = []

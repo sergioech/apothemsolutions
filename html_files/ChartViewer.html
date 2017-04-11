@@ -20,6 +20,7 @@
 							<option value="{{variable[0]}}"> {{variable[1]}} </option>
 						{% endfor %}	
 					</select> 
+
 				</div>
 			</div>
 
@@ -41,6 +42,14 @@
 				</div>
 			</div>
 
+			<div class="row hidden" style="margin-top: 10px;" id="perspectiva_portafolio">
+				<div class="col-xs-12">
+					<label>Perspectiva Portafolio</label><br>
+					<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="perspectiva_portafolio" value="total" checked="checked"> Total </label>
+					<label class="radio-inline"><input type="radio" name="perspectiva_portafolio" value="marginal"> Marginal </label>
+				</div>
+			</div>
+
 			<div class="row hidden" style="margin-top: 10px;" id="show_value_as">
 				<div class="col-xs-12">
 					<label>Mostrar valores como</label><br>
@@ -58,22 +67,16 @@
 				</div>
 			</div>
 
-			<div class="row hidden" style="margin-top: 10px;" id="perspectiva_portafolio">
-				<div class="col-xs-12">
-					<label>Perspectiva Portafolio</label><br>
-					<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="perspectiva_portafolio" value="total" checked="checked"> Total </label>
-					<label class="radio-inline"><input type="radio" name="perspectiva_portafolio" value="marginal"> Marginal </label>
-				</div>
-			</div>
 
-			<div class="row hidden" style="margin-top: 10px;" id="intervalo">
+
+<!-- 			<div class="row hidden" style="margin-top: 10px;" id="intervalo">
 				<div class="col-xs-12">
 					<label> Intervalos</label><br>
 					<label class="radio-inline"><input type="radio" name="intervalo" value="total" checked="checked"> Meses </label>
 					<label class="radio-inline"><input type="radio" name="intervalo" value="total"> Trimestres </label>
 					<label class="radio-inline"><input type="radio" name="intervalo" value="marginal"> Años </label>
 				</div>
-			</div>
+			</div> -->
 
 
 			<div class="row hidden" style="margin-top: 10px;" id="vista">
@@ -87,7 +90,7 @@
 					<div class="row" style="">
 						<div class="col-xs-12">
 							<div class="btn-group" role="group" aria-label="Vertical button group">										
-								<button type="button" class="btn btn-default SeleccionarCorte" corte_activo="No" style="width: 220px; text-align: left;" value="{{corte[0]}}" id="{{'boton_' + corte[0]}}"><span style="margin-left:2px;" id="OkGlyphicon" class="glyphicon glyphicon-ok hidden"> </span> {{corte[1]}} <span id="RowOrCol"></span></button>
+								<button type="button" class="btn btn-default SeleccionarCorte" data-container="body" corte_activo="No" style="width: 220px; text-align: left;" value="{{corte[0]}}" id="{{'boton_' + corte[0]}}" data-toggle="popover" data-trigger="manual" title="Selección invalida" data-content="No es posible seleccionar esta combinación de vistas. Por favor modifique su selección."><span style="margin-left:2px;" id="OkGlyphicon" class="glyphicon glyphicon-ok hidden"> </span> {{corte[1]}} <span id="RowOrCol"></span></button>
 								<button type="button" class="btn btn-default ExpandColapseSection" targetsection="#{{corte[0]}}" id="{{'boton_' + corte[0] + '_PlusMinus'}}"><span style="margin-left:2px;" class="glyphicon glyphicon-plus glyphicon_boton" id="PlusMinusGlyphicon"></span></button>	
 							</div>
 						</div>
@@ -103,7 +106,7 @@
 								{% for opcion in opciones[corte[0]] %}
 									<div class="checkbox">
 										<label>
-											<input class="opcion" type="checkbox" value="{{opcion[0]}}" id="{{corte[0]}}_{{opcion[0]}}" {% if corte[0] in ['tec', 'estado'] %}checked{% endif %}> {{opcion[1]}}
+											<input class="opcion" type="checkbox" value="{{opcion[0]}}" id="{{corte[0]}}_{{opcion[0]}}" {% if corte[0] in ['tec', 'estado', 'intervalo', 'moneda'] %}checked{% endif %}> {{opcion[1]}}
 										</label>
 									</div>
 								{% endfor %}								
