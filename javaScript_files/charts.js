@@ -200,6 +200,13 @@ function draw_chart(chart_array, chart_type){
     chart;
 
   var is_stacked = $('#is_stacked').is(':checked');
+
+  var is_donut = 0;
+  if($('#is_donut').is(':checked')){
+    is_donut = 0.4
+  };
+
+  var is_3D = $('#is_3D').is(':checked');
   
   if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
     axis_format = 'percent'
@@ -214,7 +221,7 @@ function draw_chart(chart_array, chart_type){
       bar: { groupWidth: '80%'}, 
       chartArea:{height: '85%', width: '65%'},
       hAxis: {title:'', format: axis_format},
-      isStacked: is_stacked
+      isStacked: is_stacked      
     };
 
     chart = new google.visualization.BarChart(document.getElementById('chart_div'));
@@ -261,7 +268,9 @@ function draw_chart(chart_array, chart_type){
     options = {
       chartArea:{height: '85%', width: '85%'},
       // legend: { position: 'top', maxLines:2},
+      pieHole: is_donut,
       legend: { position: 'right'},
+      is3D: is_3D
       // title: ''
     };
 
@@ -374,7 +383,7 @@ $('#transpose_button').on('click',function(){
 });
 
 //Por consolidemos con una clase que sea quick chart update
-$('#is_stacked').on('change', function(){
+$('.QuickChartViewUpdate').on('change', function(){
   chart_type = $('input:radio[name=chart_type]:checked').val();  
   draw_chart(chart_array, chart_type);
 });
