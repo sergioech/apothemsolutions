@@ -39,7 +39,8 @@ def_variables  = {
 	'saldo_acum': 'Saldo acumulado por cliente'.decode('utf-8'),
 	'porc_acum': 'Saldo acumulado por cliente'.decode('utf-8'),
 	'tasa': 'Tasa de interes ponderada'.decode('utf-8'),
-	'plazo': 'Plazo ponderado (remanente)'.decode('utf-8')
+	'plazo': 'Plazo ponderado (remanente)'.decode('utf-8'),
+	'imor': 'Índice de Morosidad (IMOR)'.decode('utf-8')
 }
 
 
@@ -58,17 +59,18 @@ def_variables_unidades  = {
 	'porc_acum': 'Porcentaje (%)'.decode('utf-8'),
 	'tasa': 'Porcentaje (%)'.decode('utf-8'),
 	'plazo': 'Meses (Número)'.decode('utf-8'),
-
+	'imor': 'Porcentaje (%) [Cartera Vencida/Cartera Total]'.decode('utf-8')
 }
 
 opc_variables = [
 	'saldo_total',
-	'car_vigente',
-	'car_vencida',
+	# 'car_vigente',
+	# 'car_vencida',
 	'creditos',
 	'acreditados',
 	'tasa',
 	'plazo',
+	'imor',
 	# 'tasa_i_mn',
 	# 'tasa_i_me',
 	# 'tasa_i_udis',
@@ -1414,6 +1416,11 @@ tm_040_11A_R8 = {
 	'dato': ['valor']
 }
 
+tm_mod_11E_R1 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	'imor': ['imor']
+}
 
 tm_040_11F_R1 = {
 	'cve_periodo': ['periodo'],
@@ -1504,6 +1511,8 @@ transformation_maps_CNBV = {
 	'040_11A_R4': tm_040_11A_R4,
 	'040_11A_R8': tm_040_11A_R8,
 
+	'mod_11E_R1': tm_mod_11E_R1,
+
 	'040_11F_R1': tm_040_11F_R1,
 	'040_11F_R2': tm_040_11F_R2,
 
@@ -1524,6 +1533,8 @@ detalles_tabla = {
 	
 	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal'}, #Por lo pronto solo queda fuera de forma temporal.
 
+	'mod_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+	
 	'040_11F_R1': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
 	'040_11F_R2': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
@@ -1547,6 +1558,8 @@ tablas_CNBV = [
 	# '040_11A_R4',
 	# '040_11A_R8',
 	
+	'mod_11E_R1',
+
 	'040_11F_R1',
 	'040_11F_R2',
 
@@ -1572,6 +1585,11 @@ demo_version_details = {
 	# 	'registros': 0
 	# },
 
+	'mod_11E_R1': {
+		'descripcion':'Cartera actividad empresarial: Índice de morosidad', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
 
 	# '040_11A_R8': {
 	# 	'descripcion':'Cartera actividad empresarial: Caracteristicas promedio de los creditos dispuestos marginalmente', 
@@ -1636,7 +1654,7 @@ def generar_indice_CNBV(lista_tablas):
 	indice_CNBV = []
 
 
-	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo'] # tipo_valor
+	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
 	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'moneda']
 
 	for tabla in lista_tablas:

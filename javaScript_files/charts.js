@@ -520,7 +520,9 @@ var menus_visibles = {
     'acreditados':['#perspectiva_portafolio', '[value=tec]', '[value=estado]', '#tipo_de_grafica', '#opciones_visuales'],
     
     'plazo':['#perspectiva_portafolio', '[value=tec]', '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
-    'tasa':['#perspectiva_portafolio', '[value=tec]',  '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'], 
+    'tasa':['#perspectiva_portafolio', '[value=tec]',  '#tipo_de_grafica', '#opciones_visuales', '#tipo_moneda'],
+
+    'imor':['#tipo_de_grafica', '#opciones_visuales'] 
   },
 
   'total':{
@@ -535,6 +537,8 @@ var menus_visibles = {
     
     'plazo':[],
     'tasa':[],
+
+    'imor':[],
   },
 
   'marginal':{
@@ -549,6 +553,8 @@ var menus_visibles = {
     
     'plazo':[],
     'tasa':['[value=intervalo]'],
+
+    'imor':[],
   }
 }
 
@@ -692,6 +698,14 @@ var seleccion_default = {
     'instituciones': grupo_top7,
     'corte_renglones':'institucion',
     'corte_columnas': 'tec',
+    'grafica': 'bar_chart'
+  },
+
+  'imor':{
+    'periodos': grupo_ultimoPeriodo,
+    'instituciones': grupo_top7,
+    'corte_renglones':'institucion',
+    'corte_columnas': 'periodo',
     'grafica': 'bar_chart'
   },
 

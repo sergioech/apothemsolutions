@@ -46,6 +46,7 @@ class DatoCNBV(ndb.Model):
 	acreditados = ndb.FloatProperty()
 	tasa = ndb.FloatProperty()
 	plazo = ndb.FloatProperty()
+	imor = ndb.FloatProperty()
 
 	saldo_acum = ndb.FloatProperty()
 	porc_acum = ndb.FloatProperty()
