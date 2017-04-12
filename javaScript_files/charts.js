@@ -255,6 +255,18 @@ function draw_chart(chart_array, chart_type){
     // view.setColumns()
     chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
     chart.draw(chart_data, options);
+ 
+  } else if (chart_type == 'pie_chart'){
+
+    options = {
+      chartArea:{height: '85%', width: '85%'},
+      // legend: { position: 'top', maxLines:2},
+      legend: { position: 'right'},
+      // title: ''
+    };
+
+    chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(chart_data, options);
 
   };
 };
