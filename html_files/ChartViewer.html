@@ -2,7 +2,6 @@
 
 {% block content %}
 <div class="row"> 	
-
 	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 650px; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
 		<form method="post">
 			<input type="text" class="hidden" name="renglones" id="CorteRenglones">
@@ -90,7 +89,7 @@
 					<div class="row" style="">
 						<div class="col-xs-12">
 							<div class="btn-group" role="group" aria-label="Vertical button group">										
-								<button type="button" class="btn btn-default SeleccionarCorte" data-container="body" corte_activo="No" style="width: 220px; text-align: left;" value="{{corte[0]}}" id="{{'boton_' + corte[0]}}" data-toggle="popover" data-trigger="manual" title="Selección invalida" data-content="No es posible seleccionar esta combinación de vistas. Por favor modifique su selección."><span style="margin-left:2px;" id="OkGlyphicon" class="glyphicon glyphicon-ok hidden"> </span> {{corte[1]}} <span id="RowOrCol"></span></button>
+								<button type="button" class="btn btn-default SeleccionarCorte" data-container="body" corte_activo="No" style="width: 200px; text-align: left;" value="{{corte[0]}}" id="{{'boton_' + corte[0]}}" data-toggle="popover" data-trigger="manual" title="Selección invalida" data-content="No es posible seleccionar esta combinación de vistas. Por favor modifique su selección."><span style="margin-left:2px;" id="OkGlyphicon" class="glyphicon glyphicon-ok hidden"> </span> {{corte[1]}} <span id="RowOrCol"></span></button>
 								<button type="button" class="btn btn-default ExpandColapseSection" targetsection="#{{corte[0]}}" id="{{'boton_' + corte[0] + '_PlusMinus'}}"><span style="margin-left:2px;" class="glyphicon glyphicon-plus glyphicon_boton" id="PlusMinusGlyphicon"></span></button>	
 							</div>
 						</div>
@@ -197,7 +196,14 @@
 					<div class="hidden" id="boton_transponer">
 						<button type="button" class="btn btn-primary btn-sm" id="transpose_button"> Invertir <span style="margin-left:2px;" class="glyphicon glyphicon-retweet"></span></button>						
 					</div>
-				</div>		
+				</div>
+				
+				<div class="col-xs-6">
+					<div class="" id="boton_transponer">
+						<button type="button" class="btn btn-primary btn-sm" id="sort_button"> Ordenar <span style="margin-left:2px;" class="glyphicon"></span></button>						
+					</div>
+				</div>
+
 			</div>
 		</form>
 		<br>

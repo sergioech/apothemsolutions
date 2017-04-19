@@ -769,11 +769,6 @@ function hide_group(lista_ids){
 function seleccionar_default(variable){
 
   var seleccion_inicial = seleccion_default[variable]
-
-  // console.log(' ')
-  // console.log('Esta es la seleccion inicial')
-  // console.log(seleccion_inicial)
-
   select_group(seleccion_inicial['periodos']);
   select_group(seleccion_inicial['instituciones']);
   seleccionar_cortes_iniciales(seleccion_inicial['corte_renglones'], seleccion_inicial['corte_columnas']);
@@ -847,7 +842,22 @@ function divide_matrix(matrix, denominador){
 
 
 
+function sort_matrix(chart_array){
+  console.log('Estamos conectados')
 
+//  chart_array.sort(function (a, b) {
+//    return a.value - b.value;
+//  })
+};
+
+$('#sort_button').on('click',function(){
+  sort_matrix(chart_array)
+  
+  //if(chart_array != undefined){
+  //  sort_matrix(chart_array)
+    // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
+  //}  
+});
 
 
 
