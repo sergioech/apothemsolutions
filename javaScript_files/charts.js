@@ -33,7 +33,7 @@ $('.ExpandColapseSection').on('click', function(){
   GlaphiconDiv.toggleClass('glyphicon-plus'); 
 });
 
-// xx
+
 $('.SeleccionarCorte').on('click', function(){
   
   var CorteSeleccionado = $(this)
@@ -183,12 +183,23 @@ $(document).on('click', '.UpdateChartButton', function(){
 
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
+ 
+  var is_transposed = $('#is_transposed').is(':checked');
+  if (is_transposed){
+    chart_array = transpose_matrix(chart_array)
+  }
 
-    // console.log(' ')
-    // console.log(' This is the chart array')
-    // console.log(chart_array)
-  
-    if ( chart_type == 'column_chart' || chart_type == 'line_chart'){
+  var is_sorted = $('#is_sorted').is(':checked');
+  if (is_sorted){
+    console.log('Chart array antes de ordenar:')
+    console.log(chart_array)
+    chart_array = SortChartArray(chart_array)
+    console.log()
+    console.log('Chart array despues de ordenar:')
+    console.log(chart_array)
+  }
+
+  if ( chart_type == 'column_chart' || chart_type == 'line_chart'){
       console.log('Invirtiendo dentro de draw chart...')
       chart_array = invertir_renglones(chart_array)      
     }
@@ -372,28 +383,16 @@ $('input[type=radio][name=chart_type]').on('change',function(){
   }
 });  
 
-$('#transpose_button').on('click',function(){
-  // console.log('Si detecto que quiero transponer los datos')
-  if(chart_array != undefined){
-    chart_type = $('input:radio[name=chart_type]:checked').val();
-    chart_array = transpose_matrix(chart_array);
-    draw_chart(chart_array, chart_type);
-    // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
-  }  
-});
-
-//Por consolidemos con una clase que sea quick chart update
-$('.QuickChartViewUpdate').on('change', function(){
-  chart_type = $('input:radio[name=chart_type]:checked').val();  
-  draw_chart(chart_array, chart_type);
-});
-
-
 $('#value_labels').on('change', function(){
   chart_type = $('input:radio[name=chart_type]:checked').val();  
   draw_chart(chart_array, chart_type);
 });
 
+
+$('.QuickChartViewUpdate').on('change', function(){
+  chart_type = $('input:radio[name=chart_type]:checked').val();  
+  draw_chart(chart_array, chart_type);
+});
 
 
 $(document).on('change', '.select_all_checkbox', function(){
@@ -841,26 +840,23 @@ function divide_matrix(matrix, denominador){
 
 
 
-
-function sort_matrix(chart_array){
-  console.log('Estamos conectados')
-
-//  chart_array.sort(function (a, b) {
-//    return a.value - b.value;
-//  })
+function SumChartRow(chart_row){
+  var row_total = 0
+  for (var i = chart_row.length - 1; i > 0; i--) {
+    row_total += chart_row[i]
+  }
+  return row_total
 };
 
-$('#sort_button').on('click',function(){
-  sort_matrix(chart_array)
-  
-  //if(chart_array != undefined){
-  //  sort_matrix(chart_array)
-    // console.log('Si dibujo el chart sin tener que hacer el AJAX request')
-  //}  
-});
 
+function SortChartArray(chart_array){
+    
+  var old_array = chart_array.slice()
+  var sorted_array = [old_array.shift()]
 
+  old_array.sort(function (a, b) {    
+    return SumChartRow(b) - SumChartRow(a);
+  });
 
-
-
-
+  return sorted_array.concat(old_array)
+}
