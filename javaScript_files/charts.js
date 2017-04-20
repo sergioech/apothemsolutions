@@ -101,6 +101,8 @@ function flipear_boton_corte(nombre_corte) {
 
 $(document).on('click', '.UpdateChartButton', function(){  
 
+  $("#SlideDisplaySection").removeAttr("style");
+  $('#imagen_portada').addClass('hidden');
   $('#chart_lead').addClass('hidden');
   $('#unidades_denominador').addClass('hidden');
   $('#chart_units').addClass('hidden');
