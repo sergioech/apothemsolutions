@@ -128,7 +128,7 @@ class ChartViewer(Handler):
 		datos_cnbv = datos_cnbv.filter(DatoCNBV.periodo.IN(self.determinar_rango_periodos(chart_details['filtros']['periodo'])))		
 		datos_cnbv = datos_cnbv.filter(DatoCNBV.institucion.IN(chart_details['filtros']['institucion']))
 
-		chart_lead = self.generate_lead(variable, chart_details['filtros']['institucion'], chart_details['filtros']['periodo'], [])
+		chart_lead = self.generate_lead(variable, chart_details['filtros']['institucion'], chart_details['filtros']['periodo'], [corte_renglones, corte_columnas], perspectiva_portafolio)
 		chart_units = diccionarios_CNBV.def_variables_unidades[variable]
 
 		if tipo_variable == 'indirectas':
@@ -162,29 +162,43 @@ class ChartViewer(Handler):
 		return
 
 
-	def generate_lead(self, variable, bancos, periodos, cortes):
+	def generate_lead(self, variable, bancos, periodos, cortes, perspectiva_portafolio):
 		definiciones = diccionarios_CNBV.definiciones
 		
-		variable_lead = definiciones['variables'][variable]
-		# variable_lead = definiciones['variables'][variable].decode('utf-8')
+		variable_lead = definiciones['variables_lead'][perspectiva_portafolio][variable]
+		
 		banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8')
 		
+		cortes_lead = ''
+		if cortes[0] and cortes[1]:
+			cortes_lead = ' por ' + definiciones['cortes'][cortes[0]] + ' y ' + definiciones['cortes'][cortes[1]]
+		else:
+			if cortes[0]:
+				cortes_lead = 'por ' + definiciones['cortes'][cortes[0]]
+			elif cortes[1]:
+				cortes_lead = 'por ' + definiciones['cortes'][cortes[1]]
+
+
 		if len(bancos) > 1:
 			if len(bancos) == 2:
 				banco_lead += ' y ' + definiciones['institucion'][bancos[1]].decode('utf-8')
 			else:
 				banco_lead += ' y otras ' + str(len(bancos) - 1) + ' instituciones ' 
-		
+
+		if perspectiva_portafolio == 'total':
+			union_temporal = ' a '
+		else:
+			union_temporal = ' durante '		
 	
-		periodo_lead =  definiciones['periodo'][int(periodos[0])]
+		periodo_lead =  definiciones['periodo_lead'][int(periodos[0])]
 
 		if len(periodos) == 2:
-			periodo_lead += ' y ' + definiciones['periodo'][int(periodos[1])]
+			periodo_lead += ' y ' + definiciones['periodo_lead'][int(periodos[1])]
 		
 		elif len(periodos) > 2:
 			periodo_lead += ' y otros ' + str(len(periodos) - 1) + ' periodos ' 
 
-		lead = variable_lead + ' de ' + banco_lead + ' durante ' + periodo_lead
+		lead = variable_lead + banco_lead + union_temporal + periodo_lead + ' visto ' + cortes_lead
 		return lead	
 
 	def define_chart_units(self, variable):

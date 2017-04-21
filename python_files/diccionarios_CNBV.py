@@ -44,6 +44,31 @@ def_variables  = {
 }
 
 
+def_variables_lead = {
+	'total':{
+		'saldo_total': 'Saldo total de '.decode('utf-8'),				
+		'creditos': 'Número de créditos totales de '.decode('utf-8'),
+		'acreditados': 'Número de acreditados totales de '.decode('utf-8'),	
+		'concentracion_cartera': 'Concentración de cartera por cliente del portafolio total de '.decode('utf-8'),
+		'saldo_acum': 'Saldo acumulado por cliente del portafolio total de '.decode('utf-8'),
+		'porc_acum': 'Saldo acumulado por cliente del portafolio total de '.decode('utf-8'),
+		'tasa': 'Tasa de interes ponderada del portafolio total de '.decode('utf-8'),
+		'plazo': 'Plazo ponderado de los creditos remanentes de '.decode('utf-8'),
+		'imor': 'Índice de Morosidad del portafolio total de '.decode('utf-8')
+	},
+
+	'marginal':{
+		'saldo_total': 'Incremento marginal en monto dispuesto por '.decode('utf-8'),
+		'creditos': 'Incremento marginal en número de créditos de '.decode('utf-8'),
+		'acreditados': 'Incremento marginal en número de acreditados de '.decode('utf-8'),				
+		
+		'tasa': 'Tasa de interes de nuevos créditos emitidos por '.decode('utf-8'),
+		'plazo': 'Plazo ponderado de los nuevos créditos emitidos por '.decode('utf-8'),
+	}
+}
+
+
+
 def_variables_unidades  = {
 	'saldo_total': 'Pesos ($MXN)'.decode('utf-8'),
 	'car_vigente': 'Pesos ($MXN)'.decode('utf-8'),
@@ -384,6 +409,74 @@ def_periodo = {
 	201612: '201612'
 }
 
+
+def_periodo_lead = {
+
+	201201: 'Enero 2012',
+	201202: 'Febrero 2012',
+	201203: 'Marzo 2012',
+	201204: 'Abril 2012',
+	201205: 'Mayo 2012',
+	201206: 'Junio 2012',
+	201207: 'Julio 2012',
+	201208: 'Agosto 2012',
+	201209: 'Septiembre 2012',
+	201210: 'Octubre 2012',
+	201211: 'Noviembre 2012',
+	201212: 'Diciembre 2012',
+
+	201301: 'Enero 2013',
+	201302: 'Febrero 2013',
+	201303: 'Marzo 2013',
+	201304: 'Abril 2013',
+	201305: 'Mayo 2013',
+	201306: 'Junio 2013',
+	201307: 'Julio 2013',
+	201308: 'Agosto 2013',
+	201309: 'Septiembre 2013',
+	201310: 'Octubre 2013',
+	201311: 'Noviembre 2013',
+	201312: 'Diciembre 2013',
+
+	201401: 'Enero 2014',
+	201402: 'Febrero 2014',
+	201403: 'Marzo 2014',
+	201404: 'Abril 2014',
+	201405: 'Mayo 2014',
+	201406: 'Junio 2014',
+	201407: 'Julio 2014',
+	201408: 'Agosto 2014',
+	201409: 'Septiembre 2014',
+	201410: 'Octubre 2014',
+	201411: 'Noviembre 2014',
+	201412: 'Diciembre 2014',
+
+	201501: 'Enero 2015',
+	201502: 'Febrero 2015',
+	201503: 'Marzo 2015',
+	201504: 'Abril 2015',
+	201505: 'Mayo 2015',
+	201506: 'Junio 2015',
+	201507: 'Julio 2015',
+	201508: 'Agosto 2015',
+	201509: 'Septiembre 2015',
+	201510: 'Octubre 2015',
+	201511: 'Noviembre 2015',
+	201512: 'Diciembre 2015',
+
+	201601: 'Enero 2016',
+	201602: 'Febrero 2016',
+	201603: 'Marzo 2016',
+	201604: 'Abril 2016',
+	201605: 'Mayo 2016',
+	201606: 'Junio 2016',
+	201607: 'Julio 2016',
+	201608: 'Agosto 2016',
+	201609: 'Septiembre 2016',
+	201610: 'Octubre 2016',
+	201611: 'Noviembre 2016',
+	201612: 'Diciembre 2016',
+}
 
 opc_periodo = [
 
@@ -878,6 +971,8 @@ definiciones = {
 	'cliente': def_cliente,
 	'moneda': def_moneda,
 	'intervalo': def_intervalo,
+	'variables_lead': def_variables_lead,
+	'periodo_lead': def_periodo_lead
 }
 
 
