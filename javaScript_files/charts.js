@@ -101,6 +101,7 @@ function flipear_boton_corte(nombre_corte) {
 
 $(document).on('click', '.UpdateChartButton', function(){  
 
+  $('#MensajeError').addClass('hidden');
   $("#SlideDisplaySection").removeAttr("style");
   $('#imagen_portada').addClass('hidden');
   $('#chart_lead').addClass('hidden');
@@ -185,112 +186,116 @@ $(document).on('click', '.UpdateChartButton', function(){
 
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
- 
-  var is_transposed = $('#is_transposed').is(':checked');
-  if (is_transposed){
-    chart_array = transpose_matrix(chart_array)
-  }
-
-  var is_sorted = $('#is_sorted').is(':checked');
-  if (is_sorted){
-    console.log('Chart array antes de ordenar:')
-    console.log(chart_array)
-    chart_array = SortChartArray(chart_array)
-    console.log()
-    console.log('Chart array despues de ordenar:')
-    console.log(chart_array)
-  }
-
-  if ( chart_type == 'column_chart' || chart_type == 'line_chart'){
-      console.log('Invirtiendo dentro de draw chart...')
-      chart_array = invertir_renglones(chart_array)      
+  try{
+    var is_transposed = $('#is_transposed').is(':checked');
+    if (is_transposed){
+      chart_array = transpose_matrix(chart_array)
     }
-  
-  var chart_data = google.visualization.arrayToDataTable(chart_array),
-    options,
-    axis_format,
-    chart_subtitle, 
-    chart;
 
-  var is_stacked = $('#is_stacked').is(':checked');
+    var is_sorted = $('#is_sorted').is(':checked');
+    if (is_sorted){
+      console.log('Chart array antes de ordenar:')
+      console.log(chart_array)
+      chart_array = SortChartArray(chart_array)
+      console.log()
+      console.log('Chart array despues de ordenar:')
+      console.log(chart_array)
+    }
 
-  var is_donut = 0;
-  if($('#is_donut').is(':checked')){
-    is_donut = 0.4
-  };
-
-  var is_3D = $('#is_3D').is(':checked');
-  
-  if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
-    axis_format = 'percent'
-  } else {
-    // axis_format = 'short'
-    // axis_format = 'long'
-    axis_format = 'decimal'
-  }
-
-  if ( chart_type == 'bar_chart'){
-    options = {
-      bar: { groupWidth: '80%'}, 
-      chartArea:{height: '85%', width: '65%'},
-      hAxis: {title:'', format: axis_format},
-      isStacked: is_stacked      
-    };
-
-    chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-
-    chart_data = new google.visualization.DataView(chart_data);
-
+    if ( chart_type == 'column_chart' || chart_type == 'line_chart'){
+        console.log('Invirtiendo dentro de draw chart...')
+        chart_array = invertir_renglones(chart_array)      
+      }
     
-    if($('#value_labels').is(':checked')){
-      chart_data.setColumns([0, 1,
-                         { calc: "stringify",
-                           sourceColumn: 1,
-                           type: "string",
-                           role: "annotation" },
-                         ]);
+    var chart_data = google.visualization.arrayToDataTable(chart_array),
+      options,
+      axis_format,
+      chart_subtitle, 
+      chart;
+
+    var is_stacked = $('#is_stacked').is(':checked');
+
+    var is_donut = 0;
+    if($('#is_donut').is(':checked')){
+      is_donut = 0.4
+    };
+
+    var is_3D = $('#is_3D').is(':checked');
+    
+    if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
+      axis_format = 'percent'
+    } else {
+      // axis_format = 'short'
+      // axis_format = 'long'
+      axis_format = 'decimal'
     }
 
-    chart.draw(chart_data, options);
+    if ( chart_type == 'bar_chart'){
+      options = {
+        bar: { groupWidth: '80%'}, 
+        chartArea:{height: '85%', width: '65%'},
+        hAxis: {title:'', format: axis_format},
+        isStacked: is_stacked      
+      };
 
-  } else if (chart_type == 'line_chart'){
+      chart = new google.visualization.BarChart(document.getElementById('chart_div'));
 
-    options = {      
-      chartArea:{height: '75%', width: '87%'},
-      legend: { position: 'top', maxLines:2},      
-      vAxis: { format: axis_format}
-      // curveType: 'function',
+      chart_data = new google.visualization.DataView(chart_data);
+      
+      if($('#value_labels').is(':checked')){
+        chart_data.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           ]);
+      }
+
+      chart.draw(chart_data, options);
+
+    } else if (chart_type == 'line_chart'){
+
+      options = {      
+        chartArea:{height: '75%', width: '87%'},
+        legend: { position: 'top', maxLines:2},      
+        vAxis: { format: axis_format}
+        // curveType: 'function',
+      };
+      chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(chart_data, options);
+    
+    } else if(chart_type == 'column_chart') {
+      options = {
+        chartArea:{height: '75%', width: '87%'},
+        legend: { position: 'top', maxLines:2},
+        vAxis: { format: axis_format},
+        isStacked: is_stacked
+      };
+      var view = new google.visualization.DataView(chart_data);
+      // view.setColumns()
+      chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(chart_data, options);
+   
+    } else if (chart_type == 'pie_chart'){
+
+      options = {
+        chartArea:{height: '85%', width: '85%'},
+        // legend: { position: 'top', maxLines:2},
+        pieHole: is_donut,
+        legend: { position: 'right'},
+        is3D: is_3D
+        // title: ''
+      };
+
+      chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+      chart.draw(chart_data, options);
+
     };
-    chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(chart_data, options);
-  
-  } else if(chart_type == 'column_chart') {
-    options = {
-      chartArea:{height: '75%', width: '87%'},
-      legend: { position: 'top', maxLines:2},
-      vAxis: { format: axis_format},
-      isStacked: is_stacked
-    };
-    var view = new google.visualization.DataView(chart_data);
-    // view.setColumns()
-    chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-    chart.draw(chart_data, options);
- 
-  } else if (chart_type == 'pie_chart'){
-
-    options = {
-      chartArea:{height: '85%', width: '85%'},
-      // legend: { position: 'top', maxLines:2},
-      pieHole: is_donut,
-      legend: { position: 'right'},
-      is3D: is_3D
-      // title: ''
-    };
-
-    chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(chart_data, options);
-
-  };
+  }
+  catch(err) {
+  var mensaje = '222No es posible generar una gráfica con las características seleccionadas. <br><br> Por favor, modifica tu seleccón e inténtalo nuevamente'
+  MostrarMensajeError(mensaje)
+  }
 };
 
 
@@ -841,7 +846,6 @@ function divide_matrix(matrix, denominador){
 };
 
 
-
 function SumChartRow(chart_row){
   var row_total = 0
   for (var i = chart_row.length - 1; i > 0; i--) {
@@ -862,3 +866,27 @@ function SortChartArray(chart_array){
 
   return sorted_array.concat(old_array)
 }
+
+
+function MostrarMensajeError(mensaje){
+  $('#chart_loader').addClass('hidden');
+  $('#chart_lead').addClass('hidden');
+  $('#unidades_denominador').addClass('hidden');
+  $('#chart_units').addClass('hidden');
+  $('#chart_div').addClass('hidden');
+  
+  $('#MensajeError').removeClass('hidden');
+  $('#TextoMensajeError').text(mensaje)
+
+  clearTimeout(t);
+  seconds = 0; minutes = 0; hours = 0;  
+};
+
+
+$( document ).ajaxError(function(){
+  var mensaje = 'Hubo un problema al intentar obtener los datos para generar la gráfica según los campos seleccionados. <br><br> Por favor, modifica tu seleccón e inténtalo nuevamente'
+  MostrarMensajeError(mensaje)
+});
+
+
+
