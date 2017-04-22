@@ -1,6 +1,7 @@
 var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_instituciones = 7, denominador_actual = 1,   
     start_time,
     t,
+    chart_url,
     chart_array,
     chart_type;
 
@@ -22,6 +23,7 @@ function add() {
 function timer() {
     t = setTimeout(add, 1000);
 }
+
 
 
 $('.ExpandColapseSection').on('click', function(){
@@ -151,6 +153,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     $('#chart_units').removeClass('hidden');
     $('#chart_div').removeClass('hidden');
     $('#boton_transponer').removeClass('hidden');
+    $('#download_row').removeClass('hidden');
     
     $('#chart_lead').text(raw_data['title']);
     $('#unidades_denominador').text($('#denominador').find(':selected').attr('unidades_denominador'));
@@ -250,7 +253,11 @@ function draw_chart(chart_array, chart_type){
                              role: "annotation" },
                            ]);
       }
-
+      // var chart_div = document.getElementById('chart_div');
+      // google.visualization.events.addListener(chart, 'ready', function () {
+      //   chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+      //   console.log(chart_div.innerHTML);
+      // });
       chart.draw(chart_data, options);
 
     } else if (chart_type == 'line_chart'){
@@ -291,9 +298,11 @@ function draw_chart(chart_array, chart_type){
       chart.draw(chart_data, options);
 
     };
+    chart_url = chart.getImageURI()
+
   }
   catch(err) {
-  var mensaje = '222No es posible generar una gráfica con las características seleccionadas. <br><br> Por favor, modifica tu seleccón e inténtalo nuevamente'
+  var mensaje = 'No es posible generar una gráfica con las características seleccionadas. <br><br> Por favor, modifica tu seleccón e inténtalo nuevamente'
   MostrarMensajeError(mensaje)
   }
 };
@@ -888,5 +897,14 @@ $( document ).ajaxError(function(){
   MostrarMensajeError(mensaje)
 });
 
+
+$('#download_button').on('click', function(){
+  var link = document.createElement('a');
+    link.href = chart_url;
+    // link.href = 'images/Portada.png';  // use realtive url 
+    link.download = 'Chart.png';
+    document.body.appendChild(link);
+    link.click(); 
+});
 
 

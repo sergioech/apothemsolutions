@@ -202,6 +202,21 @@
 					</div>
 				</div>
 			</div>
+
+
+			<div class="row hidden" id="download_row">
+				<div class="col-xs-12">
+					<label>Descargar</label>
+				</div>
+				
+				<div class="col-xs-6">
+					<button type="button" class="btn btn-success btn-md" id="download_button" style="width: 100px;"> Imagen <span style="margin-left:2px;" class="glyphicon glyphicon-picture"></span></button>
+				</div>
+				
+				<div class="col-xs-6">
+					<button type="button" class="btn btn-success btn-md" id="download_datos" style="width: 100px;"> Datos <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button>
+				</div>				
+			</div>
 		</form>
 		<br>
 		<br>
@@ -219,7 +234,7 @@
 			</div>
 			<div class="loader hidden" style="margin-left: 300px; margin-top: 200px;" id="chart_loader"></div>
 			<div class="row" style=""><div class="col-xs-12"><div id="chart_div" class="hidden" style="margin-left: 10px; height:490px;"></div></div></div>
-			<div class="row hidden" id="MensajeError" ><div class="col-xs-12"> <span style="font-size: 100px; padding-left: 42%; padding-top: 10%; color:#337ab7;" class="glyphicon glyphicon-warning-sign"></span><h3 style="text-align: center; color:#337ab7">Hubo un problema al intentar obtener los datos para generar la gráfica según los campos seleccionados. <br><br> Favor de modificar su selección e intentarlo nuevamente</h3></div></div>				
+			<div class="row hidden" id="MensajeError" ><div class="col-xs-12"> <span style="font-size: 100px; padding-left: 42%; padding-top: 10%; color:#337ab7;" class="glyphicon glyphicon-warning-sign"></span><h3 style="text-align: center; color:#337ab7" id="TextoMensajeError">Hubo un problema al intentar obtener los datos para generar la gráfica según los campos seleccionados. <br><br> Favor de modificar su selección e intentarlo nuevamente</h3></div></div>				
 		</div>		
 	</div>
 </div>	
