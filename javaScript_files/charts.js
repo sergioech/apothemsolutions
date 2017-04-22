@@ -2,8 +2,11 @@ var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_institucion
     start_time,
     t,
     chart_url,
+    csvContent,
     chart_array,
     chart_type;
+
+
 
 function add() {
     seconds++;
@@ -182,7 +185,7 @@ $(document).on('click', '.UpdateChartButton', function(){
     console.log('Total de data points en query: ' + raw_data['total_dps'])
     console.log('Total de tiempo requerido para generar chart: '+m.getMinutes()+":"+m.getSeconds())
     console.log('    ')
-
+    
   })
 });
 
@@ -253,11 +256,7 @@ function draw_chart(chart_array, chart_type){
                              role: "annotation" },
                            ]);
       }
-      // var chart_div = document.getElementById('chart_div');
-      // google.visualization.events.addListener(chart, 'ready', function () {
-      //   chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
-      //   console.log(chart_div.innerHTML);
-      // });
+
       chart.draw(chart_data, options);
 
     } else if (chart_type == 'line_chart'){
@@ -299,7 +298,11 @@ function draw_chart(chart_array, chart_type){
 
     };
     chart_url = chart.getImageURI()
-
+    csvContent = "data:text/csv;charset=utf-8,";
+    chart_array.forEach(function(infoArray, index){
+       dataString = infoArray.join(",");
+       csvContent += index < chart_array.length ? dataString+ "\n" : dataString;
+    }); 
   }
   catch(err) {
   var mensaje = 'No es posible generar una gráfica con las características seleccionadas. <br><br> Por favor, modifica tu seleccón e inténtalo nuevamente'
@@ -350,9 +353,9 @@ function transpose_matrix(matrix){
 
 function invertir_renglones(matrix){
 
-  console.log(' ')
-  console.log('Orden antes de invertir: ' + $('#orden_matriz').val())
-  console.log('Invirtiendo renglones...')
+  // console.log(' ')
+  // console.log('Orden antes de invertir: ' + $('#orden_matriz').val())
+  // console.log('Invirtiendo renglones...')
 
   var newArray = [matrix[0]],
     arrayLength = matrix.length,
@@ -368,8 +371,8 @@ function invertir_renglones(matrix){
     $('#orden_matriz').val('original')
   }
 
-  console.log('Orden despues de invertir: ' + $('#orden_matriz').val())
-  console.log(' ')
+  // console.log('Orden despues de invertir: ' + $('#orden_matriz').val())
+  // console.log(' ')
 
   return newArray  
 
@@ -901,10 +904,18 @@ $( document ).ajaxError(function(){
 $('#download_button').on('click', function(){
   var link = document.createElement('a');
     link.href = chart_url;
-    // link.href = 'images/Portada.png';  // use realtive url 
-    link.download = 'Chart.png';
+    link.download = 'Gráfica_CNBV.png';
     document.body.appendChild(link);
     link.click(); 
 });
 
+
+$('#download_datos').on('click', function(){
+  var encodedUri = encodeURI(csvContent);
+  var link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "Datos_CNBV.csv");
+  document.body.appendChild(link); // Required for FF
+  link.click();
+});
 
