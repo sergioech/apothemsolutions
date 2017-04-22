@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
 #
 # Copyright 2007 Google Inc.
@@ -14,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# -*- coding: utf-8 -*-
+
 import webapp2, jinja2, os, csv, re, random, string, hashlib, json, logging, math 
 
 from datetime import datetime, timedelta, time
@@ -33,10 +34,10 @@ from google.appengine.runtime import DeadlineExceededError
 from python_files import datastore, constants, diccionarios_CNBV
 constants = constants.constants
 
+Usuario = datastore.Usuario
 DatoCNBV = datastore.DatoCNBV
 CsvCNBV = datastore.CsvCNBV
 TablaCNBV = datastore.TablaCNBV
-
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -52,6 +53,26 @@ class Handler(webapp2.RequestHandler):
 
 	def print_html(self, template, **kw):
 		self.write(self.render_html(template, **kw))
+
+	def set_secure_cookie(self, cookie_name, cookie_value):
+		cookie_secure_value = make_secure_val(cookie_value)
+		self.response.headers.add_header('Set-Cookie', '%s=%s; Path=/' % (cookie_name, cookie_secure_value))
+
+	def read_secure_cookie(self, cookie_name):
+		cookie_secure_val = self.request.cookies.get(cookie_name)
+		return cookie_secure_val and check_secure_val(cookie_secure_val)
+
+	def login(self, theory):
+		self.set_secure_cookie('usuario_id', str(usuario.key.id()))
+
+	def logout(self):
+		self.response.headers.add_header('Set-Cookie', 'usuario_id=; Path=/')
+
+	def initialize(self, *a, **kw):
+		webapp2.RequestHandler.initialize(self, *a, **kw)
+		usuario_id = self.read_secure_cookie('usuario_id')
+		self.usuario = usuario_id and Usuario.get_by_usuario_id(int(usuario_id)) #if the user exist, 'self.usuario' will store the actual usuario object		
+
 
 
 class Home(Handler):
@@ -469,6 +490,140 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		self.redirect('/LoadCSV?tabla_id=' + tabla_id + '&csv_id=' + str(csv_file.key.id()))
 
 
+# xx
+class LandingPage(Handler):
+	def get(self):
+		self.print_html('LandingPage.html')
+
+
+
+class CrearUsuario(Handler):
+	def get(self):
+		self.print_html('CrearUsuario.html')
+
+	def post(self):
+		post_details = json.loads(self.request.body)
+		user_action = post_details['user_action']
+		next_step = 'No next step defined'
+
+		print
+		print 'Asi se ve el AJAX Request'
+		print post_details
+		
+		if user_action == 'SignUp':
+			input_error = user_input_error(post_details)
+			usuario = Usuario.get_by_email(post_details['email'])	
+			
+			if input_error:
+				next_step = 'TryAgain'
+											
+			elif usuario:
+				next_step = 'TryAgain'
+				input_error = 'Este correo ya está registrado a otro usuario!'.decode('utf-8')
+				
+			else:
+				next_step = 'UserCreated'
+				password_hash = make_password_hash(post_details['email'], post_details['password'])
+				
+				usuario = Usuario(
+					email=post_details['email'], 
+					password_hash=password_hash, 
+					first_name=post_details['first_name'], 
+					last_name=post_details['last_name'])
+
+				usuario.put()
+				
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				'input_error':input_error
+				}))
+			return
+
+		if user_action == 'LogIn':
+			next_step = 'No next step defined'			
+			email = post_details['email']
+			password = post_details['password']
+			usuario = Usuario.valid_login(email, password)
+			if usuario:
+				self.login(usuario)
+				next_step = 'SuccesfulLogIn'
+			else:
+				next_step = 'TryAgain'
+			
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
+
+
+
+#--- Validation and security functions ----------
+secret = 'echeverriaesputo'
+
+def make_secure_val(val):
+    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
+
+def check_secure_val(secure_val):
+	val = secure_val.split('|')[0]
+	if secure_val == make_secure_val(val):
+		return val
+
+def make_salt(lenght = 5):
+    return ''.join(random.choice(string.letters) for x in range(lenght))
+
+def make_password_hash(email, password, salt = None):
+	if not salt:
+		salt = make_salt()
+	h = hashlib.sha256(email + password + salt).hexdigest()
+	return '%s|%s' % (h, salt)
+
+def validate_password(email, password, h):
+	salt = h.split('|')[1]
+	return h == make_password_hash(email, password, salt)
+
+def user_input_error(post_details):
+	for (attribute, value) in post_details.items():
+		user_error = input_error(attribute, value)
+		if user_error:
+			return user_error
+
+	if 'confirm_email' in post_details:
+		if post_details['email'] != post_details['confirm_email']:
+			return "Emails don't match"
+
+	return None
+
+def input_error(target_attribute, user_input):
+	
+	validation_attributes = ['first_name',
+							 'last_name', 
+							 'password',
+							 'email']
+
+	d_RE = {'first_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+			'first_name_error': 'Nombre invalido. El nombre del usuario debe contener al menos 3 caracteres y no puede contener caracteres especiales.',
+			
+			'last_name': re.compile(r"^[a-zA-Z0-9_-]{3,20}$"),
+			'last_name_error': 'Apellido invalido. El apellido del usuario debe contener al menos 3 caracteres y no puede contener caracteres especiales.',
+
+			'password': re.compile(r"^.{8,20}$"),
+			'password_error': 'Contraseña invalida. La contraseña del usuario debe de contener al menos 8 caracteres.'.decode('utf-8'),
+			
+			'email': re.compile(r'^[\S]+@[\S]+\.[\S]+$'),
+			'email_error': 'Syntaxis de correo inválida.'.decode('utf-8')
+			}
+
+
+	if target_attribute not in validation_attributes:
+		return None
+	
+	error_key = target_attribute + '_error' 
+		
+	if d_RE[target_attribute].match(user_input):
+		return None
+
+	else:
+		return d_RE[error_key]
 
 
 
@@ -574,7 +729,13 @@ def adjust_post_details(post_details):
 
 
 app = webapp2.WSGIApplication([
-    ('/', ChartViewer),
+
+
+    ('/', LandingPage),
+    
+    ('/CrearUsuario', CrearUsuario),
+
+    ('/VisualizadorCNBV', ChartViewer),
     ('/CNBVQueries',ChartViewer),
     
     ('/NewTable', NewTable),

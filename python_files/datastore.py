@@ -2,6 +2,40 @@ from google.appengine.ext import ndb
 
 #--- datastore classes ----------
 
+
+class Usuario(ndb.Model):
+
+	#login details
+	email = ndb.StringProperty(required=True)
+	password_hash = ndb.StringProperty(required=True)
+
+	#user details	
+	first_name = ndb.StringProperty(required=True)
+	last_name = ndb.StringProperty(required=True)
+	
+	#tracker fields
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	last_modified = ndb.DateTimeProperty(auto_now=True)
+	created_by = ndb.KeyProperty()
+
+
+	@classmethod # This means you can call a method directly on the Class (no on a Class Instance)
+	def get_by_usuario_id(cls, usuario_id):
+		return Usuario.get_by_id(usuario_id)
+
+	@classmethod
+	def get_by_email(cls, email):
+		return Usuario.query(Usuario.email == email).get()
+
+	@classmethod
+	def valid_login(cls, email, password):
+		usuario = cls.get_by_email(email)
+		if usuario and validate_password(email, password, usuario.password_hash):
+			return usuario
+
+
+
+
 class TablaCNBV(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	nombre = ndb.StringProperty(required=True)
