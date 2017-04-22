@@ -69,4 +69,11 @@
     100% { transform: rotate(360deg); }
 }
 
+.SignUp_Error{
+    color: red;
+    font-size: 16px;
+}
+
+
+
 

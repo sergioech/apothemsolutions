@@ -12,6 +12,7 @@ class Usuario(ndb.Model):
 	#user details	
 	first_name = ndb.StringProperty(required=True)
 	last_name = ndb.StringProperty(required=True)
+	administrador = ndb.BooleanProperty(default=False)
 	
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	
@@ -84,6 +85,33 @@ class DatoCNBV(ndb.Model):
 
 	saldo_acum = ndb.FloatProperty()
 	porc_acum = ndb.FloatProperty()
+
+
+
+#--- Validation and security functions ----------
+import hashlib, random
+secret = 'echeverriaesputo'
+
+def make_secure_val(val):
+    return '%s|%s' % (val, hashlib.sha256(secret + val).hexdigest())
+
+def check_secure_val(secure_val):
+	val = secure_val.split('|')[0]
+	if secure_val == make_secure_val(val):
+		return val
+
+def make_salt(lenght = 5):
+    return ''.join(random.choice(string.letters) for x in range(lenght))
+
+def make_password_hash(email, password, salt = None):
+	if not salt:
+		salt = make_salt()
+	h = hashlib.sha256(email + password + salt).hexdigest()
+	return '%s|%s' % (h, salt)
+
+def validate_password(email, password, h):
+	salt = h.split('|')[1]
+	return h == make_password_hash(email, password, salt)
 
 
 	

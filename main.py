@@ -49,7 +49,11 @@ class Handler(webapp2.RequestHandler):
 	
 	def render_html(self, template, **kw):
 		t = jinja_env.get_template(template)
-		return t.render(**kw)
+		usuario = self.usuario 
+		if usuario:				
+			return t.render(usuario=usuario, **kw)
+		else:
+			return t.render(**kw)
 
 	def print_html(self, template, **kw):
 		self.write(self.render_html(template, **kw))
@@ -62,7 +66,7 @@ class Handler(webapp2.RequestHandler):
 		cookie_secure_val = self.request.cookies.get(cookie_name)
 		return cookie_secure_val and check_secure_val(cookie_secure_val)
 
-	def login(self, theory):
+	def login(self, usuario):
 		self.set_secure_cookie('usuario_id', str(usuario.key.id()))
 
 	def logout(self):
@@ -529,8 +533,8 @@ class CrearUsuario(Handler):
 					email=post_details['email'], 
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
-					last_name=post_details['last_name'])
-
+					last_name=post_details['last_name'],
+					administrador=post_details['is_administrator'])
 				usuario.put()
 				
 			self.response.out.write(json.dumps({
@@ -555,7 +559,25 @@ class CrearUsuario(Handler):
 				}))
 			return
 
+class FirstUser(Handler):
+	def get(self):
+		secreto = self.request.get('secreto')
+		if secreto == secret:			
+			usuario = Usuario(
+				email='email', 
+				password_hash= make_password_hash('email', secreto), 
+				first_name='Chingon', 
+				last_name='First user',
+				administrador=True)
+			usuario.put()
+			self.login(usuario)
+		self.redirect('/')
 
+
+class LogOut(Handler):
+	def get(self):
+		self.logout()
+		self.redirect('/')
 
 #--- Validation and security functions ----------
 secret = 'echeverriaesputo'
@@ -589,7 +611,7 @@ def user_input_error(post_details):
 
 	if 'confirm_email' in post_details:
 		if post_details['email'] != post_details['confirm_email']:
-			return "Emails don't match"
+			return "Los correos no son iguales."
 
 	return None
 
@@ -727,16 +749,15 @@ def adjust_post_details(post_details):
 
 
 
-
 app = webapp2.WSGIApplication([
-
-
     ('/', LandingPage),
     
+    ('/FirstUser', FirstUser),
     ('/CrearUsuario', CrearUsuario),
 
     ('/VisualizadorCNBV', ChartViewer),
     ('/CNBVQueries',ChartViewer),
+    ('/LogOut', LogOut),
     
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),

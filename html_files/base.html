@@ -18,7 +18,7 @@
 	<div class="" style="background-color:rgb(39,64,139);">
 		<div class="container">
 			
-			<div class="row" {% if usuario %}hidden{% endif %} style="min-height: 42px;">			
+			<div class="row" style="min-height: 42px;">			
 				
 				<div class="col-xs-6 col-sm-9 col-md-7 col-lg-7" style="padding-left:0px;"> 
 					<div class="NavigationTopBarBlock">
@@ -26,31 +26,36 @@
 					</div>
 				</div>
 			
-				<div class="col-xs-12 col-sm-3 col-md-5 col-lg-5 text-right">
-					<form class="form-horizontal" method="post">
-						<div class="form-group" style="margin:10px; text-align: left;">
-							<div class="col-xs-5 col-sm-5" style="padding-left: 0px;">
-								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Correo</label>
-									<input type="email" style="height: 25px; margin-bottom:0px;" name="email" id="login_email" class="form-control">			
-									<span class="hidden" style="color:red; font-size:12px;" id="InvalidEmailOrPasswordError">Invalid email or password.</span>				
+				{% if usuario %}
+					<div class="col-xs-12 col-sm-3 col-md-5 col-lg-5 text-right">
+						<div style="margin-top: 12px; color: white; white-space: pre;"> <a href="/Settings" style="color: white;">{{usuario.first_name}}</a>   |  <a href="/LogOut" style="color: white;"> Cerrar sesión </a> </div>
+					</div>
+			
+				{% else %}
+					<div class="col-xs-12 col-sm-3 col-md-5 col-lg-5 text-right">
+						<form class="form-horizontal" method="post">
+							<div class="form-group" style="margin:10px; text-align: left;">
+								<div class="col-xs-5 col-sm-5" style="padding-left: 0px;">
+									<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Correo</label>
+										<input type="email" style="height: 25px; margin-bottom:0px;" name="email" id="login_email" class="form-control">			
+										<span class="hidden" style="color:red; font-size:12px;" id="InvalidEmailOrPasswordError">Correo o contraseña invalidos.</span>				
+								</div>
+
+								<div class="col-xs-5 col-sm-5" style="padding-left: 0px;">
+									<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Contraseña</label>
+										<input type="password" style="height: 25px; margin-bottom:0px;" name="password" id="login_password" class="form-control">
+										<div style="text-align:center;">
+											<a href="/Accounts?user_request=password_reset" style="font-size:12px;color:#E6E6FA;">¿Olvidaste tu contraseña?</a>
+										</div>
+								</div>
+
+								<div class="col-xs-2" style="padding-left: 0px;">
+									<button type="button" class="btn btn-xs btn-success" style="margin-top: 20px" name="action_description" value="LogIn" id="LogInButton"> Iniciar sesión</button>
+								</div>
 							</div>
-
-							<div class="col-xs-5 col-sm-5" style="padding-left: 0px;">
-								<label style="color:white; font-weight:500; font-size:12px; margin-bottom: 0px">Contraseña</label>
-   								<input type="password" style="height: 25px; margin-bottom:0px;" name="password" id="login_password" class="form-control">
-   								<div style="text-align:center;">
-   									<a href="/Accounts?user_request=password_reset" style="font-size:12px;color:#E6E6FA;">¿Olvidaste tu contraseña?</a>
-   								</div>
-							</div>
-
-							<div class="col-xs-2" style="padding-left: 0px;">
-								<button type="button" class="btn btn-xs btn-success" style="margin-top: 20px" name="action_description" value="LogIn" id="LogInButton"> Iniciar sesión</button>
-							</div>
-
-						</div>
-					</form>
-
-				</div>					
+						</form>
+					</div>			
+				{% endif %}				
 			</div>
 
 		</div>		
