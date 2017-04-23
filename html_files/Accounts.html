@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>	
+<div class="row"> 	
+
+{% if user_request == 'password_reset' %}
+	<div class="col-xs-12"> 
+		<div class="row" id="request_reset_email">
+			<div class="col-xs-12" style="padding-left:45%;padding-right:45%;"><span style="font-size:60px;" class="glyphicon glyphicon-lock SectionTitle"></span></div>
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10" style="text-align:center;">
+				<div class="SignUp_SummaryTitle" style="padding: 42px 0 24px">Por favor ingrese su dirección de correo asociada a su cuenta de Apothem Solutions</div> 
+			</div>
+			<div class="form-group">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">
+					<input type="email" class="form-control SignUp_Input" id="user_email" placeholder="Email">
+					<div class="hidden" style="color:red" id="InvalidEmailError">No existe una cuenta asociada a esta dirección de correo, por favor verifique e inténtelo nuevamente.</div>
+					<button type="button" class="btn btn-sm btn-success" id="RequestPasswordReset" name="action_description" value="SignUp" style="margin-top:8px;">  Solicitar recuperación de contraseña </button>	
+				</div>
+			</div>						
+		</div>
+		<div class="row hidden" id="reset_email_sent">
+			<div class="col-xs-12" style="padding-left:45%;padding-right:45%;"><span style="font-size:60px;" class="glyphicon glyphicon-envelope SectionTitle"></span></div>
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10" style="text-align:center;">
+				<div class="SignUp_SummaryTitle" style="padding: 42px 0 24px"><b> Acabamos de enviarle un correo.</b><br> Por favor, revise su bandeja de entrada y siga las instrucciones para re-establecer su contraseña.</div> 
+			</div>						
+		</div>		
+	</div>
+{% elif user_request == 'set_new_password' %}
+	<div class="col-xs-12"> 
+		<div class="row" id="enter_new_password">
+			<div class="col-xs-12" style="padding-left:45%;padding-right:45%;"><span style="font-size:60px;" class="glyphicon glyphicon-lock SectionTitle"></span></div>
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10" style="text-align:center;">
+				<div class="SignUp_SummaryTitle" style="padding: 42px 0 24px">Por favor ingrese una nueva contraseña para su cuenta de Apothem Solutions</div> 
+			</div>
+			<div class="form-group">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">
+					<input type="text" class="hidden" id="usuario_id" value="{{usuario_id}}">
+					<input type="text" class="hidden" id="password_hash" value="{{password_hash}}" >
+					<input type="text" class="form-control SignUp_Input" id="NewPassword" placeholder="Password" required>
+					<div class="hidden" style="color:red" id="InvalidPasswordError">La contraseña ingresada o el código en la liga son incorrectos, por favor verifique y vuelva a intentarlo</div>
+					<button type="button" class="btn btn-sm btn-success" id="PasswordResetButton" name="action_description" value="PasswordReset" style="margin-top:8px;margin-bottom:20px;"> Actualizar mi contraseña </button>	
+				</div>
+			</div>						
+		</div>
+		<div class="row hidden" id="password_reseted">
+			<div class="col-xs-12" style="padding-left:45%;padding-right:45%;"><span style="font-size:60px;" class="glyphicon glyphicon-ok SectionTitle"></span></div>
+			<div class="col-xs-1"></div>
+			<div class="col-xs-10" style="text-align:center;">
+				<div class="SignUp_SummaryTitle" style="padding: 42px 0 24px"><b> Ha acutalizado de forma exitosa su contraseña.</b>
+				<form action="/">
+					<button type="submit" class="btn btn-sm btn-success" name="time_frame" value="Today" style="margin-top:8px;margin-bottom:20px;"> Ir a la página de inicio </button>	
+				</form>					
+			</div>						
+		</div>	
+	</div>	
+
+{% endif %}
+
+
+</div>	
+
+{% endblock %}

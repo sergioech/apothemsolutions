@@ -44,13 +44,16 @@ $('#SignUpButton').on('click', function(){
 	})		
 });
 
+
 $('#LogInButton').on('click', function(){
+	console.log('Si se dio cuenta de que quiero hacer login')
+
 	var email = $('#login_email').val();
 	var password = $('#login_password').val();
 
 	$.ajax({
 		type: "POST",
-		url: "/CrearUsuario",
+		url: "/LogIn",
 		dataType: 'json',
 		data: JSON.stringify({
 			'user_action': 'LogIn',
@@ -72,3 +75,64 @@ $('#LogInButton').on('click', function(){
 		};
 	})		
 });
+
+
+$('#RequestPasswordReset').on('click', function(){
+	var user_email = $('#user_email').val()
+	$.ajax({
+		type: "POST",
+		url: "/Accounts",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'RequestPasswordReset',
+			'user_email': user_email,			
+		})
+	})
+	.done(function(data){
+		var next_step = data['next_step'];
+		console.log(next_step);
+
+		if (next_step == 'EnterValidEmail'){
+			$('#InvalidEmailError').removeClass('hidden');
+		};
+
+		if (next_step == 'CheckYourEmail'){
+			$('#request_reset_email').toggleClass('hidden');
+			$('#reset_email_sent').toggleClass('hidden');
+		};
+	})		
+});
+
+
+$('#PasswordResetButton').on('click', function(){
+	var usuario_id = $('#usuario_id').val()
+	var password_hash = $('#password_hash').val()
+	var new_password = $('#NewPassword').val()
+	$.ajax({
+		type: "POST",
+		url: "/Accounts",
+		dataType: 'json',
+		data: JSON.stringify({
+			'user_action': 'SetNewPassword',
+			'new_password': new_password,
+			'usuario_id':usuario_id,
+			'password_hash':password_hash		
+		})
+	})
+	.done(function(data){
+		var next_step = data['next_step'];
+		console.log(next_step);
+
+		if (next_step == 'EnterValidPassword'){
+			$('#InvalidPasswordError').removeClass('hidden');
+		};
+
+		if (next_step == 'GoToLandingPage'){
+			$('#enter_new_password').toggleClass('hidden');
+			$('#password_reseted').toggleClass('hidden');
+			
+		};
+	})		
+});
+
+

@@ -54,6 +54,13 @@
     font-size: 18px;
 }
 
+.SignUp_SummaryTitle{
+    display: block;
+    color: #222;
+    font-size: 25px;
+    font-weight: 500;    
+}
+
 
 .loader {
     border: 16px solid #f3f3f3; /* Light grey */

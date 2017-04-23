@@ -43,6 +43,28 @@ template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 
+
+#--- Decorator functions
+def super_user_bouncer(funcion):
+	def user_bouncer(self):
+		usuario = self.usuario
+		if usuario:
+			return funcion(self)
+		else:
+			self.redirect('/')
+	return user_bouncer
+
+def super_civilian_bouncer(funcion):
+	def civilian_bouncer(self):
+		usuario = self.usuario
+		if usuario and usuario.is_admin:
+			return funcion(self)
+		else:
+			self.redirect('/')
+	return civilian_bouncer
+
+
+
 class Handler(webapp2.RequestHandler):
 	def write(self, *a, **kw):
 		self.response.out.write(*a, **kw)
@@ -86,6 +108,8 @@ class Home(Handler):
 
 
 class ChartViewer(Handler):
+
+	@super_user_bouncer
 	def get(self):
 		opciones_validas = diccionarios_CNBV.opciones_iniciales
 		variables = opciones_validas['variables']
@@ -93,6 +117,7 @@ class ChartViewer(Handler):
 		opciones = diccionarios_CNBV.opciones
 		self.print_html('ChartViewer.html', variables=variables, cortes=cortes, opciones=opciones)
 
+	@super_user_bouncer
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
@@ -386,9 +411,11 @@ class ChartViewer(Handler):
 
 
 class NewTable(Handler):
+	@super_civilian_bouncer
 	def get(self):
 		self.print_html('NewTable.html')
 
+	@super_civilian_bouncer
 	def post(self):
 		post_details = get_post_details(self)
 
@@ -403,6 +430,7 @@ class NewTable(Handler):
 
 class PopulateDemoVersion(Handler):
 
+	@super_civilian_bouncer
 	def get(self):
 
 		tablas = diccionarios_CNBV.tablas_CNBV 
@@ -436,6 +464,7 @@ class PopulateDemoVersion(Handler):
 
 class CreateAllTables(Handler):
 
+	@super_civilian_bouncer
 	def get(self):
 
 		tablas = diccionarios_CNBV.tablas_CNBV 
@@ -457,6 +486,7 @@ class CreateAllTables(Handler):
 
 
 class TableViewer(Handler):
+	@super_civilian_bouncer
 	def get(self):
 		tablas_cnbv = TablaCNBV.query().order(TablaCNBV.nombre).fetch()
 		upload_url = blobstore.create_upload_url('/upload_csv')
@@ -466,6 +496,7 @@ class TableViewer(Handler):
 
 
 class LoadCSV(Handler):
+	@super_civilian_bouncer
 	def get(self):
 		tabla_id = self.request.get('tabla_id')
 		csv_id = self.request.get('csv_id')
@@ -479,6 +510,7 @@ class LoadCSV(Handler):
 
 
 class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+	@super_civilian_bouncer
 	def post(self):
 		upload = self.get_uploads()[0]
 		tabla_id = self.request.get('id_tabla')
@@ -494,17 +526,45 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		self.redirect('/LoadCSV?tabla_id=' + tabla_id + '&csv_id=' + str(csv_file.key.id()))
 
 
-# xx
+
 class LandingPage(Handler):
 	def get(self):
 		self.print_html('LandingPage.html')
 
 
+class LogIn(Handler):
+	def post(self):
+		post_details = json.loads(self.request.body)
+		user_action = post_details['user_action']
+		next_step = 'No next step defined'
+
+		print
+		print 'Asi se ve el AJAX Request'
+		print post_details
+		
+		if user_action == 'LogIn':
+			next_step = 'No next step defined'			
+			email = post_details['email']
+			password = post_details['password']
+			usuario = Usuario.valid_login(email, password)
+			if usuario:
+				self.login(usuario)
+				next_step = 'SuccesfulLogIn'
+			else:
+				next_step = 'TryAgain'
+			
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
+
 
 class CrearUsuario(Handler):
+	@super_civilian_bouncer
 	def get(self):
 		self.print_html('CrearUsuario.html')
 
+	@super_civilian_bouncer
 	def post(self):
 		post_details = json.loads(self.request.body)
 		user_action = post_details['user_action']
@@ -534,7 +594,7 @@ class CrearUsuario(Handler):
 					password_hash=password_hash, 
 					first_name=post_details['first_name'], 
 					last_name=post_details['last_name'],
-					administrador=post_details['is_administrator'])
+					is_admin=post_details['is_administrator'])
 				usuario.put()
 				
 			self.response.out.write(json.dumps({
@@ -543,21 +603,64 @@ class CrearUsuario(Handler):
 				}))
 			return
 
-		if user_action == 'LogIn':
-			next_step = 'No next step defined'			
-			email = post_details['email']
-			password = post_details['password']
-			usuario = Usuario.valid_login(email, password)
+
+class Accounts(Handler):
+	def get(self):
+		usuario_id = self.request.get('user_id')
+		reset_code = self.request.get('reset_code')
+		user_request = self.request.get('user_request')
+		self.print_html('Accounts.html', user_request=user_request, usuario_id=usuario_id, password_hash=reset_code)
+
+
+	def post(self):
+		event_details = json.loads(self.request.body)
+		user_action = event_details['user_action']
+		next_step = 'No next step defined'
+
+		if user_action == 'RequestPasswordReset':
+			usuario = Usuario.get_by_email(event_details['user_email'])	
 			if usuario:
-				self.login(usuario)
-				next_step = 'SuccesfulLogIn'
+				next_step = 'CheckYourEmail'
+
+				email_receiver = str(usuario.email)
+				email_body = '<a href="apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)+'">Actualizar mi contraseña</a>'
+				mail.send_mail(sender="Apothem@apothemsolutions.appspotmail.com", to=email_receiver, subject="Solicitud para actualizar contraseña de Apothem Solutions", body=email_body, html=email_body) 
+				print
+				print email_body
+
 			else:
-				next_step = 'TryAgain'
-			
+				next_step = 'EnterValidEmail'
+
 			self.response.out.write(json.dumps({
 				'next_step':next_step,
 				}))
 			return
+
+
+		if user_action == 'SetNewPassword':
+		
+			usuario_id = event_details['usuario_id']
+			reset_code = event_details['password_hash']
+			print
+			print 'Usuario id:' + usuario_id
+			print 'Password hash: ' + reset_code
+
+			usuario = Usuario.get_by_usuario_id(int(usuario_id))
+			
+			if reset_code == usuario.password_hash:
+				usuario.password_hash = make_password_hash(usuario.email, event_details['new_password'])
+				usuario.put()
+				self.login(usuario)
+				next_step = 'GoToLandingPage'
+			
+			else:
+				next_step = 'EnterValidPassword'
+
+			self.response.out.write(json.dumps({
+				'next_step':next_step,
+				}))
+			return
+
 
 class FirstUser(Handler):
 	def get(self):
@@ -568,7 +671,7 @@ class FirstUser(Handler):
 				password_hash= make_password_hash('email', secreto), 
 				first_name='Chingon', 
 				last_name='First user',
-				administrador=True)
+				is_admin=True)
 			usuario.put()
 			self.login(usuario)
 		self.redirect('/')
@@ -578,6 +681,9 @@ class LogOut(Handler):
 	def get(self):
 		self.logout()
 		self.redirect('/')
+
+
+
 
 #--- Validation and security functions ----------
 secret = 'echeverriaesputo'
@@ -757,7 +863,9 @@ app = webapp2.WSGIApplication([
 
     ('/VisualizadorCNBV', ChartViewer),
     ('/CNBVQueries',ChartViewer),
+    ('/LogIn', LogIn),
     ('/LogOut', LogOut),
+    ('/Accounts', Accounts),
     
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),

@@ -12,7 +12,7 @@ class Usuario(ndb.Model):
 	#user details	
 	first_name = ndb.StringProperty(required=True)
 	last_name = ndb.StringProperty(required=True)
-	administrador = ndb.BooleanProperty(default=False)
+	is_admin = ndb.BooleanProperty(default=False)
 	
 	#tracker fields
 	created = ndb.DateTimeProperty(auto_now_add=True)	
