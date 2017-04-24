@@ -2,6 +2,7 @@ var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_institucion
     start_time,
     t,
     chart_url,
+    chart_units,
     csvContent,
     chart_array,
     chart_type;
@@ -156,11 +157,9 @@ $(document).on('click', '.UpdateChartButton', function(){
     $('#chart_units').removeClass('hidden');
     $('#chart_div').removeClass('hidden');
     $('#boton_transponer').removeClass('hidden');
-    $('#download_row').removeClass('hidden');
-    
+    $('#download_row').removeClass('hidden');    
     $('#chart_lead').text(raw_data['title']);
-    $('#unidades_denominador').text($('#denominador').find(':selected').attr('unidades_denominador'));
-    $('#chart_units').text(raw_data['chart_units']);
+    chart_units = raw_data['chart_units'];
     
     chart_array = raw_data['chart_array'];
 
@@ -192,7 +191,11 @@ $(document).on('click', '.UpdateChartButton', function(){
 
 // function draw_chart(chart_data, chart_type, chart_options, chart_details){
 function draw_chart(chart_array, chart_type){
-  try{
+  // try{
+
+    var unidades_denominador_locales = $('#denominador').find(':selected').attr('unidades_denominador');
+    var chart_units_locales = chart_units
+
     var is_transposed = $('#is_transposed').is(':checked');
     if (is_transposed){
       chart_array = transpose_matrix(chart_array)
@@ -200,19 +203,37 @@ function draw_chart(chart_array, chart_type){
 
     var is_sorted = $('#is_sorted').is(':checked');
     if (is_sorted){
-      console.log('Chart array antes de ordenar:')
-      console.log(chart_array)
+      // console.log('Chart array antes de ordenar:')
+      // console.log(chart_array)
       chart_array = SortChartArray(chart_array)
-      console.log()
-      console.log('Chart array despues de ordenar:')
-      console.log(chart_array)
+      // console.log()
+      // console.log('Chart array despues de ordenar:')
+      // console.log(chart_array)
     }
 
     if ( chart_type == 'column_chart' || chart_type == 'line_chart'){
-        console.log('Invirtiendo dentro de draw chart...')
+        // console.log('Invirtiendo dentro de draw chart...')
         chart_array = invertir_renglones(chart_array)      
       }
-    
+
+
+    if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
+      axis_format = 'percent'
+    } else {
+      // axis_format = 'short'
+      // axis_format = 'long'
+      axis_format = 'decimal'
+    }
+
+    var as_delta = $('#as_delta').is(':checked');
+    if (as_delta){
+      chart_array = ShowAsPercentChange(chart_array)
+      axis_format = 'percent'
+      unidades_denominador_locales = ''
+      chart_units_locales = 'Cambio porcentual v.s. el periodo anterior (%)'
+
+    }
+
     var chart_data = google.visualization.arrayToDataTable(chart_array),
       options,
       axis_format,
@@ -226,20 +247,17 @@ function draw_chart(chart_array, chart_type){
 
     var is_3D = $('#is_3D').is(':checked');
     
-    if ($('input:radio[name=show_value_as]:checked').val() == 'percentage'){
-      axis_format = 'percent'
-    } else {
-      // axis_format = 'short'
-      // axis_format = 'long'
-      axis_format = 'decimal'
-    }
-
     var is_stacked = $('#is_stacked').is(':checked');
     var as_percent = $('#as_percent').is(':checked');
     if(is_stacked && as_percent){
       is_stacked = 'percent'
       axis_format = 'percent'
+      unidades_denominador_locales = ''
+      chart_units_locales = 'Camo porcentaje del total (%)'
     }
+
+    $('#unidades_denominador').text(unidades_denominador_locales);
+    $('#chart_units').text(chart_units_locales);
 
     if ( chart_type == 'bar_chart'){
 
@@ -309,11 +327,11 @@ function draw_chart(chart_array, chart_type){
        dataString = infoArray.join(",");
        csvContent += index < chart_array.length ? dataString+ "\n" : dataString;
     }); 
-  }
-  catch(err) {
-  var mensaje = 'No es posible generar una gráfica con las características seleccionadas. <br><br> Por favor, modifica tu seleccón e inténtalo nuevamente'
-  MostrarMensajeError(mensaje)
-  }
+  // }
+  // catch(err) {
+  // var mensaje = 'No es posible generar una gráfica con las características seleccionadas. Por favor, modifica tu seleccón e inténtalo nuevamente'
+  // MostrarMensajeError(mensaje)
+  // }
 };
 
 
@@ -924,4 +942,43 @@ $('#download_datos').on('click', function(){
   document.body.appendChild(link); // Required for FF
   link.click();
 });
+
+
+
+function CalcRowChange(chart_row){
+  var new_row = []
+
+  for (var i = chart_row.length - 1; i > 1; i--) {
+    var valor = chart_row[i-1]/chart_row[i]-1;
+    if ($.isNumeric(valor)){
+      new_row.unshift(valor)
+    } else {
+      new_row.unshift(0)
+    }     
+  }
+  new_row.unshift(chart_row[0])   
+  return new_row
+};
+
+
+function ShowAsPercentChange(chart_array){
+  // var base_array = chart_array.slice()
+  var base_array = JSON.parse(JSON.stringify(chart_array))
+
+  // console.log('El array al entrar')
+  // console.log(chart_array)
+  base_array[0].pop()
+  // console.log('El array al salir')
+  // console.log(chart_array) 
+
+  var new_array = [base_array.shift()]
+  
+  for (var i = 0; i <= base_array.length - 1; i++) {
+    new_array.push(CalcRowChange(base_array[i])) 
+  }
+
+  return new_array
+};
+
+
 
