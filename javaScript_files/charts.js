@@ -219,8 +219,6 @@ function draw_chart(chart_array, chart_type){
       chart_subtitle, 
       chart;
 
-    var is_stacked = $('#is_stacked').is(':checked');
-
     var is_donut = 0;
     if($('#is_donut').is(':checked')){
       is_donut = 0.4
@@ -236,7 +234,15 @@ function draw_chart(chart_array, chart_type){
       axis_format = 'decimal'
     }
 
+    var is_stacked = $('#is_stacked').is(':checked');
+    var as_percent = $('#as_percent').is(':checked');
+    if(is_stacked && as_percent){
+      is_stacked = 'percent'
+      axis_format = 'percent'
+    }
+
     if ( chart_type == 'bar_chart'){
+
       options = {
         bar: { groupWidth: '80%'}, 
         chartArea:{height: '85%', width: '65%'},
