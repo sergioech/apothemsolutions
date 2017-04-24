@@ -624,7 +624,7 @@ class Accounts(Handler):
 
 				email_receiver = str(usuario.email)
 				email_body = '<a href="apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)+'">Actualizar mi contraseña</a>'
-				mail.send_mail(sender="Apothem@apothemsolutions.appspotmail.com", to=email_receiver, subject="Solicitud para actualizar contraseña de Apothem Solutions", body=email_body, html=email_body) 
+				mail.send_mail(sender="Apothem@apothem100.appspotmail.com", to=email_receiver, subject="Solicitud para actualizar contraseña de Apothem Solutions", body=email_body, html=email_body) 
 				print
 				print email_body
 
@@ -858,7 +858,7 @@ def adjust_post_details(post_details):
 app = webapp2.WSGIApplication([
     ('/', LandingPage),
     
-    ('/FirstUser', FirstUser),
+    # ('/FirstUser', FirstUser),
     ('/CrearUsuario', CrearUsuario),
 
     ('/VisualizadorCNBV', ChartViewer),

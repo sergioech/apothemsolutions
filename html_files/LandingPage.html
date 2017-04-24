@@ -2,9 +2,73 @@
 
 {% block content %}
 <div class="row">
-	<div class="col-xs-12">
+		
+	{% if usuario %}
+	<div class="col-xs-2"></div>	
+	<div class="col-xs-4">
+		<div class="SlideDisplaySection BlueRectangle">
+			<div class="row BlueRectangleTitle">
+				<div class="col-xs-12">
+					<div>Reporte</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12" style="padding-top: 20px; padding-top: 20px" >
+					<div>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>
+				</div>					
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12" style="padding-left: 75px; padding-top: 30px;">
+					<img src="http://placehold.it/140x100" id="" >
+				</div>	
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12" style="padding-top: 40px; padding-left: 35px">
+					<button type="button" class="btn btn-success btn-md" id="" style="width: 220px;"> Descargar reporte <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button>
+				</div>	
+			</div>		
+		</div>
+	</div>	
+	<div class="col-xs-4">
+		<div class="SlideDisplaySection BlueRectangle">
+			<div class="row BlueRectangleTitle">
+				<div class="col-xs-12">
+					<div>Visualizador</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12" style="padding-top: 20px; padding-top: 20px" >
+					<div>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>
+				</div>					
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-12" style="padding-left: 75px; padding-top: 30px;">
+					<img src="http://placehold.it/140x100" id="" >
+				</div>	
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12" style="padding-top: 40px; padding-left: 35px">
+					<form action="/VisualizadorCNBV">						
+						<button type="submit" class="btn btn-success btn-md" id="" style="width: 220px;"> Ir a visualizador <span style="margin-left:2px;" class="glyphicon glyphicon-equalizer"></span></button>
+				</div>	
+			</div>		
+		</div>
+	</div>
+
+
+
+	<div class="col-xs-2"></div>
+
+	{% else %}
+	<div class="col-xs-12">	
 		<h1>Sitio en construcción</h1>
 	</div>	
+	{% endif %}
+		
 </div>
 
 
