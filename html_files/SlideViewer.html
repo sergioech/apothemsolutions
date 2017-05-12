@@ -1,0 +1,25 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<div class="row"> 	
+	<h1>Slides</h1>
+	<div class="col-xs-12">		
+		<div class="row" style="margin-bottom: 20px;">
+			<div class="col-xs-4"><span style="font-weight: bold;">Imagen</span></div>
+			<div class="col-xs-4"><span style="font-weight: bold;">Lead</span></div>
+			<div class="col-xs-4"><span style="font-weight: bold;">Documento</span></div>			
+		</div>
+		{% for slide in slides %}
+			<div class="row" style="margin-bottom: 10px;">
+				<hr style="margin:5px;">
+				<div class="col-xs-4">
+					<img id="" src="{{slide.pic_url}}" alt="" style="max-height: 80px;" />
+				</div>
+				<div class="col-xs-4">{{slide.lead}}</div>
+				<div class="col-xs-4">{{slide.doc_name}}</div>			
+			</div>
+		{% endfor %}
+	</div>
+
+</div>	
+{% endblock %}

@@ -4,6 +4,7 @@ var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_institucion
     chart_url,
     chart_units,
     csvContent,
+    unmodified_chart_array,
     chart_array,
     chart_type;
 
@@ -871,7 +872,9 @@ function divide_matrix(matrix, denominador){
   
   for(i = 1; i < renglonesMatriz; i++){
       for(var j = 1; j < columnasMatriz; j++){
-          newArray[i].push(matrix[i][j]/parseInt(denominador)*denominador_actual);
+          // newArray[i].push(matrix[i][j]/parseInt(denominador)*denominador_actual);
+          newArray[i].push(parseFloat((matrix[i][j]/parseInt(denominador)*denominador_actual).toFixed(2)));
+          // console.log(parseFloat((matrix[i][j]/parseInt(denominador)*denominador_actual).toFixed(2)));
       };
   };
 
@@ -880,6 +883,7 @@ function divide_matrix(matrix, denominador){
   return newArray
 
 };
+
 
 
 function SumChartRow(chart_row){

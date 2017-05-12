@@ -35,8 +35,6 @@ class Usuario(ndb.Model):
 			return usuario
 
 
-
-
 class TablaCNBV(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	nombre = ndb.StringProperty(required=True)
@@ -56,6 +54,16 @@ class CsvCNBV(ndb.Model):
 	covertura = ndb.JsonProperty()
 	rows_transfered = ndb.IntegerProperty(default=0)
 
+
+class Slide(ndb.Model):	
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	pic_key = ndb.BlobKeyProperty()
+	pic_url = ndb.StringProperty()
+	doc_key = ndb.KeyProperty()		
+	lead = ndb.StringProperty()
+	doc_name = ndb.StringProperty()
+	number = ndb.IntegerProperty(default=0)	
+	
 
 class DatoCNBV(ndb.Model):
 	

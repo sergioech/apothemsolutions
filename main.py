@@ -27,6 +27,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from google.appengine.ext import deferred
 from google.appengine.runtime import DeadlineExceededError
+from google.appengine.api import images
 
 # from google.appengine.api import urlfetch
 # urlfetch.set_default_fetch_deadline(900)
@@ -38,6 +39,7 @@ Usuario = datastore.Usuario
 DatoCNBV = datastore.DatoCNBV
 CsvCNBV = datastore.CsvCNBV
 TablaCNBV = datastore.TablaCNBV
+Slide = datastore.Slide
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -485,6 +487,56 @@ class CreateAllTables(Handler):
 
 
 
+
+
+class SlideViewer(Handler):
+	@super_civilian_bouncer
+	def get(self):
+		slides = Slide.query().order(Slide.number).fetch()
+		self.print_html('SlideViewer.html', slides=slides)
+
+
+
+class NewSlide(Handler):
+	@super_civilian_bouncer
+	def get(self):
+		upload_url = blobstore.create_upload_url('/upload_slide')
+		blob_file_input = "{0}".format(upload_url)
+		self.print_html('NewSlide.html', blob_file_input=blob_file_input)
+
+	# @super_civilian_bouncer
+	# def post(self):
+	# 	post_details = get_post_details(self)
+
+	# 	new_table = TablaCNBV(
+	# 		nombre = post_details['nombre'],
+	# 		descripcion = post_details['descripcion'],
+	# 		url_fuente = post_details['url_fuente'])
+		
+	# 	new_table.put()
+	# 	self.redirect('/TableViewer')
+
+class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+	# @super_civilian_bouncer
+	def post(self):
+		upload = self.get_uploads()[0]
+		post_details = get_post_details(self)
+		
+		print
+		print 'These are the post details from new slide:'
+		print post_details
+		print
+		
+		slide = Slide(			
+			pic_key = upload.key(),
+			pic_url = images.get_serving_url(blob_key=upload.key()),		
+			lead = post_details['lead'],
+			doc_name = post_details['doc_name'],			
+		)
+		slide.put()
+		self.redirect('/SlideViewer')
+
+
 class TableViewer(Handler):
 	@super_civilian_bouncer
 	def get(self):
@@ -492,7 +544,6 @@ class TableViewer(Handler):
 		upload_url = blobstore.create_upload_url('/upload_csv')
 		blob_file_input = "{0}".format(upload_url)
 		self.print_html('TableViewer.html', tablas_cnbv=tablas_cnbv, blob_file_input=blob_file_input)
-
 
 
 class LoadCSV(Handler):
@@ -506,7 +557,6 @@ class LoadCSV(Handler):
 
 		load_cnbv_csv(tabla_cnbv, csv_cnbv, 'from_blob', 0, None, 0)
 		self.redirect('/')
-
 
 
 class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
@@ -524,7 +574,6 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		csv_file.put()		
 
 		self.redirect('/LoadCSV?tabla_id=' + tabla_id + '&csv_id=' + str(csv_file.key.id()))
-
 
 
 class LandingPage(Handler):
@@ -867,9 +916,12 @@ app = webapp2.WSGIApplication([
     ('/LogOut', LogOut),
     ('/Accounts', Accounts),
     
+    ('/NewSlide', NewSlide),
+    ('/SlideViewer', SlideViewer),
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),
+    ('/upload_slide', SlideUploadHandler),
     ('/upload_csv', CsvUploadHandler),
     ('/LoadDemoTables', PopulateDemoVersion),
     ('/CreateAllTables', CreateAllTables)
