@@ -123,10 +123,10 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
-		# print
-		# print 'This are the chart details: '
-		# print chart_details
-		# print
+		print
+		print 'This are the chart details: '
+		print chart_details
+		print
 
 		# chart_details['filtros']['periodo'] = list(reversed(chart_details['filtros']['periodo']))
 
@@ -219,8 +219,16 @@ class ChartViewer(Handler):
 		
 		variable_lead = definiciones['variables_lead'][perspectiva_portafolio][variable]
 		
-		banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8')
-		
+				
+		banco_lead = '' 		
+		if len(bancos) == 1:
+			banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8')
+
+		elif len(bancos) == 2:
+			banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8') + ' y ' + definiciones['institucion'][bancos[1]].decode('utf-8')
+			
+
+
 		cortes_lead = ''
 		if cortes[0] and cortes[1]:
 			cortes_lead = ' por ' + definiciones['cortes'][cortes[0]] + ' y ' + definiciones['cortes'][cortes[1]]
@@ -230,27 +238,30 @@ class ChartViewer(Handler):
 			elif cortes[1]:
 				cortes_lead = 'por ' + definiciones['cortes'][cortes[1]]
 
-
-		if len(bancos) > 1:
-			if len(bancos) == 2:
-				banco_lead += ' y ' + definiciones['institucion'][bancos[1]].decode('utf-8')
-			else:
-				banco_lead += ' y otras ' + str(len(bancos) - 1) + ' instituciones ' 
-
+		conjuncion = ''
+		union_temporal = ''
 		if perspectiva_portafolio == 'total':
-			union_temporal = ' a '
+			if len(periodos) < 3:
+				union_temporal = ' a '
+			if len(bancos) < 3:
+				conjuncion = ' de '
 		else:
-			union_temporal = ' durante '		
+			if len(periodos) < 3:
+				union_temporal = ' durante '
+			if len(bancos) < 3:
+				conjuncion = ' por '		
+
+
 	
-		periodo_lead =  definiciones['periodo_lead'][int(periodos[0])]
-
+		periodo_lead = ''
+		if len(periodos) == 1:
+			periodo_lead =  definiciones['periodo_lead'][int(periodos[0])]
 		if len(periodos) == 2:
-			periodo_lead += ' y ' + definiciones['periodo_lead'][int(periodos[1])]
+			periodo_lead = definiciones['periodo_lead'][int(periodos[0])] + ' y ' + definiciones['periodo_lead'][int(periodos[1])]
 		
-		elif len(periodos) > 2:
-			periodo_lead += ' y otros ' + str(len(periodos) - 1) + ' periodos ' 
 
-		lead = variable_lead + banco_lead + union_temporal + periodo_lead + ' visto ' + cortes_lead
+
+		lead = variable_lead + conjuncion + banco_lead + union_temporal + periodo_lead + ' visto ' + cortes_lead
 		return lead	
 
 	def define_chart_units(self, variable):
@@ -402,6 +413,7 @@ class ChartViewer(Handler):
 						output_filtro.append(dp)
 				
 				filtered_query = output_filtro
+
 
 		return filtered_query
 

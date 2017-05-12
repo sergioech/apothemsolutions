@@ -46,24 +46,24 @@ def_variables  = {
 
 def_variables_lead = {
 	'total':{
-		'saldo_total': 'Saldo total de '.decode('utf-8'),				
-		'creditos': 'Número de créditos totales de '.decode('utf-8'),
-		'acreditados': 'Número de acreditados totales de '.decode('utf-8'),	
-		'concentracion_cartera': 'Concentración de cartera por cliente del portafolio total de '.decode('utf-8'),
-		'saldo_acum': 'Saldo acumulado por cliente del portafolio total de '.decode('utf-8'),
-		'porc_acum': 'Saldo acumulado por cliente del portafolio total de '.decode('utf-8'),
-		'tasa': 'Tasa de interes ponderada del portafolio total de '.decode('utf-8'),
-		'plazo': 'Plazo ponderado de los creditos remanentes de '.decode('utf-8'),
-		'imor': 'Índice de Morosidad del portafolio total de '.decode('utf-8')
+		'saldo_total': 'Saldo total'.decode('utf-8'),				
+		'creditos': 'Número de créditos totales'.decode('utf-8'),
+		'acreditados': 'Número de acreditados totales'.decode('utf-8'),	
+		'concentracion_cartera': 'Concentración de cartera por cliente del portafolio total'.decode('utf-8'),
+		'saldo_acum': 'Saldo acumulado por cliente del portafolio total'.decode('utf-8'),
+		'porc_acum': 'Saldo acumulado por cliente del portafolio total'.decode('utf-8'),
+		'tasa': 'Tasa de interes ponderada del portafolio total'.decode('utf-8'),
+		'plazo': 'Plazo ponderado de los creditos remanentes'.decode('utf-8'),
+		'imor': 'Índice de Morosidad del portafolio total'.decode('utf-8')
 	},
 
 	'marginal':{
-		'saldo_total': 'Incremento marginal en monto dispuesto por '.decode('utf-8'),
-		'creditos': 'Incremento marginal en número de créditos de '.decode('utf-8'),
-		'acreditados': 'Incremento marginal en número de acreditados de '.decode('utf-8'),				
+		'saldo_total': 'Incremento marginal en monto dispuesto'.decode('utf-8'),
+		'creditos': 'Incremento marginal en número de créditos emitidos'.decode('utf-8'),
+		'acreditados': 'Incremento marginal en número de acreditados'.decode('utf-8'),				
 		
-		'tasa': 'Tasa de interes de nuevos créditos emitidos por '.decode('utf-8'),
-		'plazo': 'Plazo ponderado de los nuevos créditos emitidos por '.decode('utf-8'),
+		'tasa': 'Tasa de interes de nuevos créditos emitidos'.decode('utf-8'),
+		'plazo': 'Plazo ponderado de los nuevos créditos emitidos'.decode('utf-8'),
 	}
 }
 
