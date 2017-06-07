@@ -67,8 +67,6 @@ def_variables_lead = {
 	}
 }
 
-
-
 def_variables_unidades  = {
 	'saldo_total': 'Pesos ($MXN)'.decode('utf-8'),
 	'car_vigente': 'Pesos ($MXN)'.decode('utf-8'),
@@ -110,7 +108,8 @@ def_cortes = {
 	'tec': 'Tamaño de Empresa'.decode('utf-8'),
 	'cliente': 'Cliente'.decode('utf-8'),
 	'intervalo': 'Intervalo de Plazo'.decode('utf-8'),
-	'moneda': 'Moneda'.decode('utf-8')
+	'moneda': 'Moneda'.decode('utf-8'),
+	'destino': 'Destino del crédito'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -120,6 +119,7 @@ opc_cortes = [
 	'tec',
 	'intervalo',
 	'moneda',
+	'destino'
 ]
 
 
@@ -960,6 +960,40 @@ opc_moneda = [
 ]
 
 
+def_destino_credito = {
+	'00': 'No Clasificado',
+	'21': 'Consolidacion (pago) de pasivos',
+	'22': 'Activo fijo',
+	'23': 'Obras publicas',
+	'24': 'Proyectos de infraestructura',
+	'25': 'Desarrollo Inmobiliario de Vivienda',
+	'26': 'Desarrollo Inmobiliario Comercial',
+	'27': 'Capital de Trabajo',
+	'28': 'Operaciones de Factoraje Financiero',
+	'29': 'Operaciones de Arrendamiento Puro',
+	'30': 'Operaciones de Arrendamiento Financiero',
+	'31': 'Credito a Estados y Municipios',
+	'32': 'Credito a Instituciones Financieras',
+	'33': 'Procampo'
+}
+
+opc_destino_credito = [
+	['00', 'No Clasificado'],
+	['21', 'Consolidacion (pago) de pasivos'],
+	['22', 'Activo fijo'],
+	['23', 'Obras publicas'],
+	['24', 'Proyectos de infraestructura'],
+	['25', 'Desarrollo Inmobiliario de Vivienda'],
+	['26', 'Desarrollo Inmobiliario Comercial'],
+	['27', 'Capital de Trabajo'],
+	['28', 'Operaciones de Factoraje Financiero'],
+	['29', 'Operaciones de Arrendamiento Puro'],
+	['30', 'Operaciones de Arrendamiento Financiero'],
+	['31', 'Credito a Estados y Municipios'],
+	['32', 'Credito a Instituciones Financieras'],
+	['33', 'Procampo']
+]
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
@@ -972,7 +1006,8 @@ definiciones = {
 	'moneda': def_moneda,
 	'intervalo': def_intervalo,
 	'variables_lead': def_variables_lead,
-	'periodo_lead': def_periodo_lead
+	'periodo_lead': def_periodo_lead,
+	'destino':def_destino_credito
 }
 
 
@@ -986,6 +1021,7 @@ opciones = {
 	'cliente': decode_options(opc_cliente, 'cliente'),
 	'intervalo': decode_options(opc_intervalo, 'intervalo'),
 	'moneda': decode_options(opc_moneda, 'moneda'),
+	'destino':decode_options(opc_destino_credito, 'destino')
 }
 
 
@@ -1485,6 +1521,24 @@ cat_moneda = {
 	'2':['UDIS', '02']
 }
 
+cat_destino_credito = {
+	'0': ['No Clasificado', '00'],
+	'21': ['Consolidacion (pago) de pasivos', '21'],
+	'22': ['Activo fijo', '22'],
+	'23': ['Obras publicas', '23'],
+	'24': ['Proyectos de infraestructura', '24'],
+	'25': ['Desarrollo Inmobiliario de Vivienda', '25'],
+	'26': ['Desarrollo Inmobiliario Comercial', '26'],
+	'27': ['Capital de Trabajo', '27'],
+	'28': ['Operaciones de Factoraje Financiero', '28'],
+	'29': ['Operaciones de Arrendamiento Puro', '29'],
+	'30': ['Operaciones de Arrendamiento Financiero', '30'],
+	'31': ['Credito a Estados y Municipios', '31'],
+	'32': ['Credito a Instituciones Financieras', '32'],
+	'33': ['Procampo', '33']
+}
+
+
 #--- trasformation maps ---
 tm_040_11A_R1 = {
 	'cve_periodo': ['periodo'],
@@ -1569,6 +1623,16 @@ tm_040_11L_R3 = {
 }
 
 
+tm_040_11L_R5 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_TEC': ['tec', cat_TEC],
+	'cve_destino_credito': ['destino', cat_destino_credito],
+	'dat_responsabilidad_total': ['saldo_total']
+}
+
+
+
 tm_040_11L_R11 = {
 	'cve_periodo': ['periodo'],
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1614,6 +1678,8 @@ transformation_maps_CNBV = {
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
+	'040_11L_R5': tm_040_11L_R5,
+
 	'040_11L_R11': tm_040_11L_R11,
 	'040_11L_R12': tm_040_11L_R12,
 	'040_11L_R13': tm_040_11L_R13,
@@ -1640,6 +1706,8 @@ detalles_tabla = {
 
 	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
+	'040_11L_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'040_11L_R11': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
 	'040_11L_R12': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
@@ -1661,6 +1729,8 @@ tablas_CNBV = [
 	'040_11L_R0',
 	'040_11L_R2',
 	'040_11L_R3',
+	'040_11L_R5',
+
 	'040_11L_R11',
 	'040_11L_R12',
 	'040_11L_R13'
@@ -1723,6 +1793,12 @@ demo_version_details = {
 		'registros': 0
 	},
 
+	'040_11L_R5': {
+		'descripcion':'Saldo por destino del credito y tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 	'040_11L_R11': {
 		'descripcion':'Numero de creditos, acreditados y monto por tamano de empresa. Creditos dispuestos marginalmente.', 
 		'url_fuente': 'Un URL',
@@ -1750,7 +1826,7 @@ def generar_indice_CNBV(lista_tablas):
 
 
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'moneda']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'moneda', 'destino']
 
 	for tabla in lista_tablas:
 		variables = []

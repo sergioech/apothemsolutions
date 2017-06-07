@@ -570,7 +570,7 @@ var menus_visibles = {
 
   'total':{
     'concentracion_cartera':[],
-    'saldo_total':[],
+    'saldo_total':['[value=destino]'],
   
     'car_vigente':[],
     'car_vencida':[],
@@ -642,7 +642,8 @@ var to_be_hidden = [
   '#tipo_de_grafica',
   '#boton_graficar',
   '#tipo_moneda',
-  '[value=moneda]'
+  '[value=moneda]',
+  '[value=destino]'
 ]
 
 

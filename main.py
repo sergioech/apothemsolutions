@@ -572,7 +572,7 @@ class LoadCSV(Handler):
 
 
 class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-	@super_civilian_bouncer
+	# @super_civilian_bouncer
 	def post(self):
 		upload = self.get_uploads()[0]
 		tabla_id = self.request.get('id_tabla')
@@ -860,7 +860,7 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 		for a_key in attributes:
 			a_val = raw_dp[i]
 			
-			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo']:				
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'destino']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
 			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'imor']:
@@ -919,7 +919,7 @@ def adjust_post_details(post_details):
 app = webapp2.WSGIApplication([
     ('/', LandingPage),
     
-    # ('/FirstUser', FirstUser),
+    ('/FirstUser', FirstUser),
     ('/CrearUsuario', CrearUsuario),
 
     ('/VisualizadorCNBV', ChartViewer),
