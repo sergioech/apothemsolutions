@@ -105,7 +105,7 @@
 								{% for opcion in opciones[corte[0]] %}
 									<div class="checkbox">
 										<label>
-											<input class="opcion" type="checkbox" value="{{opcion[0]}}" id="{{corte[0]}}_{{opcion[0]}}" {% if corte[0] in ['tec', 'estado', 'intervalo', 'moneda', 'destino'] %}checked{% endif %}> {{opcion[1]}}
+											<input class="opcion" type="checkbox" value="{{opcion[0]}}" id="{{corte[0]}}_{{opcion[0]}}" {% if corte[0] in ['tec', 'estado', 'intervalo', 'moneda', 'destino', 'monto'] %}checked{% endif %}> {{opcion[1]}}
 										</label>
 									</div>
 								{% endfor %}								

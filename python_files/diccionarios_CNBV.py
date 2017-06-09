@@ -108,6 +108,7 @@ def_cortes = {
 	'tec': 'Tamaño de Empresa'.decode('utf-8'),
 	'cliente': 'Cliente'.decode('utf-8'),
 	'intervalo': 'Intervalo de Plazo'.decode('utf-8'),
+	'monto': 'Monto del crédio [miles]'.decode('utf-8'),
 	'moneda': 'Moneda'.decode('utf-8'),
 	'destino': 'Destino del crédito'.decode('utf-8')
 }
@@ -118,6 +119,7 @@ opc_cortes = [
 	'estado',
 	'tec',
 	'intervalo',
+	'monto',
 	'moneda',
 	'destino'
 ]
@@ -946,6 +948,53 @@ opc_intervalo = [
 ]
 
 
+def_monto = {
+	'00': 'Sin clasificación',
+	'01': '0-10 ',
+	'02': '10-25',
+	'03': '25-50 ',
+	'04': '50-100 ',
+	'05': '100-250',
+	'06': '250-500',
+	'07': '500-1,000',
+	'08': '1,000-2,500',
+	'09': '2,500-5,000',
+	'10': '5,000-10,000',
+	'11': '10,000-25,000',
+	'12': '25,000-50,000',
+	'13': '50,000-100,000',
+	'14': '100,000-250,000',
+	'15': '250,000-500,000',
+	'16': '500,000-1,000,000',
+	'17': '1,000,000-2,500,000',
+	'18': '2,500,000-5,000,000',
+	'19': '+ 5,000,000'
+}
+
+opc_monto = [
+	['01', '0-10 '],
+	['02', '10-25'],
+	['03', '25-50 '],
+	['04', '50-100 '],
+	['05', '100-250'],
+	['06', '250-500'],
+	['07', '500-1,000'],
+	['08', '1,000-2,500'],
+	['09', '2,500-5,000'],
+	['10', '5,000-10,000'],
+	['11', '10,000-25,000'],
+	['12', '25,000-50,000'],
+	['13', '50,000-100,000'],
+	['14', '100,000-250,000'],
+	['15', '250,000-500,000'],
+	['16', '500,000-1,000,000'],
+	['17', '1,000,000-2,500,000'],
+	['18', '2,500,000-5,000,000'],
+	['19', '+ 5,000,000'],
+	['00', 'Sin clasificación']
+]
+
+
 def_moneda = {
 	'00':'Nacional',
 	'01':'Extranjera',
@@ -1005,6 +1054,7 @@ definiciones = {
 	'cliente': def_cliente,
 	'moneda': def_moneda,
 	'intervalo': def_intervalo,
+	'monto': def_monto,
 	'variables_lead': def_variables_lead,
 	'periodo_lead': def_periodo_lead,
 	'destino':def_destino_credito
@@ -1020,6 +1070,7 @@ opciones = {
 	'periodo_y': decode_options(opc_periodo_y, 'periodo_y'),
 	'cliente': decode_options(opc_cliente, 'cliente'),
 	'intervalo': decode_options(opc_intervalo, 'intervalo'),
+	'monto': decode_options(opc_monto, 'monto'),
 	'moneda': decode_options(opc_moneda, 'moneda'),
 	'destino':decode_options(opc_destino_credito, 'destino')
 }
@@ -1514,6 +1565,28 @@ cat_intervalo = {
 	'14': ['más de 120', '14']
 }
 
+cat_monto = {
+	'0': ['Sin clasificación', '00'],
+	'1': ['0-10 ', '01'],
+	'2': ['10-25', '02'],
+	'3': ['25-50 ', '03'],
+	'4': ['50-100 ', '04'],
+	'5': ['100-250', '05'],
+	'6': ['250-500', '06'],
+	'7': ['500-1,000', '07'],
+	'8': ['1,000-2,500', '08'],
+	'9': ['2,500-5,000', '09'],
+	'10': ['5,000-10,000', '10'],
+	'11': ['10,000-25,000', '11'],
+	'12': ['25,000-50,000', '12'],
+	'13': ['50,000-100,000', '13'],
+	'14': ['100,000-250,000', '14'],
+	'15': ['250,000-500,000', '15'],
+	'16': ['500,000-1,000,000', '16'],
+	'17': ['1,000,000-2,500,000', '17'],
+	'18': ['2,500,000-5,000,000', '18'],
+	'19': ['+ 5,000,000', '19']
+}
 
 cat_moneda = {
 	'0':['Nacional', '00'],
@@ -1564,6 +1637,18 @@ tm_040_11A_R8 = {
 	'cve_concepto': ['tipo_valor', cat_concepto],
 	'dato': ['valor']
 }
+
+
+tm_mod_11C_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+
+	'intervalo_responsabilidad':['monto', cat_monto],
+	'creditos': ['creditos'],	
+	'cart_total': ['saldo_total'],
+	'IMOR': ['imor']
+}
+
 
 tm_mod_11E_R1 = {
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1682,6 +1767,8 @@ transformation_maps_CNBV = {
 	'040_11A_R4': tm_040_11A_R4,
 	'040_11A_R8': tm_040_11A_R8,
 
+	'mod_11C_R1': tm_mod_11C_R1,
+
 	'mod_11E_R1': tm_mod_11E_R1,
 
 	'040_11F_R1': tm_040_11F_R1,
@@ -1706,6 +1793,8 @@ detalles_tabla = {
 	# '040_11A_R4': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
 	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal'}, #Por lo pronto solo queda fuera de forma temporal.
+
+	'mod_11C_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 	
@@ -1736,6 +1825,7 @@ tablas_CNBV = [
 	# '040_11A_R4',
 	# '040_11A_R8',
 	
+	'mod_11C_R1',
 	'mod_11E_R1',
 
 	'040_11F_R1',
@@ -1765,6 +1855,12 @@ demo_version_details = {
 	# 	'url_fuente': 'Un URL',
 	# 	'registros': 0
 	# },
+
+	'mod_11C_R1': {
+		'descripcion':'Cartera actividad empresarial: numero, saldo e IMOR por intervalo de monto de credito. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
 
 	'mod_11E_R1': {
 		'descripcion':'Cartera actividad empresarial: Índice de morosidad', 
@@ -1848,7 +1944,7 @@ def generar_indice_CNBV(lista_tablas):
 
 
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'moneda', 'destino']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino']
 
 	for tabla in lista_tablas:
 		variables = []

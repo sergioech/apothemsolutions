@@ -570,18 +570,18 @@ var menus_visibles = {
 
   'total':{
     'concentracion_cartera':[],
-    'saldo_total':['[value=destino]'],
+    'saldo_total':['[value=destino]', '[value=monto]'],
   
     'car_vigente':[],
     'car_vencida':[],
 
-    'creditos':[],
+    'creditos':['[value=monto]'],
     'acreditados':[],
     
     'plazo':['[value=destino]'],
     'tasa':['[value=destino]'],
 
-    'imor':[],
+    'imor':['[value=monto]'],
   },
 
   'marginal':{
@@ -605,11 +605,12 @@ var menus_visibles = {
 var cortes_incompatibles = {
   'periodo':[],
   'institucion':[],
-  'estado':['moneda', 'estado', 'destino'],
-  'tec':['intervalo', 'moneda'],
+  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto'],
+  'tec':['intervalo', 'monto', 'moneda'],
   'intervalo':['tec', 'estado', 'destino'],
-  'moneda':['estado', 'tec'],
-  'destino':['estado', 'intervalo']  
+  'monto': ['tec', 'estado', 'destino'],
+  'moneda':['estado', 'tec', 'monto'],
+  'destino':['estado', 'intervalo', 'monto']  
 }
 
 
@@ -639,12 +640,13 @@ var to_be_hidden = [
   '[value=institucion]', 
   '[value=tec]', 
   '[value=estado]',
-  '[value=intervalo]',  
+  '[value=intervalo]',
+  '[value=monto]',  
   '#tipo_de_grafica',
   '#boton_graficar',
   '#tipo_moneda',
   '[value=moneda]',
-  '[value=destino]'
+  '[value=destino]',
 ]
 
 

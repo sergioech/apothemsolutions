@@ -77,8 +77,10 @@ class DatoCNBV(ndb.Model):
 	estado = ndb.StringProperty()	
 	cliente = ndb.StringProperty()
 	moneda = ndb.StringProperty()
-	intervalo = ndb.StringProperty()
+	intervalo = ndb.StringProperty() #Se refiere al rango del plazo
+	monto = ndb.StringProperty() #Se refiere al rango del monto
 	destino = ndb.StringProperty()
+
 	
 	#Formato vertical
 	tipo_valor = ndb.StringProperty()
