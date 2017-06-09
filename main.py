@@ -684,10 +684,11 @@ class Accounts(Handler):
 				next_step = 'CheckYourEmail'
 
 				email_receiver = str(usuario.email)
-				email_body = '<a href="apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)+'">Actualizar mi contraseña</a>'
+				email_body = '<a href="apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)+'">Actualizar mi contraseña</a>. Si el hipervínculo no funciona, por favor copie y pegue la siguiente liga en su navegador: apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)
 				mail.send_mail(sender="Apothem@apothem100.appspotmail.com", to=email_receiver, subject="Solicitud para actualizar contraseña de Apothem Solutions", body=email_body, html=email_body) 
 				print
 				print email_body
+				logging.info(email_body)
 
 			else:
 				next_step = 'EnterValidEmail'

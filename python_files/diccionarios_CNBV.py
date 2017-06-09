@@ -1632,6 +1632,18 @@ tm_040_11L_R5 = {
 }
 
 
+tm_040_11L_R6 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+	'cve_destino_credito': ['destino', cat_destino_credito],
+	'cve_TEC': ['tec', cat_TEC],
+
+	'tasa': ['tasa'],
+	'responsabilidad':['saldo_total'],
+	'plazo':['plazo']
+}
+
 
 tm_040_11L_R11 = {
 	'cve_periodo': ['periodo'],
@@ -1679,6 +1691,7 @@ transformation_maps_CNBV = {
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
 	'040_11L_R5': tm_040_11L_R5,
+	'040_11L_R6': tm_040_11L_R6,
 
 	'040_11L_R11': tm_040_11L_R11,
 	'040_11L_R12': tm_040_11L_R12,
@@ -1708,6 +1721,8 @@ detalles_tabla = {
 
 	'040_11L_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
+	'040_11L_R6': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'040_11L_R11': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
 	'040_11L_R12': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
@@ -1730,6 +1745,7 @@ tablas_CNBV = [
 	'040_11L_R2',
 	'040_11L_R3',
 	'040_11L_R5',
+	'040_11L_R6',
 
 	'040_11L_R11',
 	'040_11L_R12',
@@ -1795,6 +1811,12 @@ demo_version_details = {
 
 	'040_11L_R5': {
 		'descripcion':'Saldo por destino del credito y tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'040_11L_R6': {
+		'descripcion':'Tasa de interés, plazos y saldo por destino del crédito y tamaño de empresa', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},

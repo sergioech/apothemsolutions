@@ -578,8 +578,8 @@ var menus_visibles = {
     'creditos':[],
     'acreditados':[],
     
-    'plazo':[],
-    'tasa':[],
+    'plazo':['[value=destino]'],
+    'tasa':['[value=destino]'],
 
     'imor':[],
   },
@@ -605,10 +605,11 @@ var menus_visibles = {
 var cortes_incompatibles = {
   'periodo':[],
   'institucion':[],
-  'estado':['moneda', 'estado'],
+  'estado':['moneda', 'estado', 'destino'],
   'tec':['intervalo', 'moneda'],
-  'intervalo':['tec', 'estado'],
-  'moneda':['estado', 'tec']  
+  'intervalo':['tec', 'estado', 'destino'],
+  'moneda':['estado', 'tec'],
+  'destino':['estado', 'intervalo']  
 }
 
 
