@@ -91,7 +91,8 @@ class DatoCNBV(ndb.Model):
 	creditos = ndb.FloatProperty()
 	acreditados = ndb.FloatProperty()
 	tasa = ndb.FloatProperty()
-	plazo = ndb.FloatProperty()
+	plazo = ndb.FloatProperty() #Plazo ponderado del remanente
+	vigencia = ndb.FloatProperty() #Plazo  original
 	imor = ndb.FloatProperty()
 
 	saldo_acum = ndb.FloatProperty()

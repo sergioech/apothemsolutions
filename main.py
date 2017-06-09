@@ -864,7 +864,7 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'monto', 'destino']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
-			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'imor']:
+			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'vigencia', 'imor']:
 				if a_val == '':
 					a_val = '0'
 				setattr(new_dp, a_key, float(a_val))		
