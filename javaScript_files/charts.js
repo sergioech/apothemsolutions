@@ -570,18 +570,18 @@ var menus_visibles = {
 
   'total':{
     'concentracion_cartera':[],
-    'saldo_total':['[value=destino]', '[value=monto]'],
+    'saldo_total':['[value=destino]', '[value=monto]', '[value=garantia]'],
   
     'car_vigente':[],
     'car_vencida':[],
 
-    'creditos':['[value=monto]'],
+    'creditos':['[value=monto]', '[value=garantia]'],
     'acreditados':[],
     
     'plazo':['[value=destino]', '[value=monto]'],
     'tasa':['[value=destino]', '[value=monto]'],
 
-    'imor':['[value=monto]'],
+    'imor':['[value=monto]', '[value=garantia]'],
   },
 
   'marginal':{
@@ -605,12 +605,13 @@ var menus_visibles = {
 var cortes_incompatibles = {
   'periodo':[],
   'institucion':[],
-  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto'],
-  'tec':['intervalo', 'monto', 'moneda'],
-  'intervalo':['tec', 'estado', 'destino'],
-  'monto': ['tec', 'estado', 'destino'],
-  'moneda':['estado', 'tec', 'monto'],
-  'destino':['estado', 'intervalo', 'monto']  
+  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto', 'garantia'],
+  'tec':['intervalo', 'monto', 'moneda', 'garantia'],
+  'intervalo':['tec', 'estado', 'destino', 'garantia'],
+  'monto': ['tec', 'estado', 'destino', 'garantia'],
+  'moneda':['estado', 'tec', 'monto', 'garantia'],
+  'destino':['estado', 'intervalo', 'monto', 'garantia'],
+  'garantia':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino']  
 }
 
 
@@ -647,6 +648,7 @@ var to_be_hidden = [
   '#tipo_moneda',
   '[value=moneda]',
   '[value=destino]',
+  '[value=garantia]'
 ]
 
 

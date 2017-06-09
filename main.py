@@ -202,6 +202,8 @@ class ChartViewer(Handler):
 		print
 		print 'This is the chart array'
 		print chart_array
+		logging.info('This is the chart array')
+		logging.info(chart_array)
 		print
 
 		self.response.out.write(json.dumps({
@@ -287,8 +289,15 @@ class ChartViewer(Handler):
 
 		indice_tablas = new_indice_tablas
 
+		print
+		logging.info('Este es el indice de las tablas: ')
+		logging.info(indice_tablas)
+		print
+
 		if corte_columnas:
 			for tabla in indice_tablas:
+				logging.info(tabla[0])
+
 				variables_validas = tabla[1]
 				cortes_validos = tabla[2]
 				if variable in variables_validas and corte_renglones in cortes_validos and corte_columnas in cortes_validos:
@@ -861,7 +870,7 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 		for a_key in attributes:
 			a_val = raw_dp[i]
 			
-			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'monto', 'destino']:				
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'monto', 'destino', 'garantia']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
 			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'vigencia', 'imor']:

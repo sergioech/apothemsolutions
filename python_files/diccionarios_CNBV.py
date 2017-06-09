@@ -110,7 +110,8 @@ def_cortes = {
 	'intervalo': 'Intervalo de Plazo'.decode('utf-8'),
 	'monto': 'Monto del crédio [miles]'.decode('utf-8'),
 	'moneda': 'Moneda'.decode('utf-8'),
-	'destino': 'Destino del crédito'.decode('utf-8')
+	'destino': 'Destino del crédito'.decode('utf-8'),
+	'garantia': 'Tipo de garantía'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -121,7 +122,8 @@ opc_cortes = [
 	'intervalo',
 	'monto',
 	'moneda',
-	'destino'
+	'destino',
+	'garantia'
 ]
 
 
@@ -546,7 +548,6 @@ opc_periodo = [
 	['201203', '201203'],
 	['201202', '201202'],
 	['201201', '201201']	
-
 ]
 
 opc_periodo_y = [
@@ -1043,6 +1044,36 @@ opc_destino_credito = [
 	['33', 'Procampo']
 ]
 
+
+def_garantia = {
+	'00': 'Sin Garantía',
+	'01': 'Dinero en Efectivo',
+	'02': 'Acciones Representativas de Capital',
+	'03': 'Bienes Muebles',
+	'04': 'Bienes Inmuebles',
+	'05': 'Documentos por Cobrar',
+	'06': 'Inventarios o Productos Terminado',
+	'07': 'Títulos de Deuda Emitidos por el Gobierno Federal',
+	'08': 'Títulos de Deuda Emitidos por Entidades Distintas al Gobierno Federal',
+	'09': 'Con Garantía Fiduciaria',
+	'10': 'Masa de Garantías'	
+}
+
+opc_garantia = [
+	['00', 'Sin Garantía'],
+	['01', 'Dinero en Efectivo'],
+	['02', 'Acciones Representativas de Capital'],
+	['03', 'Bienes Muebles'],
+	['04', 'Bienes Inmuebles'],
+	['05', 'Documentos por Cobrar'],
+	['06', 'Inventarios o Productos Terminado'],
+	['07', 'Títulos de Deuda Emitidos por el Gobierno Federal'],
+	['08', 'Títulos de Deuda Emitidos por Entidades Distintas al Gobierno Federal'],
+	['09', 'Con Garantía Fiduciaria'],
+	['10', 'Masa de Garantías']
+]
+
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
@@ -1057,7 +1088,8 @@ definiciones = {
 	'monto': def_monto,
 	'variables_lead': def_variables_lead,
 	'periodo_lead': def_periodo_lead,
-	'destino':def_destino_credito
+	'destino':def_destino_credito,
+	'garantia': def_garantia
 }
 
 
@@ -1072,7 +1104,8 @@ opciones = {
 	'intervalo': decode_options(opc_intervalo, 'intervalo'),
 	'monto': decode_options(opc_monto, 'monto'),
 	'moneda': decode_options(opc_moneda, 'moneda'),
-	'destino':decode_options(opc_destino_credito, 'destino')
+	'destino':decode_options(opc_destino_credito, 'destino'),
+	'garantia':decode_options(opc_garantia, 'garantia'),
 }
 
 
@@ -1611,6 +1644,20 @@ cat_destino_credito = {
 	'33': ['Procampo', '33']
 }
 
+cat_garantia = {
+	'0': ['Sin Garantía', '00'],
+	'1': ['Dinero en Efectivo', '01'],
+	'2': ['Acciones Representativas de Capital', '02'],
+	'3': ['Bienes Muebles', '03'],
+	'4': ['Bienes Inmuebles', '04'],
+	'5': ['Documentos por Cobrar', '05'],
+	'6': ['Inventarios o Productos Terminado', '06'],
+	'7': ['Títulos de Deuda Emitidos por el Gobierno Federal', '07'],
+	'8': ['Títulos de Deuda Emitidos por Entidades Distintas al Gobierno Federal', '08'],
+	'9': ['Con Garantía Fiduciaria', '09'],
+	'10': ['Masa de Garantías', '10']	
+}
+
 
 #--- trasformation maps ---
 tm_040_11A_R1 = {
@@ -1685,6 +1732,16 @@ tm_040_11F_R2 = {
 	'id':['intervalo', cat_intervalo],
 	'creditos': ['creditos'],	
 	'monto_dispuesto': ['saldo_total']
+}
+
+tm_mod_11K_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+
+	'cve_tipo_garantia':['garantia', cat_garantia],
+	'creditos': ['creditos'],	
+	'total': ['saldo_total'],
+	'imor': ['imor']
 }
 
 
@@ -1786,6 +1843,8 @@ transformation_maps_CNBV = {
 	'040_11F_R1': tm_040_11F_R1,
 	'040_11F_R2': tm_040_11F_R2,
 
+	'mod_11K_R1': tm_mod_11K_R1,
+
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
@@ -1816,6 +1875,8 @@ detalles_tabla = {
 
 	'040_11F_R2': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
+	'mod_11K_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
 	'040_11L_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
@@ -1835,6 +1896,8 @@ detalles_tabla = {
 
 
 tablas_CNBV = [
+	'mod_11E_R1',
+
 	'040_11A_R1',
 	# '040_11A_R4',
 	# '040_11A_R8',
@@ -1842,10 +1905,10 @@ tablas_CNBV = [
 	'mod_11C_R1',
 	'mod_11C_R2',
 	
-	'mod_11E_R1',
-
 	'040_11F_R1',
 	'040_11F_R2',
+
+	'mod_11K_R1',
 
 	'040_11L_R0',
 	'040_11L_R2',
@@ -1909,6 +1972,12 @@ demo_version_details = {
 		'registros': 0
 	},
 
+	'mod_11K_R1': {
+		'descripcion':'Cartera actividad empresarial: número de créditos y saldos de cartera por tipo de garantía. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 	'040_11L_R0': {
 		'descripcion':'Numero de creditos, acreditados y saldo por tamano de empresa', 
 		'url_fuente': 'Un URL',
@@ -1967,7 +2036,7 @@ def generar_indice_CNBV(lista_tablas):
 
 
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino', 'garantia']
 
 	for tabla in lista_tablas:
 		variables = []
