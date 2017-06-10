@@ -1745,6 +1745,16 @@ tm_mod_11K_R1 = {
 }
 
 
+tm_mod_11K_R20 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+
+	'cve_tipo_garantia':['garantia', cat_garantia],
+	'tasa_ponderada':  ['tasa'],
+	'cve_tipo_moneda': ['moneda', cat_moneda]	
+}
+
+
 tm_040_11L_R0 = {
 	'cve_periodo': ['periodo'],
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1844,6 +1854,7 @@ transformation_maps_CNBV = {
 	'040_11F_R2': tm_040_11F_R2,
 
 	'mod_11K_R1': tm_mod_11K_R1,
+	'mod_11K_R20': tm_mod_11K_R20,
 
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
@@ -1877,6 +1888,8 @@ detalles_tabla = {
 
 	'mod_11K_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
+	'mod_11K_R20': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
 	'040_11L_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
@@ -1909,6 +1922,7 @@ tablas_CNBV = [
 	'040_11F_R2',
 
 	'mod_11K_R1',
+	'mod_11K_R20',
 
 	'040_11L_R0',
 	'040_11L_R2',
@@ -1977,6 +1991,14 @@ demo_version_details = {
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
+
+	
+	'mod_11K_R20': {
+		'descripcion':'Cartera actividad empresarial: tasa de interes por tipo de garantia. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 
 	'040_11L_R0': {
 		'descripcion':'Numero de creditos, acreditados y saldo por tamano de empresa', 

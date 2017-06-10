@@ -579,7 +579,7 @@ var menus_visibles = {
     'acreditados':[],
     
     'plazo':['[value=destino]', '[value=monto]'],
-    'tasa':['[value=destino]', '[value=monto]'],
+    'tasa':['[value=destino]', '[value=monto]', '[value=garantia]'],
 
     'imor':['[value=monto]', '[value=garantia]'],
   },
