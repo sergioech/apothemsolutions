@@ -1758,6 +1758,12 @@ tm_mod_11E_R1 = {
 	'imor': ['imor']
 }
 
+tm_mod_11E_R3 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	'calificacion':['calificacion', cat_calificacion],
+	'n_total': ['creditos']
+}
 
 tm_mod_11E_R5 = {
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1905,6 +1911,7 @@ transformation_maps_CNBV = {
 
 	'mod0_11E_R1': tm_mod0_11E_R1,
 	'mod_11E_R1': tm_mod_11E_R1,
+	'mod_11E_R3': tm_mod_11E_R3,
 	'mod_11E_R5': tm_mod_11E_R5,
 
 	'040_11F_R1': tm_040_11F_R1,
@@ -1941,6 +1948,8 @@ detalles_tabla = {
 
 	'mod_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
+	'mod_11E_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'mod_11E_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 	
 	'040_11F_R1': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
@@ -1972,6 +1981,7 @@ detalles_tabla = {
 tablas_CNBV = [
 	'mod_11E_R1',
 	'mod0_11E_R1',
+	'mod_11E_R3',
 	'mod_11E_R5',
 
 	'040_11A_R1',
@@ -2035,6 +2045,14 @@ demo_version_details = {
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
+
+
+	'mod_11E_R3': {
+		'descripcion':'Cartera actividad empresarial: número de creditos por calificacion. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 
 	'mod_11E_R5': {
 		'descripcion':'Cartera actividad empresarial: tasa por calificación. Portafolio total', 

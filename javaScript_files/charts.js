@@ -575,7 +575,7 @@ var menus_visibles = {
     'car_vigente':[],
     'car_vencida':[],
 
-    'creditos':['[value=monto]', '[value=garantia]'],
+    'creditos':['[value=monto]', '[value=garantia]', '[value=calificacion]'],
     'acreditados':[],
     
     'plazo':['[value=destino]', '[value=monto]'],
