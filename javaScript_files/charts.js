@@ -579,7 +579,7 @@ var menus_visibles = {
     'acreditados':[],
     
     'plazo':['[value=destino]', '[value=monto]'],
-    'tasa':['[value=destino]', '[value=monto]', '[value=garantia]'],
+    'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
 
     'imor':['[value=monto]', '[value=garantia]'],
   },
@@ -605,13 +605,14 @@ var menus_visibles = {
 var cortes_incompatibles = {
   'periodo':[],
   'institucion':[],
-  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto', 'garantia'],
-  'tec':['intervalo', 'monto', 'moneda', 'garantia'],
-  'intervalo':['tec', 'estado', 'destino', 'garantia'],
-  'monto': ['tec', 'estado', 'destino', 'garantia'],
-  'moneda':['estado', 'tec', 'monto', 'garantia'],
-  'destino':['estado', 'intervalo', 'monto', 'garantia'],
-  'garantia':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino']  
+  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto', 'garantia', 'calificacion'],
+  'tec':['intervalo', 'monto', 'moneda', 'garantia', 'calificacion'],
+  'intervalo':['tec', 'estado', 'destino', 'garantia', 'calificacion'],
+  'monto': ['tec', 'estado', 'destino', 'garantia', 'calificacion'],
+  'moneda':['estado', 'tec', 'monto', 'garantia', 'calificacion'],
+  'destino':['estado', 'intervalo', 'monto', 'garantia', 'calificacion'],
+  'garantia':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'calificacion'],
+  'calificacion':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia']
 }
 
 
@@ -648,7 +649,8 @@ var to_be_hidden = [
   '#tipo_moneda',
   '[value=moneda]',
   '[value=destino]',
-  '[value=garantia]'
+  '[value=garantia]',
+  '[value=calificacion]'
 ]
 
 

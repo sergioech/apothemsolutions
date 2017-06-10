@@ -111,7 +111,8 @@ def_cortes = {
 	'monto': 'Monto del crédio [miles]'.decode('utf-8'),
 	'moneda': 'Moneda'.decode('utf-8'),
 	'destino': 'Destino del crédito'.decode('utf-8'),
-	'garantia': 'Tipo de garantía'.decode('utf-8')
+	'garantia': 'Tipo de garantía'.decode('utf-8'),
+	'calificacion': 'Calificación'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -123,7 +124,8 @@ opc_cortes = [
 	'monto',
 	'moneda',
 	'destino',
-	'garantia'
+	'garantia',
+	'calificacion'
 ]
 
 
@@ -1074,6 +1076,28 @@ opc_garantia = [
 ]
 
 
+def_calificacion = {
+	'A1': 'A1',
+	'A2': 'A2',
+	'B1': 'B1',
+	'B2': 'B2',
+	'B3': 'B3',
+	'CDE': 'C,D,E',
+	'PM': 'PM',
+	'EX': 'EX'	
+}
+
+opc_calificacion = [
+	['A1', 'A1'],
+	['A2', 'A2'],
+	['B1', 'B1'],
+	['B2', 'B2'],
+	['B3', 'B3'],
+	['CDE', 'C,D,E'],
+	['PM', 'PM'],
+	['EX', 'EX']
+]
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
@@ -1089,7 +1113,8 @@ definiciones = {
 	'variables_lead': def_variables_lead,
 	'periodo_lead': def_periodo_lead,
 	'destino':def_destino_credito,
-	'garantia': def_garantia
+	'garantia': def_garantia,
+	'calificacion': def_calificacion
 }
 
 
@@ -1106,6 +1131,7 @@ opciones = {
 	'moneda': decode_options(opc_moneda, 'moneda'),
 	'destino':decode_options(opc_destino_credito, 'destino'),
 	'garantia':decode_options(opc_garantia, 'garantia'),
+	'calificacion':decode_options(opc_calificacion, 'calificacion')
 }
 
 
@@ -1658,6 +1684,17 @@ cat_garantia = {
 	'10': ['Masa de Garantías', '10']	
 }
 
+cat_calificacion = {
+	'A1': ['A1', 'A1'],
+	'A2': ['A2', 'A2'],
+	'B1': ['B1', 'B1'],
+	'B2': ['B2', 'B2'],
+	'B3': ['B3', 'B3'],
+	'CDE': ['C,D,E', 'CDE'],
+	'PM': ['PM', 'PM'],
+	'EX': ['EX', 'EX']
+}
+
 
 #--- trasformation maps ---
 tm_040_11A_R1 = {
@@ -1713,6 +1750,16 @@ tm_mod_11E_R1 = {
 	'cve_periodo': ['periodo'],	
 	'imor': ['imor']
 }
+
+tm_mod_11E_R5 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+	'calificacion':['calificacion', cat_calificacion],
+	'tasa': ['tasa']
+}
+
 
 tm_040_11F_R1 = {
 	'cve_periodo': ['periodo'],
@@ -1849,6 +1896,7 @@ transformation_maps_CNBV = {
 	'mod_11C_R2': tm_mod_11C_R2,
 
 	'mod_11E_R1': tm_mod_11E_R1,
+	'mod_11E_R5': tm_mod_11E_R5,
 
 	'040_11F_R1': tm_040_11F_R1,
 	'040_11F_R2': tm_040_11F_R2,
@@ -1881,6 +1929,8 @@ detalles_tabla = {
 	'mod_11C_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11E_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 	
 	'040_11F_R1': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
@@ -1910,6 +1960,7 @@ detalles_tabla = {
 
 tablas_CNBV = [
 	'mod_11E_R1',
+	'mod_11E_R5',
 
 	'040_11A_R1',
 	# '040_11A_R4',
@@ -1967,6 +2018,13 @@ demo_version_details = {
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
+
+	'mod_11E_R5': {
+		'descripcion':'Cartera actividad empresarial: tasa por calificación. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 
 	# '040_11A_R8': {
 	# 	'descripcion':'Cartera actividad empresarial: Caracteristicas promedio de los creditos dispuestos marginalmente', 
@@ -2058,7 +2116,7 @@ def generar_indice_CNBV(lista_tablas):
 
 
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino', 'garantia']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion']
 
 	for tabla in lista_tablas:
 		variables = []

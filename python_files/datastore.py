@@ -81,6 +81,7 @@ class DatoCNBV(ndb.Model):
 	monto = ndb.StringProperty() #Se refiere al rango del monto
 	destino = ndb.StringProperty()
 	garantia = ndb.StringProperty()
+	calificacion = ndb.StringProperty()
 	
 	#Formato vertical
 	tipo_valor = ndb.StringProperty()
