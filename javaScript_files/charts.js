@@ -570,7 +570,7 @@ var menus_visibles = {
 
   'total':{
     'concentracion_cartera':[],
-    'saldo_total':['[value=destino]', '[value=monto]', '[value=garantia]'],
+    'saldo_total':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
   
     'car_vigente':[],
     'car_vencida':[],
@@ -581,7 +581,7 @@ var menus_visibles = {
     'plazo':['[value=destino]', '[value=monto]'],
     'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
 
-    'imor':['[value=monto]', '[value=garantia]'],
+    'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]'],
   },
 
   'marginal':{

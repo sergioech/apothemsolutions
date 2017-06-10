@@ -1744,12 +1744,20 @@ tm_mod_11C_R2 = {
 	'tasa': ['tasa']	
 }
 
+tm_mod0_11E_R1 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	'calificacion':['calificacion', cat_calificacion],
+	'm_total':['saldo_total'],
+	'imor': ['imor']
+}
 
 tm_mod_11E_R1 = {
 	'cve_institucion': ['institucion', cat_institucion],
 	'cve_periodo': ['periodo'],	
 	'imor': ['imor']
 }
+
 
 tm_mod_11E_R5 = {
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1895,6 +1903,7 @@ transformation_maps_CNBV = {
 	'mod_11C_R1': tm_mod_11C_R1,
 	'mod_11C_R2': tm_mod_11C_R2,
 
+	'mod0_11E_R1': tm_mod0_11E_R1,
 	'mod_11E_R1': tm_mod_11E_R1,
 	'mod_11E_R5': tm_mod_11E_R5,
 
@@ -1928,6 +1937,8 @@ detalles_tabla = {
 
 	'mod_11C_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
+	'mod0_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'mod_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod_11E_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
@@ -1960,6 +1971,7 @@ detalles_tabla = {
 
 tablas_CNBV = [
 	'mod_11E_R1',
+	'mod0_11E_R1',
 	'mod_11E_R5',
 
 	'040_11A_R1',
@@ -2012,6 +2024,11 @@ demo_version_details = {
 		'registros': 0
 	},
 
+	'mod0_11E_R1': {
+		'descripcion':'Cartera actividad empresarial: saldo de cartera por calificación. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
 
 	'mod_11E_R1': {
 		'descripcion':'Cartera actividad empresarial: Índice de morosidad', 
