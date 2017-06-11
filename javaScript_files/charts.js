@@ -570,18 +570,18 @@ var menus_visibles = {
 
   'total':{
     'concentracion_cartera':[],
-    'saldo_total':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
+    'saldo_total':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
   
     'car_vigente':[],
     'car_vencida':[],
 
-    'creditos':['[value=monto]', '[value=garantia]', '[value=calificacion]'],
-    'acreditados':[],
+    'creditos':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
+    'acreditados':['[value=sector]'],
     
     'plazo':['[value=destino]', '[value=monto]'],
     'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
 
-    'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=estado]'],
+    'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=estado]', '[value=sector]'],
   },
 
   'marginal':{
@@ -605,14 +605,15 @@ var menus_visibles = {
 var cortes_incompatibles = {
   'periodo':[],
   'institucion':[],
-  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto', 'garantia', 'calificacion'],
-  'tec':['intervalo', 'monto', 'moneda', 'garantia', 'calificacion'],
-  'intervalo':['tec', 'estado', 'destino', 'garantia', 'calificacion'],
-  'monto': ['tec', 'estado', 'destino', 'garantia', 'calificacion'],
-  'moneda':['estado', 'tec', 'monto', 'garantia', 'calificacion'],
-  'destino':['estado', 'intervalo', 'monto', 'garantia', 'calificacion'],
-  'garantia':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'calificacion'],
-  'calificacion':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia']
+  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto', 'garantia', 'calificacion', 'sector'],
+  'tec':['intervalo', 'monto', 'moneda', 'garantia', 'calificacion', 'sector'],
+  'intervalo':['tec', 'estado', 'destino', 'garantia', 'calificacion', 'sector'],
+  'monto': ['tec', 'estado', 'destino', 'garantia', 'calificacion', 'sector'],
+  'moneda':['estado', 'tec', 'monto', 'garantia', 'calificacion', 'sector'],
+  'destino':['estado', 'intervalo', 'monto', 'garantia', 'calificacion', 'sector'],
+  'garantia':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'calificacion', 'sector'],
+  'calificacion':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'sector'],
+  'sector': ['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion']
 }
 
 
@@ -650,7 +651,8 @@ var to_be_hidden = [
   '[value=moneda]',
   '[value=destino]',
   '[value=garantia]',
-  '[value=calificacion]'
+  '[value=calificacion]',
+  '[value=sector]',
 ]
 
 
@@ -659,85 +661,85 @@ var seleccion_default = {
   'saldo_total':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'creditos':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'acreditados':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'car_vigente':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
   
   'car_vencida':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_mn':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_me':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_udis':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'plazo_ponderado':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'concentracion_cartera':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'line_chart'
   },
 
   'tasa':{
-    'periodos': ['#periodo_201610'],
+    'periodos': ['#periodo_201612'],
     'instituciones': grupo_top7,
     'corte_renglones':'institucion',
     'corte_columnas': 'tec',
@@ -755,12 +757,10 @@ var seleccion_default = {
   'imor':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
-
-
 }
 
 

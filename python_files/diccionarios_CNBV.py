@@ -112,7 +112,8 @@ def_cortes = {
 	'moneda': 'Moneda'.decode('utf-8'),
 	'destino': 'Destino del crédito'.decode('utf-8'),
 	'garantia': 'Tipo de garantía'.decode('utf-8'),
-	'calificacion': 'Calificación'.decode('utf-8')
+	'calificacion': 'Calificación'.decode('utf-8'),
+	'sector': 'Sector económico'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -125,7 +126,8 @@ opc_cortes = [
 	'moneda',
 	'destino',
 	'garantia',
-	'calificacion'
+	'calificacion',
+	'sector'
 ]
 
 
@@ -1098,6 +1100,63 @@ opc_calificacion = [
 	['EX', 'EX']
 ]
 
+def_sector = {
+	'010': 'Agricultura, Silvicultura, Ganadería y Pesca',
+	'020': 'Bancario',
+	'030': 'Comercio',
+	'040': 'Comunicaciones y Telecomunicaciones',
+	'050': 'Construcción',
+	'051': 'Edificación residencial',
+	'052': 'Otros construcción',
+	'060': 'Educativo',
+	'070': 'Hoteles y Restaurantes',
+	'080': 'Alimentos, Bebidas y Tabaco',
+	'090': 'Industria Automotriz',
+	'100': 'Petróleo, Minería, Gas y Energía',
+	'110': 'Resto Industria',
+	'120': 'Salud',
+	'130': 'Servicios Comunales y Sociales',
+	'140': 'Servicios Financieros (No Bancarios)',
+	'150': 'Servicios Profesionales y Técnicos',
+	'160': 'Transporte',
+	'170': 'Gobierno, Estados y Municipio',
+	'180': 'Gobierno Federal',
+	'190': 'Organismos Internacionales',
+	'200': 'Industria Textil y de Calzado',
+	'210': 'Industria Química y Farmacéutica',
+	'220': 'Industria Materiales de Construcción',
+	'230': 'Servicios de Esparcimiento y otros Servicios Recreativo',
+	'999': 'Total'
+}
+
+opc_sector = [
+	['010', 'Agricultura, Silvicultura, Ganadería y Pesca'],
+	['020', 'Bancario'],
+	['030', 'Comercio'],
+	['040', 'Comunicaciones y Telecomunicaciones'],
+	['051', 'Edificación residencial'],
+	['052', 'Otros construcción'],
+	['060', 'Educativo'],
+	['070', 'Hoteles y Restaurantes'],
+	['080', 'Alimentos, Bebidas y Tabaco'],
+	['090', 'Industria Automotriz'],
+	['100', 'Petróleo, Minería, Gas y Energía'],
+	['110', 'Resto Industria'],
+	['120', 'Salud'],
+	['130', 'Servicios Comunales y Sociales'],
+	['140', 'Servicios Financieros (No Bancarios)'],
+	['150', 'Servicios Profesionales y Técnicos'],
+	['160', 'Transporte'],
+	['170', 'Gobierno, Estados y Municipio'],
+	['180', 'Gobierno Federal'],
+	['190', 'Organismos Internacionales'],
+	['200', 'Industria Textil y de Calzado'],
+	['210', 'Industria Química y Farmacéutica'],
+	['220', 'Industria Materiales de Construcción'],
+	['230', 'Servicios de Esparcimiento y otros Servicios Recreativo']
+]
+
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
@@ -1114,7 +1173,8 @@ definiciones = {
 	'periodo_lead': def_periodo_lead,
 	'destino':def_destino_credito,
 	'garantia': def_garantia,
-	'calificacion': def_calificacion
+	'calificacion': def_calificacion,
+	'sector': def_sector
 }
 
 
@@ -1131,7 +1191,8 @@ opciones = {
 	'moneda': decode_options(opc_moneda, 'moneda'),
 	'destino':decode_options(opc_destino_credito, 'destino'),
 	'garantia':decode_options(opc_garantia, 'garantia'),
-	'calificacion':decode_options(opc_calificacion, 'calificacion')
+	'calificacion':decode_options(opc_calificacion, 'calificacion'),
+	'sector':decode_options(opc_sector, 'sector')
 }
 
 
@@ -1298,7 +1359,6 @@ cat_estado = {
 	'99': ['Migración', '91'],
 	'999': ['Extranjero', '92']
 }
-
 
 cat_concentracion = {
 	'Cliente 1': ['Cliente 1', '001'],
@@ -1696,6 +1756,34 @@ cat_calificacion = {
 	'EX': ['EX', 'EX']
 }
 
+cat_sector = {
+	'1': ['Agricultura, Silvicultura, Ganadería y Pesca', '010'],
+	'2': ['Bancario', '020'],
+	'3': ['Comercio', '030'],
+	'4': ['Comunicaciones y Telecomunicaciones', '040'],
+	'5': ['Construcción', '050'],
+	'6': ['Educativo', '060'],
+	'7': ['Hoteles y Restaurantes', '070'],
+	'8': ['Alimentos, Bebidas y Tabaco', '080'],
+	'9': ['Industria Automotriz', '090'],
+	'10': ['Petróleo, Minería, Gas y Energía', '100'],
+	'11': ['Resto Industria', '110'],
+	'12': ['Salud', '120'],
+	'13': ['Servicios Comunales y Sociales', '130'],
+	'14': ['Servicios Financieros (No Bancarios)', '140'],
+	'15': ['Servicios Profesionales y Técnicos', '150'],
+	'16': ['Transporte', '160'],
+	'17': ['Gobierno, Estados y Municipio', '170'],
+	'18': ['Gobierno Federal', '180'],
+	'19': ['Organismos Internacionales', '190'],
+	'20': ['Industria Textil y de Calzado', '200'],
+	'21': ['Industria Química y Farmacéutica', '210'],
+	'22': ['Industria Materiales de Construcción', '220'],
+	'23': ['Servicios de Esparcimiento y otros Servicios Recreativo', '230'],
+	'999': ['Total', '999'],
+	'5999': ['Otros construcción', '052'],
+	'23611': ['Edificación residencial', '051']
+}
 
 #--- trasformation maps ---
 tm_040_11A_R1 = {
@@ -1744,6 +1832,19 @@ tm_mod_11C_R2 = {
 	'plazo':['vigencia'],
 	'tasa': ['tasa']	
 }
+
+tm_mod_11D_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'sector': ['sector', cat_sector],
+
+	'm_total': ['saldo_total'],
+	'imor': ['imor'],
+	'creditos': ['creditos'],
+	'acreditados': ['acreditados']
+	
+}
+
 
 tm_mod0_11E_R1 = {
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1924,6 +2025,8 @@ transformation_maps_CNBV = {
 	'mod_11C_R1': tm_mod_11C_R1,
 	'mod_11C_R2': tm_mod_11C_R2,
 
+	'mod_11D_R1': tm_mod_11D_R1,
+
 	'mod0_11E_R1': tm_mod0_11E_R1,
 	'mod_11E_R1': tm_mod_11E_R1,
 	'mod_11E_R3': tm_mod_11E_R3,
@@ -1960,6 +2063,8 @@ detalles_tabla = {
 	'mod_11C_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod_11C_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11D_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod0_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
@@ -2010,6 +2115,8 @@ tablas_CNBV = [
 	'mod_11C_R1',
 	'mod_11C_R2',
 	
+	'mod_11D_R1',
+
 	'040_11F_R1',
 	'040_11F_R2',
 	
@@ -2051,6 +2158,12 @@ demo_version_details = {
 
 	'mod_11C_R2': {
 		'descripcion':'Cartera actividad empresarial: tasa por monto del credito. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod_11D_R1': {
+		'descripcion':'Cartera actividad empresarial: numero de creditos y saldo de cartera por sector economico. Portafolio total', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
@@ -2177,9 +2290,8 @@ def generar_indice_CNBV(lista_tablas):
 	
 	indice_CNBV = []
 
-
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion', 'sector']
 
 	for tabla in lista_tablas:
 		variables = []

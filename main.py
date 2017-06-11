@@ -870,7 +870,7 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 		for a_key in attributes:
 			a_val = raw_dp[i]
 			
-			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'monto', 'destino', 'garantia', 'calificacion']:				
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'monto', 'destino', 'garantia', 'calificacion', 'sector']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
 			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'vigencia', 'imor']:
