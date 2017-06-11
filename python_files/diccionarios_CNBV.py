@@ -1845,6 +1845,17 @@ tm_mod_11D_R1 = {
 	
 }
 
+tm_mod_11D_R2 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'sector': ['sector', cat_sector],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+
+	'plazo_venc':['plazo'],
+	'plazo':['vigencia'],
+	'tasa': ['tasa']	
+}
+
 
 tm_mod0_11E_R1 = {
 	'cve_institucion': ['institucion', cat_institucion],
@@ -2026,6 +2037,7 @@ transformation_maps_CNBV = {
 	'mod_11C_R2': tm_mod_11C_R2,
 
 	'mod_11D_R1': tm_mod_11D_R1,
+	'mod_11D_R2': tm_mod_11D_R2,
 
 	'mod0_11E_R1': tm_mod0_11E_R1,
 	'mod_11E_R1': tm_mod_11E_R1,
@@ -2065,6 +2077,8 @@ detalles_tabla = {
 	'mod_11C_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod_11D_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11D_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod0_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
@@ -2116,6 +2130,7 @@ tablas_CNBV = [
 	'mod_11C_R2',
 	
 	'mod_11D_R1',
+	'mod_11D_R2',
 
 	'040_11F_R1',
 	'040_11F_R2',
@@ -2164,6 +2179,12 @@ demo_version_details = {
 
 	'mod_11D_R1': {
 		'descripcion':'Cartera actividad empresarial: numero de creditos y saldo de cartera por sector economico. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod_11D_R2': {
+		'descripcion':'Cartera actividad empresarial: tasa por sector economico. Portafolio total', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},

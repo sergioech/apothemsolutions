@@ -578,8 +578,8 @@ var menus_visibles = {
     'creditos':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
     'acreditados':['[value=sector]'],
     
-    'plazo':['[value=destino]', '[value=monto]'],
-    'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
+    'plazo':['[value=destino]', '[value=monto]', '[value=sector]'],
+    'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
 
     'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=estado]', '[value=sector]'],
   },
