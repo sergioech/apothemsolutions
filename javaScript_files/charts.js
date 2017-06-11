@@ -581,7 +581,7 @@ var menus_visibles = {
     'plazo':['[value=destino]', '[value=monto]'],
     'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]'],
 
-    'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]'],
+    'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=estado]'],
   },
 
   'marginal':{

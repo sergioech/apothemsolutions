@@ -1294,6 +1294,7 @@ cat_estado = {
 	'30': ['Veracruz de Ignacio de la Llave', '30'],
 	'31': ['Yucatán', '31'],
 	'32': ['Zacatecas', '32'],
+	'88': ['Extranjero', '92'],
 	'99': ['Migración', '91'],
 	'999': ['Extranjero', '92']
 }
@@ -1795,6 +1796,20 @@ tm_040_11F_R2 = {
 	'monto_dispuesto': ['saldo_total']
 }
 
+
+tm_mod_11G_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_estado': ['estado', cat_estado],
+	'cartera_total': ['saldo_total'],
+
+	'imor': ['imor'],
+	'creditos': ['creditos'],
+	'acreditados': ['acreditados']
+	
+}
+
+
 tm_mod_11K_R1 = {
 	'cve_periodo': ['periodo'],
 	'cve_institucion': ['institucion', cat_institucion],
@@ -1917,6 +1932,8 @@ transformation_maps_CNBV = {
 	'040_11F_R1': tm_040_11F_R1,
 	'040_11F_R2': tm_040_11F_R2,
 
+	'mod_11G_R1': tm_mod_11G_R1,
+
 	'mod_11K_R1': tm_mod_11K_R1,
 	'mod_11K_R20': tm_mod_11K_R20,
 
@@ -1956,6 +1973,8 @@ detalles_tabla = {
 
 	'040_11F_R2': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
+	'mod_11G_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'mod_11K_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'mod_11K_R20': {'tipo_variables': 'directas', 'perspectiva': 'total'},
@@ -1993,6 +2012,8 @@ tablas_CNBV = [
 	
 	'040_11F_R1',
 	'040_11F_R2',
+	
+	'mod_11G_R1',
 
 	'mod_11K_R1',
 	'mod_11K_R20',
@@ -2075,6 +2096,13 @@ demo_version_details = {
 
 	'040_11F_R2': {
 		'descripcion':'Creditos y saldos por intervalo de plazo. Creditos dispuestos marginalmente', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+
+	'mod_11G_R1': {
+		'descripcion':'Cartera actividad empresarial: numero de créditos y saldo de cartera por estado. Portafolio total', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
