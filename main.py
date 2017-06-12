@@ -540,21 +540,19 @@ class NewSlide(Handler):
 class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	# @super_civilian_bouncer
 	def post(self):
-		upload = self.get_uploads()[0]
-		post_details = get_post_details(self)
-		
-		print
-		print 'These are the post details from new slide:'
-		print post_details
-		print
-		
-		slide = Slide(			
-			pic_key = upload.key(),
-			pic_url = images.get_serving_url(blob_key=upload.key()),		
-			lead = post_details['lead'],
-			doc_name = post_details['doc_name'],			
-		)
-		slide.put()
+		uploads = self.get_uploads()
+		# post_details = get_post_details(self)
+		i = 0
+		for upload in uploads:
+			slide = Slide(			
+				pic_key = upload.key(),
+				pic_url = images.get_serving_url(blob_key=upload.key()),		
+				lead = upload.filename,
+				number = i,
+				doc_name = 'Default',			
+			)
+			slide.put()
+			i += 1
 		self.redirect('/SlideViewer')
 
 

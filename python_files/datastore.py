@@ -57,12 +57,12 @@ class CsvCNBV(ndb.Model):
 
 class Slide(ndb.Model):	
 	created = ndb.DateTimeProperty(auto_now_add=True)	
+	lead = ndb.StringProperty()
 	pic_key = ndb.BlobKeyProperty()
 	pic_url = ndb.StringProperty()
-	doc_key = ndb.KeyProperty()		
-	lead = ndb.StringProperty()
-	doc_name = ndb.StringProperty()
 	number = ndb.IntegerProperty(default=0)	
+	tags = ndb.JsonProperty()
+	doc_name = ndb.StringProperty()
 	
 
 class DatoCNBV(ndb.Model):

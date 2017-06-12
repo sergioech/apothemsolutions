@@ -108,7 +108,7 @@ def_cortes = {
 	'tec': 'Tamaño de Empresa'.decode('utf-8'),
 	'cliente': 'Cliente'.decode('utf-8'),
 	'intervalo': 'Intervalo de Plazo'.decode('utf-8'),
-	'monto': 'Monto del crédio [miles]'.decode('utf-8'),
+	'monto': 'Monto del crédito [miles]'.decode('utf-8'),
 	'moneda': 'Moneda'.decode('utf-8'),
 	'destino': 'Destino del crédito'.decode('utf-8'),
 	'garantia': 'Tipo de garantía'.decode('utf-8'),
