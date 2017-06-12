@@ -60,7 +60,7 @@ class Slide(ndb.Model):
 	lead = ndb.StringProperty()
 	pic_key = ndb.BlobKeyProperty()
 	pic_url = ndb.StringProperty()
-	number = ndb.IntegerProperty(default=0)	
+	number = ndb.IntegerProperty(required=True, default=0)	
 	tags = ndb.JsonProperty()
 	doc_name = ndb.StringProperty()
 	

@@ -152,3 +152,31 @@ function readURL(input) {
 $("#imgInp").change(function(){
     readURL(this);
 });
+
+$(document).on('focusin', '.QuickAttributeUpdate', function(){
+	
+	var attr_value = $(this).val();
+
+	$(this).on('focusout', function(){
+		if(attr_value != $(this).val()){
+			var attr_key = $(this).attr("name");
+			var slide = $(this).closest('#DeckEditorSlide');
+			var slide_id = slide.attr("value");
+			
+			console.log(attr_key);
+			console.log(attr_value);
+
+			$.ajax({
+				type: "POST",
+				url: "/DeckEditor",
+				dataType: 'json',
+				data: JSON.stringify({
+					'slide_id': slide_id,
+					'user_action': 'UpdateSlide',
+					'attr_key':attr_key,
+					'attr_value':$(this).val(),
+				})
+			}).done(function(data){console.log(data['message'])})
+		}
+	})
+});

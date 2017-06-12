@@ -510,12 +510,33 @@ class CreateAllTables(Handler):
 
 
 
-class SlideViewer(Handler):
+class DeckEditor(Handler):
 	@super_civilian_bouncer
 	def get(self):
 		slides = Slide.query().order(Slide.number).fetch()
-		self.print_html('SlideViewer.html', slides=slides)
+		upload_url = blobstore.create_upload_url('/upload_slide')
+		blob_file_input = "{0}".format(upload_url)
+		self.print_html('DeckEditor.html', slides=slides, blob_file_input=blob_file_input)
 
+	def post(self):
+		event_details = json.loads(self.request.body)
+		slide = Slide.get_by_id(int(event_details['slide_id']))
+		user_action = event_details['user_action']
+		
+		if user_action == 'UpdateSlide':
+			attr_key = event_details['attr_key']
+			attr_value = event_details['attr_value']
+			
+			if attr_key == 'lead':
+				slide.lead = attr_value.encode('utf-8')
+			elif attr_key == 'number':
+				slide.number = int(attr_value)
+			elif attr_key == 'tags':
+				attr.tags = [0]
+			slide.put()
+			self.response.out.write(json.dumps({
+				'message': 'the package has been delivered'
+				}))
 
 
 class NewSlide(Handler):
@@ -525,17 +546,7 @@ class NewSlide(Handler):
 		blob_file_input = "{0}".format(upload_url)
 		self.print_html('NewSlide.html', blob_file_input=blob_file_input)
 
-	# @super_civilian_bouncer
-	# def post(self):
-	# 	post_details = get_post_details(self)
 
-	# 	new_table = TablaCNBV(
-	# 		nombre = post_details['nombre'],
-	# 		descripcion = post_details['descripcion'],
-	# 		url_fuente = post_details['url_fuente'])
-		
-	# 	new_table.put()
-	# 	self.redirect('/TableViewer')
 
 class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	# @super_civilian_bouncer
@@ -553,7 +564,7 @@ class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 			)
 			slide.put()
 			i += 1
-		self.redirect('/SlideViewer')
+		self.redirect('/DeckEditor')
 
 
 class TableViewer(Handler):
@@ -937,7 +948,7 @@ app = webapp2.WSGIApplication([
     ('/Accounts', Accounts),
     
     ('/NewSlide', NewSlide),
-    ('/SlideViewer', SlideViewer),
+    ('/DeckEditor', DeckEditor),
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),

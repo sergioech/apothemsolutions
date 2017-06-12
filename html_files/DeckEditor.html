@@ -1,25 +1,37 @@
 {% extends "Base.html" %}
 
 {% block content %}
-<div class="row"> 	
-	<h1>Slides</h1>
+<div class="row"> 
 	<div class="col-xs-12">		
+		<div class="row">
+			<form action="{{blob_file_input|safe}}" method="POST" enctype="multipart/form-data">  
+				<div class="col-xs-8"><h1>Slides</h1></div>
+				<div class="col-xs-2">
+					<input type="file" name="file" id="imgInp" style="margin-top: 20px;" multiple>
+				</div>	
+				
+				<div class="col-xs-2" style="padding-left:70px ">
+					<input style="margin-top: 25px;" style="width:150px;" type="submit" class="form-control btn-primary" name="submit" value="Subir slides">	
+				</div>	
+			</form>
+		</div>
+		
 		{% for slide in slides %}
-			<div class="row DeckEditorSlide" style="margin-bottom: 10px;">
+			<div class="row DeckEditorSlide" id="DeckEditorSlide" style="margin-bottom: 10px;" value="{{slide.key.id()}}">
 				<div class="col-xs-2">
 					<img id="" src="{{slide.pic_url}}" alt="" style="max-height: 80px; margin-bottom: 10px" />
 				</div>
 				<div class="col-xs-4">
 					<label>Lead</label>
-					<textarea style="width:100%;" class="form-control" name="lead" id="lead" placeholder="Lead">{{slide.lead}}</textarea>
+					<textarea style="width:100%;" class="form-control QuickAttributeUpdate" name="lead" id="lead" placeholder="Lead">{{slide.lead}}</textarea>
 				</div>
 				<div class="col-xs-1" style="padding:0px">
 					<label>Numero</label>
-					<input type="number" min="0" class="form-control" name="number" id="number" placeholder="e.g. 1" style="margin-bottom:5px;">
+					<input type="number" min="0" class="form-control QuickAttributeUpdate" name="number" id="number" placeholder="e.g. 1" style="margin-bottom:5px;" value="{{slide.number}}">
 				</div>
 				<div class="col-xs-4">
 					<label>Tags Ids</label>
-						<input type="text" class="form-control"  name="tags" id="tags" placeholder="e.g. S00, S02" value="{% if slide.tags != 'None' %}{{slide.tags}}{% endif %}">
+						<input type="text" class="form-control QuickAttributeUpdate"  name="tags" id="tags" placeholder="e.g. S00, S02" value="{% if slide.tags %}{{slide.tags}}{% endif %}">
 				</div>
 				<div class="col-xs-1">
 					<button type="button" class="btn btn-danger DeleteSlideButton" style="margin-top: 23px"><span class="glyphicon glyphicon-trash"></span></button>
