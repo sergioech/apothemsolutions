@@ -31,7 +31,7 @@
 				</div>
 				<div class="col-xs-4">
 					<label>Tags Ids</label>
-						<input type="text" class="form-control QuickAttributeUpdate"  name="tags" id="tags" placeholder="e.g. S00, S02" value="{% if slide.tags %}{{slide.tags}}{% endif %}">
+						<input type="text" class="form-control QuickAttributeUpdate"  name="tags" id="tags" placeholder="e.g. S00, S02" value="{% for tag in slide.tags %}{{tag}},{% endfor %}">
 				</div>
 				<div class="col-xs-1">
 					<button type="button" class="btn btn-danger DeleteSlideButton" style="margin-top: 23px"><span class="glyphicon glyphicon-trash"></span></button>

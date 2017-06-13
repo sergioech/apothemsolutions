@@ -130,6 +130,79 @@ opc_cortes = [
 	'sector'
 ]
 
+def_secciones = {
+	'S00': 'General',
+	'S01': 'Por tamaño de empresa',
+	'S02': 'Por región geográfica',
+	'S03': 'Efectividad de sucursales',
+	'S04': 'Tasas y precios',
+	'S05': 'Cartera vencida y riesgos',
+	'S06': 'Por sector'
+}
+
+opc_secciones = [
+	['S00', 'General'],
+	['S01', 'Por tamaño de empresa'],
+	['S02', 'Por región geográfica'],
+	['S03', 'Efectividad de sucursales'],
+	['S04', 'Tasas y precios'],
+	['S05', 'Cartera vencida y riesgos'],
+	['S06', 'Por sector']
+]
+
+def_bulk_slide_import = {
+	'Slide0.PNG': ['Menu', []],
+	'Slide1.PNG': ['Evolución y distribución de la cartera', ['S00']],
+	'Slide2.PNG': ['Crecimiento en originaciones', ['S00']],
+	'Slide3.PNG': ['Componentes del portafolio (1/2)', ['S00']],
+	'Slide4.PNG': ['Componentes del portafolio (2/2)', ['S00']],
+	'Slide5.PNG': ['Crecimiento vs. portafolio total', ['S00']],
+	'Slide6.PNG': ['Componentes del portafolio', ['S00']],
+	'Slide7.PNG': ['Distribución de cartera por tamaño de empresa', ['S00', 'S01']],
+	'Slide8.PNG': ['Distribución de cartera por sector económico', ['S00', 'S06']],
+	'Slide9.PNG': ['Distribución de cartera por región geográfica', ['S00', 'S02']],
+	'Slide10.PNG': ['FALTA (NO LA VAMOS A HACER)', []],
+	'Slide11.PNG': ['Cartera por tamaño de empresa', ['S01']],
+	'Slide12.PNG': ['Componentes del portafolio', ['S01']],
+	'Slide13.PNG': ['Componentes del portafolio', ['S01']],
+	'Slide14.PNG': ['Crecimiento vs. portafolio total', ['S01']],
+	'Slide15.PNG': ['Distribución de créditos empresariales por tamaño de empresa', ['S01']],
+	'Slide16.PNG': ['Cartera por región', ['S02']],
+	'Slide17.PNG': ['Componentes del portafolio', ['S02']],
+	'Slide18.PNG': ['Componentes del portafolio', ['S02']],
+	'Slide19.PNG': ['Crecimiento vs. portafolio total (1/3)', ['S02']],
+	'Slide20.PNG': ['Crecimiento vs. portafolio total (2/3)', ['S02']],
+	'Slide21.PNG': ['Crecimiento vs. portafolio total (3/3)', ['S02']],
+	'Slide22.PNG': ['Distribución de créditos empresariales por región geográfica', ['S02']],
+	'Slide23.PNG': ['Existe una alta correlación entre la participación de sucursales con la participación de clientes y el share of wallet', ['S03']],
+	'Slide24.PNG': ['Comparación de la efectividad por sucursal entre bancos', ['S03']],
+	'Slide25.PNG': ['Efectividad sucursales por estado', ['S03']],
+	'Slide26.PNG': ['Comparación de tasas de interés por tamaño de empresa', ['S04']],
+	'Slide27.PNG': ['Comparación de tasas de interés por tamaño de crédito', ['S04']],
+	'Slide28.PNG': ['Comparación de tasas de interés por calificación crediticia de la cartera', ['S04']],
+	'Slide29.PNG': ['Comparación de la cartera vencida por tamaño de empresa', ['S05']],
+	'Slide30.PNG': ['Comparación de la cartera vencida por tamaño de crédito', ['S05']],
+	'Slide31.PNG': ['Correlación entre crecimiento en originaciones y tasa de interés promedio', ['S04']],
+	'Slide32.PNG': ['Correlación entre crecimiento en originaciones y tasa de interés promedio por tamaño de empresa', ['S04']],
+	'Slide33.PNG': ['Correlación entre riesgo (medido como cartera vencida) y tasa de interés promedio', ['S04', 'S05']],
+	'Slide34.PNG': ['Correlación entre riesgo (medido como cartera vencida) y tasa de interés promedio por tamaño de empresa', ['S04', 'S05']],
+	'Slide35.PNG': ['Correlación entre cartera total y tasa de interés promedio', ['S04']],
+	'Slide36.PNG': ['Riesgo de concentración de clientes por banco', ['S05']],
+	'Slide37.PNG': ['Cartera por sector', ['S06']],
+	'Slide38.PNG': ['Componentes del portafolio por sector', ['S06']],
+	'Slide39.PNG': ['Componentes del portafolio por sector', ['S06']],
+	'Slide40.PNG': ['Crecimiento vs. portafolio total (1/3)', ['S06']],
+	'Slide41.PNG': ['Crecimiento vs. portafolio total (2/3)', ['S06']],
+	'Slide42.PNG': ['Crecimiento vs. portafolio total (3/3)', ['S06']],
+	'Slide43.PNG': ['Distribución de créditos empresariales por sector económico', ['S06']],
+	'Slide44.PNG': ['Evolución de la cartera vencida por banco', ['S05']],
+	'Slide45.PNG': ['Evolución de la cartera vencida por tamaño de empresa y banco', ['S05']],
+	'Slide46.PNG': ['FALTA (NO LA VAMOS A HACER)', []],
+	
+
+} 
+
+
 
 def decode_options(options_list, corte):	
 	result = []
@@ -1174,7 +1247,9 @@ definiciones = {
 	'destino':def_destino_credito,
 	'garantia': def_garantia,
 	'calificacion': def_calificacion,
-	'sector': def_sector
+	'sector': def_sector,
+	'secciones': def_secciones,
+	'bulk_slide_import': def_bulk_slide_import
 }
 
 
@@ -1192,7 +1267,8 @@ opciones = {
 	'destino':decode_options(opc_destino_credito, 'destino'),
 	'garantia':decode_options(opc_garantia, 'garantia'),
 	'calificacion':decode_options(opc_calificacion, 'calificacion'),
-	'sector':decode_options(opc_sector, 'sector')
+	'sector':decode_options(opc_sector, 'sector'),
+	'secciones':decode_options(opc_secciones, 'secciones'),
 }
 
 

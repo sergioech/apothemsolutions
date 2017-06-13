@@ -180,3 +180,25 @@ $(document).on('focusin', '.QuickAttributeUpdate', function(){
 		}
 	})
 });
+
+
+$(document).on('click', '.DeleteSlideButton', function(){
+	
+	var slide = $(this).closest('#DeckEditorSlide');
+	var slide_id = slide.attr("value");
+	slide.fadeOut("slow")
+	// slide.addClass('hidden');
+
+	$.ajax({
+		type: "POST",
+		url: "/DeckEditor",
+		dataType: 'json',
+		data: JSON.stringify({
+			'slide_id': slide_id,
+			'user_action': 'DeleteSlide'
+		})
+	}).done(function(data){
+		console.log(data['message']);
+		slide.addClass('hidden');
+		})
+});

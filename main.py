@@ -532,11 +532,25 @@ class DeckEditor(Handler):
 			elif attr_key == 'number':
 				slide.number = int(attr_value)
 			elif attr_key == 'tags':
-				attr.tags = [0]
+				tags = []
+				new_tags = attr_value.split(',')
+				valid_tags = diccionarios_CNBV.definiciones['secciones']
+				for tag in new_tags:
+					if tag in valid_tags:
+						tags.append(tag)
+				slide.tags = tags
 			slide.put()
 			self.response.out.write(json.dumps({
 				'message': 'the package has been delivered'
 				}))
+		elif user_action == 'DeleteSlide':
+			blob_key = slide.pic_key
+			slide.key.delete()
+			blob_info = blobstore.BlobInfo.get(blob_key)
+			blob_info.delete()
+			self.response.out.write(json.dumps({
+				'message': 'slide deleted'
+				}))			
 
 
 class NewSlide(Handler):
@@ -550,15 +564,25 @@ class NewSlide(Handler):
 
 class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	# @super_civilian_bouncer
-	def post(self):
+	def post(self):		
 		uploads = self.get_uploads()
-		# post_details = get_post_details(self)
+
+		bulk_upload = False
+		slides_details = diccionarios_CNBV.definiciones['bulk_slide_import']
+		
 		i = 0
 		for upload in uploads:
+			slide_lead = 'Lead'
+			slide_tags = []
+			if bulk_upload:
+				slide_lead = slides_details[upload.filename][0],
+				slide_tags = slides_details[upload.filename][1],
+
 			slide = Slide(			
 				pic_key = upload.key(),
 				pic_url = images.get_serving_url(blob_key=upload.key()),		
-				lead = upload.filename,
+				lead = slide_lead,
+				tags = slide_tags,
 				number = i,
 				doc_name = 'Default',			
 			)
