@@ -562,7 +562,6 @@ class ReportViewer(Handler):
 
 
 
-
 class NewSlide(Handler):
 	@super_civilian_bouncer
 	def get(self):
@@ -577,25 +576,28 @@ class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	def post(self):		
 		uploads = self.get_uploads()
 
-		bulk_upload = False
+		bulk_upload = True
 		slides_details = diccionarios_CNBV.definiciones['bulk_slide_import']
 		
 		i = 0
 		for upload in uploads:
-			slide_lead = 'Lead'
-			slide_tags = []
-			if bulk_upload:
-				slide_lead = slides_details[upload.filename][0],
-				slide_tags = slides_details[upload.filename][1],
 
-			slide = Slide(			
-				pic_key = upload.key(),
-				pic_url = images.get_serving_url(blob_key=upload.key()),		
-				lead = slide_lead,
-				tags = slide_tags,
-				number = i,
-				doc_name = 'Default',			
-			)
+			if bulk_upload:
+				slide = Slide(			
+					pic_key = upload.key(),
+					pic_url = images.get_serving_url(blob_key=upload.key()),		
+					lead = slides_details[upload.filename][0],
+					tags = slides_details[upload.filename][1],
+					number = i,
+					doc_name = 'Default')			
+			else:
+				slide = Slide(			
+					pic_key = upload.key(),
+					pic_url = images.get_serving_url(blob_key=upload.key()),		
+					lead = 'Lead',
+					tags = [],
+					number = i,
+					doc_name = 'Default')
 			slide.put()
 			i += 1
 		self.redirect('/DeckEditor')

@@ -131,6 +131,7 @@ opc_cortes = [
 ]
 
 def_secciones = {
+	'S99': 'Menu',
 	'S00': 'General',
 	'S01': 'Por tamaño de empresa',
 	'S02': 'Por región geográfica',
@@ -141,6 +142,7 @@ def_secciones = {
 }
 
 opc_secciones = [
+	['S99', 'Menu'],
 	['S00', 'General'],
 	['S01', 'Por tamaño de empresa'],
 	['S02', 'Por región geográfica'],
@@ -151,7 +153,7 @@ opc_secciones = [
 ]
 
 def_bulk_slide_import = {
-	'Slide0.PNG': ['Menu', []],
+	'Slide0.PNG': ['Menu', ['S99']],
 	'Slide1.PNG': ['Evolución y distribución de la cartera', ['S00']],
 	'Slide2.PNG': ['Crecimiento en originaciones', ['S00']],
 	'Slide3.PNG': ['Componentes del portafolio (1/2)', ['S00']],
