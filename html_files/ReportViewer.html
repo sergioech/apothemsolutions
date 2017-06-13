@@ -1,0 +1,33 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<div class="row"> 	
+	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 650px; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
+		<div class="btn-group-vertical">
+			{% for seccion in secciones %}
+				<button type="button" class="btn btn-primary SectionButton" seccion_objetivo=".{{seccion[0]}}">{{seccion[1]}}</button>
+			{% endfor %}
+		</div>
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary MovementButton" movement="left"><span class="glyphicon glyphicon-arrow-left"></span></button>
+			<button type="button" class="btn btn-primary MovementButton" movement="right"><span class="glyphicon glyphicon-arrow-right"></span></button>
+		</div>
+	</div>
+
+	<div class="col-xs-9" style="padding-left: 30px;"> 
+		{% for slide in slides %}
+			<div class="row ReportSlide hidden {% for tag in slide.tags %}{{tag}} {% endfor %}">
+				<div class="col-xs-12">
+					<div class="row"><div class="col-xs-12"><span id="chart_lead" class="ChartLead">{{slide.lead}}</span></div></div>
+				</div>
+			</div>
+			
+		{% endfor %}	
+	</div>
+</div>	
+{% endblock %}
+
+
+
+
+

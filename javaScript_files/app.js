@@ -202,3 +202,77 @@ $(document).on('click', '.DeleteSlideButton', function(){
 		slide.addClass('hidden');
 		})
 });
+
+
+function unhide_group(lista_ids){
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).removeClass('hidden') 
+  }
+};
+
+
+function hide_group(lista_ids){
+  for( miembro in lista_ids){
+    $(lista_ids[miembro]).addClass('hidden') 
+  }
+};
+
+var past_slide = 0;
+var current_slide = 0;
+var next_slide = 0;
+
+
+function UpdateCurrentNextPreviews(movement){
+	var SeccionActiva = $('.SeccionActiva');
+	var TamanoSeccion = SeccionActiva.length;
+	
+	if(movement == 'right'){
+		past_slide = current_slide
+		current_slide = next_slide
+		
+		if(next_slide + 1 < TamanoSeccion ){
+			next_slide = next_slide + 1
+		}
+	}
+
+	if(movement == 'left'){
+		next_slide = current_slide
+		current_slide = past_slide
+				
+		if(past_slide - 1 >= 0 ){
+			past_slide = past_slide - 1
+		}
+	}
+};
+
+$(document).on('click', '.SectionButton', function(){
+	$('.ReportSlide').addClass('hidden')
+	$('.ReportSlide').removeClass('SeccionActiva')
+	var seccion_objetivo = $(this).attr('seccion_objetivo');
+	console.log(seccion_objetivo);
+	// $(seccion_objetivo).removeClass('hidden')
+	$(seccion_objetivo).addClass('SeccionActiva');
+	$($(seccion_objetivo)[0]).removeClass('hidden');
+
+	past_slide = 0;
+	current_slide = 0;
+	next_slide = 1;
+});
+
+
+
+$('.MovementButton').on('click', function(){
+	var movement = $(this).attr('movement');
+	var SeccionActiva = $('.SeccionActiva');
+	$(SeccionActiva[current_slide]).addClass('hidden');
+
+	if(movement == 'right'){	
+		$(SeccionActiva[next_slide]).removeClass('hidden');		
+	}
+
+	if(movement == 'left'){
+		$(SeccionActiva[past_slide]).removeClass('hidden');	
+	}
+	UpdateCurrentNextPreviews(movement)
+
+});

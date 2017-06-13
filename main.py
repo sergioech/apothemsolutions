@@ -553,6 +553,16 @@ class DeckEditor(Handler):
 				}))			
 
 
+class ReportViewer(Handler):
+	@super_civilian_bouncer
+	def get(self):
+		slides = Slide.query().order(Slide.number).fetch()
+		secciones = diccionarios_CNBV.opciones['secciones']
+		self.print_html('ReportViewer.html', slides=slides, secciones=secciones)
+
+
+
+
 class NewSlide(Handler):
 	@super_civilian_bouncer
 	def get(self):
@@ -973,6 +983,7 @@ app = webapp2.WSGIApplication([
     
     ('/NewSlide', NewSlide),
     ('/DeckEditor', DeckEditor),
+    ('/ReportViewer', ReportViewer),
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),
