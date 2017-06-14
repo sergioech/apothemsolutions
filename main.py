@@ -278,7 +278,7 @@ class ChartViewer(Handler):
 
 		return result
 
-		#xx
+		
 	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas, perspectiva_portafolio):
 
 		new_indice_tablas = []
@@ -576,7 +576,7 @@ class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	def post(self):		
 		uploads = self.get_uploads()
 
-		bulk_upload = True
+		bulk_upload = False
 		slides_details = diccionarios_CNBV.definiciones['bulk_slide_import']
 		
 		i = 0
@@ -610,6 +610,28 @@ class TableViewer(Handler):
 		upload_url = blobstore.create_upload_url('/upload_csv')
 		blob_file_input = "{0}".format(upload_url)
 		self.print_html('TableViewer.html', tablas_cnbv=tablas_cnbv, blob_file_input=blob_file_input)
+
+	@super_civilian_bouncer
+	def post(self):
+		event_details = json.loads(self.request.body)
+		table = TablaCNBV.get_by_id(int(event_details['table_id']))
+		user_action = event_details['user_action']
+	
+		if user_action == 'DeleteTable':
+			
+			key_tabla = table.key
+			table_entities = DatoCNBV.query(DatoCNBV.tabla == key_tabla)	
+			self.operate_on_multiple_keys_at_once(table_entities)
+			table.key.delete()
+			self.response.out.write(json.dumps({
+				'message': 'Table deleted'
+				}))			
+
+	def operate_on_multiple_keys_at_once(self, list_of_entities):
+	    list_of_keys = ndb.put_multi(list_of_entities)
+	    list_of_entities = ndb.get_multi(list_of_keys)
+	    ndb.delete_multi(list_of_keys)
+
 
 
 class LoadCSV(Handler):

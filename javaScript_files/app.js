@@ -204,19 +204,6 @@ $(document).on('click', '.DeleteSlideButton', function(){
 });
 
 
-function unhide_group(lista_ids){
-  for( miembro in lista_ids){
-    $(lista_ids[miembro]).removeClass('hidden') 
-  }
-};
-
-
-function hide_group(lista_ids){
-  for( miembro in lista_ids){
-    $(lista_ids[miembro]).addClass('hidden') 
-  }
-};
-
 var past_slide = 0;
 var current_slide = 0;
 var next_slide = 0;
@@ -275,4 +262,29 @@ $('.MovementButton').on('click', function(){
 	}
 	UpdateCurrentNextPreviews(movement)
 
+});
+
+$(document).on('click', '.DeleteTableButton', function(){
+	
+	var table = $(this).closest('#TableViewerTable');
+	var table_name = $(this).attr("table_name")
+	var table_id = table.attr("value");
+	table.fadeOut("slow")
+	
+	console.log('This is the table to be deleted:')
+	console.log(table_name)
+
+	$.ajax({
+		type: "POST",
+		url: "/TableViewer",
+		dataType: 'json',
+		data: JSON.stringify({
+			'table_name': table_name,
+			'table_id': table_id,
+			'user_action': 'DeleteTable'
+		})
+	}).done(function(data){
+		console.log(data['message']);
+		table.addClass('hidden');
+		})
 });
