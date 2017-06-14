@@ -381,6 +381,7 @@ def_estado = {
 	'30': 'Veracruz de Ignacio de la Llave',
 	'31': 'Yucatán',
 	'32': 'Zacatecas',
+	'90': 'Estado sin clasificar',
 	'91': 'Migración',
 	'92': 'Extranjero'
 }
@@ -419,6 +420,7 @@ opc_estado = [
 	['30',  'Veracruz de Ignacio de la Llave'],
 	['31',  'Yucatán'],
 	['32',  'Zacatecas'],
+	['90',  'Estado sin clasificar'],
 	['91',  'Migración'],
 	['92',  'Extranjero']
 ]
@@ -1435,6 +1437,7 @@ cat_estado = {
 	'32': ['Zacatecas', '32'],
 	'88': ['Extranjero', '92'],
 	'99': ['Migración', '91'],
+	'888': ['Estado sin clasificar', '90'],
 	'999': ['Extranjero', '92']
 }
 
