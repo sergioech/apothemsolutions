@@ -620,18 +620,31 @@ class TableViewer(Handler):
 		if user_action == 'DeleteTable':
 			
 			key_tabla = table.key
-			table_entities = DatoCNBV.query(DatoCNBV.tabla == key_tabla)	
-			self.operate_on_multiple_keys_at_once(table_entities)
-			table.key.delete()
-			self.response.out.write(json.dumps({
-				'message': 'Table deleted'
-				}))			
+			table_entities = DatoCNBV.query(DatoCNBV.tabla == key_tabla).fetch(limit=500)	
+			rows_to_be_deleted = len(table_entities)
+			
+			if rows_to_be_deleted > 0:
+				self.operate_on_multiple_keys_at_once(table_entities)
+				# table.key.delete()
+				table.registros -= rows_to_be_deleted
+				table.put()
+				self.response.out.write(json.dumps({
+					'message': 'Only rows deleted',
+					'RowsDeleted': rows_to_be_deleted,
+					'RowsLeft': table.registros
+					}))
+
+			if rows_to_be_deleted == 0:	
+				table.key.delete()
+				self.response.out.write(json.dumps({
+					'message': 'Table deleted',
+					'RowsDeleted': 0
+					}))		
 
 	def operate_on_multiple_keys_at_once(self, list_of_entities):
 	    list_of_keys = ndb.put_multi(list_of_entities)
 	    list_of_entities = ndb.get_multi(list_of_keys)
 	    ndb.delete_multi(list_of_keys)
-
 
 
 class LoadCSV(Handler):

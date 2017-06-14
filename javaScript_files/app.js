@@ -269,7 +269,7 @@ $(document).on('click', '.DeleteTableButton', function(){
 	var table = $(this).closest('#TableViewerTable');
 	var table_name = $(this).attr("table_name")
 	var table_id = table.attr("value");
-	table.fadeOut("slow")
+	// table.fadeOut("slow")
 	
 	console.log('This is the table to be deleted:')
 	console.log(table_name)
@@ -285,6 +285,8 @@ $(document).on('click', '.DeleteTableButton', function(){
 		})
 	}).done(function(data){
 		console.log(data['message']);
-		table.addClass('hidden');
+		console.log(data['RowsDeleted']);
+		console.log(data['RowsLeft'])
+		// table.addClass('hidden');
 		})
 });
