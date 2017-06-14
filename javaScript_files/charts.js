@@ -42,8 +42,11 @@ $('.ExpandColapseSection').on('click', function(){
 
 
 $('.SeleccionarCorte').on('click', function(){
-  
+
   var CorteSeleccionado = $(this)
+  // console.log('Este es el corte que se acaba de seleccionar: ')
+  // console.log(CorteSeleccionado.attr('value'))
+
   var CortesActivos = parseInt($('#NumeroCortesSeleccionados').val());
   var CorteRenglones = $('#CorteRenglones');
   var CorteColumnas = $('#CorteColumnas');
@@ -52,9 +55,13 @@ $('.SeleccionarCorte').on('click', function(){
 
   if (CorteSeleccionado.attr("corte_activo") == "Si") {
     $('#NumeroCortesSeleccionados').val(CortesActivos - 1);
-    CorteRenglones.val(CorteColumnas.val())
+    
+    if(CorteSeleccionado.attr('value') == CorteRenglones){
+      CorteRenglones.val(CorteColumnas.val())
+    }
+
     CorteColumnas.val('')
-  
+
   } else {
 
     if ( CortesActivos == 0){
@@ -66,22 +73,19 @@ $('.SeleccionarCorte').on('click', function(){
       $('#NumeroCortesSeleccionados').val(2);   
 
     } else if (CortesActivos == 2){
-
       flipear_boton_corte(CorteRenglones.val())
       CorteRenglones.val(CorteColumnas.val())
-      CorteColumnas.val(CorteSeleccionado.val())   
-
-      // console.log('This is the current corte columnas')
-      // console.log(CorteColumnas.val())
-      // console.log('This is the current corte renglones')
-      // console.log(CorteRenglones.val())
-      
+      CorteColumnas.val(CorteSeleccionado.val())         
     }
 
   }
 
-  flipear_boton_corte(CorteSeleccionado.val());
+  // console.log('This is the current corte columnas')
+  // console.log(CorteColumnas.val())
+  // console.log('This is the current corte renglones')
+  // console.log(CorteRenglones.val())
 
+  flipear_boton_corte(CorteSeleccionado.val());
 });
 
 
@@ -102,7 +106,6 @@ function flipear_boton_corte(nombre_corte) {
   var boton_PlusMinus = $('#boton_' + nombre_corte + '_PlusMinus')
   boton_PlusMinus.toggleClass('btn-primary');
   boton_PlusMinus.toggleClass('btn-default');
-
 };
 
 
@@ -378,10 +381,6 @@ function transpose_matrix(matrix){
 
 function invertir_renglones(matrix){
 
-  // console.log(' ')
-  // console.log('Orden antes de invertir: ' + $('#orden_matriz').val())
-  // console.log('Invirtiendo renglones...')
-
   var newArray = [matrix[0]],
     arrayLength = matrix.length,
     i;
@@ -396,11 +395,7 @@ function invertir_renglones(matrix){
     $('#orden_matriz').val('original')
   }
 
-  // console.log('Orden despues de invertir: ' + $('#orden_matriz').val())
-  // console.log(' ')
-
   return newArray  
-
 };
 
 
@@ -415,7 +410,6 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
   } else {
     $('#value_labels_div').removeClass('hidden')
   }
-
 }); 
 
 
@@ -426,6 +420,7 @@ $('input[type=radio][name=chart_type]').on('change',function(){
     draw_chart(chart_array, chart_type);
   }
 });  
+
 
 $('#value_labels').on('change', function(){
   chart_type = $('input:radio[name=chart_type]:checked').val();  
