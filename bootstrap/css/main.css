@@ -30,8 +30,8 @@
   border-style: solid;  
   border-color: #0000ff;
   
-  width: 800px;
-  height: 600px;
+  /*width: 800px;*/
+  height: 88vh;
 
   margin-bottom:8px;
   margin-right:5px;
@@ -133,6 +133,10 @@
     font-size: 16px;
 }
 
-
+/*img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}*/
 
 

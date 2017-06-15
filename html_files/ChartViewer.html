@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row"> 	
-	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 650px; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
+	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 93vh; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
 		
 		<form method="post">
 			<div class="hidden">
@@ -70,18 +70,6 @@
 					<label class="radio-inline"><input type="radio" name="moneda" value="02" id=""> UDIS </label>
 				</div>
 			</div>
-
-
-
-<!-- 			<div class="row hidden" style="margin-top: 10px;" id="intervalo">
-				<div class="col-xs-12">
-					<label> Intervalos</label><br>
-					<label class="radio-inline"><input type="radio" name="intervalo" value="total" checked="checked"> Meses </label>
-					<label class="radio-inline"><input type="radio" name="intervalo" value="total"> Trimestres </label>
-					<label class="radio-inline"><input type="radio" name="intervalo" value="marginal"> Años </label>
-				</div>
-			</div> -->
-
 
 			<div class="row hidden" style="margin-top: 10px;" id="vista">
 				<div class="col-xs-12">
@@ -237,7 +225,7 @@
 	<div class="col-xs-9" style="padding-left: 30px;"> 
 		<div class="SlideDisplaySection" style="padding: 0px" id="SlideDisplaySection">
 		
-			<img src="images/Portada.png" id="imagen_portada">
+			<img style="height: 100%; width: 100%" src="images/Portada.png" id="imagen_portada">
 		
 			<div id="ChartLead" style="margin-right: 15px; margin-left: 15px;">
 				<div class="row"><div class="col-xs-12"><span id="chart_lead" class="ChartLead"></span></div></div>
@@ -245,7 +233,7 @@
 				<hr style="margin-top:5px; margin-bottom: 0px;">
 			</div>
 			<div class="loader hidden" style="margin-left: 300px; margin-top: 200px;" id="chart_loader"></div>
-			<div class="row" style=""><div class="col-xs-12"><div id="chart_div" class="hidden" style="margin-left: 10px; height:490px;"></div></div></div>
+			<div class="row" style=""><div class="col-xs-12"><div id="chart_div" class="hidden" style="margin-left: 10px; height: 75vh;"></div></div></div>
 			<div class="row hidden" id="MensajeError" ><div class="col-xs-12"> <span style="font-size: 100px; padding-left: 42%; padding-top: 10%; color:#337ab7;" class="glyphicon glyphicon-warning-sign"></span><h3 style="text-align: center; color:#337ab7" id="TextoMensajeError">Hubo un problema al intentar obtener los datos para generar la gráfica según los campos seleccionados. <br><br> Favor de modificar su selección e intentarlo nuevamente</h3></div></div>				
 		</div>		
 	</div>
