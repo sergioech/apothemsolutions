@@ -115,107 +115,106 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="row hidden" style="margin-top: 10px;" id="tipo_de_grafica">
-				
-				<div class="col-xs-12">
-					<label style="margin-top: 10px; margin-bottom: 0px;">Tipo de gráfica</label>
-					<div class="row">
-						<div class="col-xs-4">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="bar_chart" id="chart_type_bar_chart"> Barras </label>
-							</div>
-						</div>		
-					
-						<div class="col-xs-4" style="padding-left: 5px;">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
-							</div>
-						</div>	
-						<div class="col-xs-4">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="chart_type_line_chart" checked="checked"> Lineas </label>	
-							</div>
-						</div>
-					</div>
-					<div class="row">					
-						<div class="col-xs-4">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="pie_chart" id="chart_type_pie_chart"> Pie </label>
-							</div>
-						</div>	
-					</div>	
-				</div>				
-			</div>
-
-
-			<div class="row hidden" style="margin-top: 10px;" id="opciones_visuales">
-				
-				<div class="col-xs-12">					
-					<label style="margin-bottom: 0px;">Opciones Visuales</label>
-					<div class="row">
-
-						<div class="col-xs-4">
-							<div class="checkbox"><label><input type="checkbox" id="is_transposed" class="QuickChartViewUpdate"> Invertir </label></div>
-						</div>
+			<div  class="hidden" id="chart_details_div">
+				<div class="row hidden" style="margin-top: 10px;" id="tipo_de_grafica">					
+					<div class="col-xs-12">
+						<label style="margin-top: 0px; margin-bottom: 0px;">Tipo de gráfica</label>
+						<div class="row">
+							<div class="col-xs-4">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="bar_chart" id="chart_type_bar_chart"> Barras </label>
+								</div>
+							</div>		
 						
-						<div class="col-xs-4">
-							<div class="checkbox"><label><input type="checkbox" id="is_sorted" class="QuickChartViewUpdate"> Ordenar </label></div>
+							<div class="col-xs-4" style="padding-left: 5px;">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
+								</div>
+							</div>	
+							<div class="col-xs-4">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="chart_type_line_chart" checked="checked"> Lineas </label>	
+								</div>
+							</div>
 						</div>
+						<div class="row">					
+							<div class="col-xs-4">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="pie_chart" id="chart_type_pie_chart"> Pie </label>
+								</div>
+							</div>	
+						</div>	
+					</div>				
+				</div>
 
-						<div class="col-xs-4">
-							<div class="checkbox"><label><input type="checkbox" id="is_stacked" class="QuickChartViewUpdate"> Apilar </label></div>
+				<div class="row hidden" style="margin-top: 10px;" id="opciones_visuales">
+					
+					<div class="col-xs-12">					
+						<label style="margin-bottom: 0px;">Opciones Visuales</label>
+						<div class="row">
+
+							<div class="col-xs-4" id="is_transposed_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_transposed" class="QuickChartViewUpdate"> Invertir </label></div>
+							</div>
+							
+							<div class="col-xs-4" id="is_sorted_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_sorted" class="QuickChartViewUpdate"> Ordenar </label></div>
+							</div>
+
+							<div class="col-xs-4" id="is_stacked_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_stacked" class="QuickChartViewUpdate"> Apilar </label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="value_labels_div">
+								<div class="checkbox"><label><input type="checkbox" id="value_labels" class="QuickChartViewUpdate"> Valores</label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="is_donut_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_donut" class="QuickChartViewUpdate"> Dona </label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="is_3D_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_3D" class="QuickChartViewUpdate"> 3D </label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="as_delta_col">
+								<div class="checkbox"><label><input type="checkbox" id="as_delta" class="QuickChartViewUpdate"> Δ%  </label></div>
+							</div>
+
+							<div class="col-xs-6" style="" id="as_percent_col">
+								<div class="checkbox"><label><input type="checkbox" id="as_percent" class="QuickChartViewUpdate"> % del total </label></div>
+							</div>						
+
+						</div>											
+
+						<div class="row" id="denominador_col">												
+							<div class="col-xs-6">														
+								<select class="form-control" dir="rtl" name="" id="denominador" style="margin-bottom:7px; width: 111px; -webkit-appearance: none; padding-left: 10px; padding-right: 10px;">															
+									<option value="1" unidades_denominador="">1</option>
+									<option value="1000" unidades_denominador="Miles de ">1,000</option>
+									<option value="1000000" unidades_denominador="Millones de ">1,000,000</option>
+									<option value="1000000000" unidades_denominador="Miles de Millones de ">1,000,000,000</option>
+								</select> 
+							</div>
+							<div class="col-xs-6" style="padding-left: 0px; margin-left: -10px;"><span>Unidades</span></div>
 						</div>
+					</div>				
+				</div>
 
-						<div class="col-xs-4" style="" id="value_labels_div">
-							<div class="checkbox"><label><input type="checkbox" id="value_labels" class="QuickChartViewUpdate"> Valores</label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="is_donut" class="QuickChartViewUpdate"> Dona </label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="is_3D" class="QuickChartViewUpdate"> 3D </label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="as_delta" class="QuickChartViewUpdate"> Δ%  </label></div>
-						</div>
-
-						<div class="col-xs-6" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="as_percent" class="QuickChartViewUpdate"> % del total </label></div>
-						</div>						
-
-					</div>											
-
-					<div class="row">												
-						<div class="col-xs-6">														
-							<select class="form-control" dir="rtl" name="" id="denominador" style="margin-bottom:7px; width: 111px; -webkit-appearance: none; padding-left: 10px; padding-right: 10px;">															
-								<option value="1" unidades_denominador="">1</option>
-								<option value="1000" unidades_denominador="Miles de ">1,000</option>
-								<option value="1000000" unidades_denominador="Millones de ">1,000,000</option>
-								<option value="1000000000" unidades_denominador="Miles de Millones de ">1,000,000,000</option>
-							</select> 
-						</div>
-						<div class="col-xs-6" style="padding-left: 0px; margin-left: -10px;"><span>Unidades</span></div>
+				<div class="row hidden" id="download_row" style="margin-top: 10px;">
+					<div class="col-xs-12">
+						<label>Descargar</label>
 					</div>
-				</div>				
-			</div>
+					
+					<div class="col-xs-6">
+						<button type="button" class="btn btn-success btn-md" id="download_button" style="width: 100px;"> Imagen <span style="margin-left:2px;" class="glyphicon glyphicon-picture"></span></button>
+					</div>
+					
+					<div class="col-xs-6">
+						<button type="button" class="btn btn-success btn-md" id="download_datos" style="width: 100px;"> Datos <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button>
+					</div>				
+				</div>
 
-		
-			<div class="row hidden" id="download_row">
-				<div class="col-xs-12">
-					<label>Descargar</label>
-				</div>
-				
-				<div class="col-xs-6">
-					<button type="button" class="btn btn-success btn-md" id="download_button" style="width: 100px;"> Imagen <span style="margin-left:2px;" class="glyphicon glyphicon-picture"></span></button>
-				</div>
-				
-				<div class="col-xs-6">
-					<button type="button" class="btn btn-success btn-md" id="download_datos" style="width: 100px;"> Datos <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button>
-				</div>				
 			</div>
 		</form>
 		<br>

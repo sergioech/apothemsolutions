@@ -131,8 +131,6 @@ $(document).on('click', '.UpdateChartButton', function(){
 
   start_time = new Date()
   timer()
-
-  $("#left_options_bar").animate({ scrollTop: 0 }, "fast");
   
   $('.opciones_corte').addClass('hidden');
   $('.glyphicon_boton').removeClass('glyphicon-minus');
@@ -188,7 +186,8 @@ $(document).on('click', '.UpdateChartButton', function(){
     console.log('Total de data points en query: ' + raw_data['total_dps'])
     console.log('Total de tiempo requerido para generar chart: '+m.getMinutes()+":"+m.getSeconds())
     console.log('    ')
-    
+    $('#chart_details_div').removeClass('hidden');
+    $("#left_options_bar").animate({ scrollTop: 1000 }, "fast");
   })
 });
 
@@ -257,7 +256,7 @@ function draw_chart(chart_array, chart_type){
       is_stacked = 'percent'
       axis_format = 'percent'
       unidades_denominador_locales = ''
-      chart_units_locales = 'Camo porcentaje del total (%)'
+      chart_units_locales = 'Como porcentaje del total (%)'
     }
 
     $('#unidades_denominador').text(unidades_denominador_locales);
@@ -413,10 +412,14 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
 }); 
 
 
-$('input[type=radio][name=chart_type]').on('change',function(){
-  if(chart_array != undefined){
-    chart_type = $('input:radio[name=chart_type]:checked').val();
+$('input[type=radio][name=chart_type]').on('change',function(){    
   
+  if(chart_array != undefined){    
+    chart_type = $('input:radio[name=chart_type]:checked').val();
+    
+    hide_group(opciones_visuales);
+    unhide_group(menus_visibles[chart_type]);
+
     draw_chart(chart_array, chart_type);
   }
 });  
@@ -593,8 +596,55 @@ var menus_visibles = {
     'tasa':['[value=intervalo]'],
 
     'imor':[],
-  }
+  },
+
+ 'bar_chart':[
+    '#is_transposed_col',
+    '#is_sorted_col',
+    '#is_stacked_col',
+    '#value_labels_div',
+    
+    '#as_delta_col',
+    '#as_percent_col',
+    '#denominador_col'
+  ],
+
+  'pie_chart': [
+    '#is_transposed_col',
+    '#is_sorted_col',
+    
+    '#is_donut_col',
+    '#is_3D_col',
+    
+    '#denominador_col'
+  ],
+  
+  'line_chart': [
+    '#is_transposed_col',
+    '#denominador_col'
+  ],
+  
+  'column_chart': [
+    '#is_transposed_col',
+    '#is_sorted_col',
+    '#is_stacked_col',
+    '#as_delta_col',
+    '#as_percent_col',
+    '#denominador_col'
+  ]
 }
+
+var opciones_visuales = [
+  '#is_transposed_col',
+  '#is_sorted_col',
+  '#is_stacked_col',
+  '#value_labels_div',
+  '#is_donut_col',
+  '#is_3D_col',
+  '#as_delta_col',
+  '#as_percent_col',
+  '#denominador_col'
+]
 
 
 var cortes_incompatibles = {
@@ -610,6 +660,8 @@ var cortes_incompatibles = {
   'calificacion':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'sector'],
   'sector': ['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion']
 }
+
+
 
 
 function validar_compatibilidad(corte_seleccionado, corte_activo){
