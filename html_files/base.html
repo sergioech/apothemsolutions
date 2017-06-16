@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" charset="UTF-8"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
 	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 	<link type="text/css" rel="stylesheet" href="/bootstrap/css/main.css">
+	<link href="carousel.css" rel="stylesheet" style="max-height: 200px">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons">	
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYar0kU6pFRnqn08Uz1X8uAYpD8Wt_irw&callback=myMap"></script>
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart','bar'], 'language':'en'});
 	</script>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" charset="UTF-8">
 	<title> Apothem Solutions </title>
+	
 </head>
 
 <body class="">
@@ -63,7 +71,7 @@
 
 
 	<div class=""> 
-		<div class="container">		
+		<div class="container" style="width:100%; padding:0px">		
 		{% block content %}
 		{% endblock %}
 		</div>

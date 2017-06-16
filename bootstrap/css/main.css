@@ -106,6 +106,10 @@
     font-size: 16px;
 }
 
+.marketing{
+  text-align: center;
+}
 
-
-
+.img-circle{
+  border-radius: 10%;
+}
