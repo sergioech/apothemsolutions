@@ -1,17 +1,18 @@
 {% extends "Base.html" %}
 
 {% block content %}
-<div class="row">
-		
-	{% if usuario %}
-	<div class="col-xs-2"></div>	
-	<div class="col-xs-4">
-		<div class="SlideDisplaySection BlueRectangle">
-			<div class="row BlueRectangleTitle">
-				<div class="col-xs-12">
-					<div>Reporte</div>
+	
+{% if usuario %}
+	<div class="row">
+		<div class="col-xs-2"></div>	
+		<div class="col-xs-4">
+			<div class="SlideDisplaySection BlueRectangle">
+				<div class="row BlueRectangleTitle">
+					<div class="col-xs-12">
+						<div>Reporte</div>
+					</div>
 				</div>
-			</div>
+             
 			<div class="row">
 				<div class="col-xs-12" style="padding-top: 20px; padding-top: 20px" >
 					<div>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>
@@ -32,45 +33,178 @@
 			</div>		
 		</div>
 	</div>	
-	<div class="col-xs-4">
-		<div class="SlideDisplaySection BlueRectangle">
-			<div class="row BlueRectangleTitle">
-				<div class="col-xs-12">
-					<div>Visualizador</div>
+		<div class="col-xs-4">
+			<div class="SlideDisplaySection BlueRectangle">
+				<div class="row BlueRectangleTitle">
+					<div class="col-xs-12">
+						<div>Visualizador</div>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12" style="padding-top: 20px; padding-top: 20px" >
-					<div>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>
-				</div>					
-			</div>
-			
-			<div class="row">
-				<div class="col-xs-12" style="padding-left: 75px; padding-top: 30px;">
-					<img src="http://placehold.it/140x100" id="" >
-				</div>	
-			</div>
+				<div class="row">
+					<div class="col-xs-12" style="padding-top: 20px; padding-top: 20px" >
+						<div>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>
+					</div>					
+				</div>
+				
+				<div class="row">
+					<div class="col-xs-12" style="padding-left: 75px; padding-top: 30px;">
+						<img src="http://placehold.it/140x100" id="" >
+					</div>	
+				</div>
 
-			<div class="row">
-				<div class="col-xs-12" style="padding-top: 40px; padding-left: 35px">
-					<form action="/VisualizadorCNBV">						
-						<button type="submit" class="btn btn-success btn-md" id="" style="width: 220px;"> Ir a visualizador <span style="margin-left:2px;" class="glyphicon glyphicon-equalizer"></span></button>
-				</div>	
-			</div>		
+				<div class="row">
+					<div class="col-xs-12" style="padding-top: 40px; padding-left: 35px">
+						<form action="/VisualizadorCNBV">						
+							<button type="submit" class="btn btn-success btn-md" id="" style="width: 220px;"> Ir a visualizador <span style="margin-left:2px;" class="glyphicon glyphicon-equalizer"></span></button>
+					</div>	
+				</div>		
+			</div>
 		</div>
+		<div class="col-xs-2"></div>
 	</div>
+{% else %}
 
+<!-- INICIA EL CARRUSEL -->
 
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="height: 500px;">
+  <!-- Indicators --> 
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
 
-	<div class="col-xs-2"></div>
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" >
+    <div class="item active" style="height: 500px;">
+      <img src="images/Carrusel1.jpg">
+      					<div class="carousel-caption" style="margin-bottom: 120px">
+                            <h1 style="color: rgb(245,245,245)">SPECTRE</h1>
+                            <h3 style="color: rgb(245,245,245)">Toma de decisiones estratégicas con base en información actualizada del mercado</h3>                         
+                        </div>
+                    
+    </div>
 
-	{% else %}
-	<div class="col-xs-12">	
-		<h1>Sitio en construcción</h1>
-	</div>	
-	{% endif %}
-		
+    <div class="item" style="height: 500px;">
+      <img src="images/Carrusel2.jpg">
+      <div class="carousel-caption" style="margin-bottom: 120px">
+                            <h1 style="color: rgb(245,245,245)">SPECTRE</h1>
+                            <h3 style="color: rgb(245,245,245)">Toma de decisiones estratégicas con base en información actualizada del mercado</h3>                         
+                        </div>
+    </div>
+
+    <div class="item" style="height: 500px;">
+      <img src="images/Carrusel3.jpg">
+            <div class="carousel-caption" style="margin-bottom: 120px">
+                            <h1 style="color: rgb(245,245,245)">SPECTRE</h1>
+                            <h3 style="color: rgb(245,245,245)">Toma de decisiones estratégicas con base en información actualizada del mercado</h3>                         
+                        </div>
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
 </div>
 
+<!-- MENSAJE INICIAL -->
 
+<div class="container marketing">
+        <div class="row" style="padding-top: 50px">
+            <h3 style="text-align:center">Spectre es una herramienta que te brinda información actualizada del mercado de créditos empresariales para mejorar la toma estratégica de decisiones</h3>
+        </div>
+    <hr class="featurette-divider" style=" border: none; height:2px; background-color:rgb(220,220,220); margin-bottom: 100px; margin-top:70px">
+
+<!-- 3 CARACTERÍSTICAS -->
+
+    <div class="row">
+                <div class="col-xs-4">
+                    <img class="img-circle" src="images/Decision.jpg" width="140" height="140" vertical-align="middle">
+                    <h3>Toma de decisiones estratégicas</h3>
+                    <p style="padding:20px">Conoce tu posición competitiva en el mercado y realiza ajustes estratégicos que te permitan crecer con mejores niveles de rentabilidad</p>
+                </div>
+                
+                <div class="col-xs-4">
+                    <img class="img-circle" src="images/updated.jpg" width="140" height="140">
+                    <h3>Información actualizada</h3>
+                    <p style="padding:20px">La plataforma se actualiza en tiempo real con base en la información más actualizada disponible en el mercado</p>   
+                </div>
+                
+                <div class="col-xs-4">
+                    <img class="img-circle" src="images/userfriendly.png" width="140" height="140">
+                    <h3>Facilidad de uso</h3>
+                    <p style="padding:20px">La interfaz del usuario es muy sencilla y rápida de utilizar. Genera al instante gráficas y tablas con miles de variables y cortes</p>
+                </div>
+            </div>
+    <hr class="featurette-divider" style=" border: none; height:2px; background-color:rgb(220,220,220); margin-bottom: 100px; margin-top:70px">
+
+<!-- PRIMER BLOQUE -->
+
+</div>
+            <div class="row featurette" style="padding-left: 110px">
+                <div class="col-md-7">
+                    <h5 class="featurette-heading" style="margin-top: 0; font-size:25px">Spectre te ayuda a resolver distintos problemas, tales como:</h5>
+                    <p class="lead" style="font-size:17px; margin-top: 30px">¿Qué instituciones financieras han tenido el mayor crecimiento en empresas pequeñas en la zona del Bajío?</p>
+                    <p class="lead" style="font-size:17px">¿Qué productos deberíamos ofrecer en la región norte del país?</p>
+                    <p class="lead" style="font-size:17px">¿En qué segmentos mis tasas de interés se encuentran por debajo del mercado?</p>
+                    <p class="lead" style="font-size:17px">¿Qué instituciones tienen los índices de morosidad más altos por sector económico?</p>
+                    <p class="lead" style="font-size:17px">¿Cómo ha evolucionado la concentración de cartera de mis principales competidores en los últimos 3 años?</p>
+                </div>
+                <div class="col-md-5" style="padding-right: 100px">
+                    <img class="featurette-image img-responsive center-block" src="images/personas2.jpg" style="height:395px; width:400px">
+                </div>
+            </div>
+</div>
+            
+<hr class="featurette-divider" style=" border: none; height:2px; background-color:rgb(220,220,220); margin-bottom: 150px; margin-top: 100px">
+
+<!-- SEGUNDO BLOQUE -->
+
+<div class="row featurette" style="padding-right: 100px; padding-left: 60px">
+	<div class="col-md-5">
+        <img class="featurette-image img-responsive center-block" src="images/piedras.jpg" style="height:395px; width:400px">
+    </div>
+
+    <div class="col-md-7">
+        <h5 class="featurette-heading" style="margin-top: 0; font-size:25px";">Spectre cuenta con un amplio conjunto de indicadores así como múltiples cortes de visualización, incluyendo:</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="lead" style="margin-top: 35px; margin-bottom:1px"> Conjunto de indicadores</p>
+                    <hr class="featurette-divider" style=" border: none; height:2px; background-color:rgb(220,220,220); margin-bottom: 10px; margin-top:1px; margin-right:30px">
+                    <ul style="list-style-type:square; font-size:17px">
+  					<li>Monto dispuesto</li>
+  					<li>Número de créditos</li>
+  					<li>Número de acreditados</li>
+  					<li>Tasa de interés</li>
+  					<li>Plazos de créditos</li>
+  					<li>Concentración de cartera</li>
+					</ul>
+				</div>
+
+				<div class="col-md-6">
+                     <p class="lead" style="margin-top: 35px; margin-bottom:1px"> Cortes de visualización</p>
+                     <hr class="featurette-divider" style=" border: none; height:2px; background-color:rgb(220,220,220); margin-bottom: 10px; margin-top:1px; margin-right:30px">
+                    <ul style="list-style-type:square; font-size:17px">
+  					<li>Geográfico</li>
+  					<li>Tamaño de empresa</li>
+  					<li>Sector económico</li>
+  					<li>Tasa de interés</li>
+  					<li>Monto del crédito</li>
+  					<li>Tipo de garantía</li>
+					</ul>
+				</div>
+						<p class="lead" style="margin-left: 17px; margin-top:270px; font-size:17px";>El visualizador automático, te permite realizar cualquier combinación de variables con corte para generar cualquier gráfica que estés buscando. Descarga las gráficas o datos en Excel para que crees tus propias presentaciones</p>
+			</div>
+    </div>
+</div>
+
+<hr class="featurette-divider" style=" border: none; height:2px; background-color:rgb(220,220,220); margin-bottom: 150px; margin-top: 100px">
+
+{% endif %}		
 {% endblock %}

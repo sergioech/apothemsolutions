@@ -133,10 +133,11 @@
     font-size: 16px;
 }
 
-/*img {
-    max-width: 100%;
-    height: auto;
-    width: auto\9; /* ie8 */
-}*/
+.marketing{
+  text-align: center;
+}
 
+.img-circle{
+  border-radius: 10%;
+}
 
