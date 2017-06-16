@@ -2,13 +2,18 @@
 
 {% block content %}
 <div class="row"> 	
-	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 650px; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
+	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 93vh; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
 		
 		<form method="post">
-			<input type="text" class="hidden" name="renglones" id="CorteRenglones">
-			<input type="text" class="hidden" name="columnas" id="CorteColumnas">
-			<input type="text" class="hidden" id="orden_matriz" value="original">
-			<input type="number" class="hidden" id="NumeroCortesSeleccionados" value="2">
+			<div class="hidden">
+				<label>Corte renglones</label>
+				<input type="text" class="" name="renglones" id="CorteRenglones">
+				<label>Corte columnas</label>
+				<input type="text" class="" name="columnas" id="CorteColumnas">
+				<input type="text" class="" id="orden_matriz" value="original">
+				<input type="number" class="" id="NumeroCortesSeleccionados" value="2">
+			</div>
+
 			
 			<div class="row" style="margin-top: 30px;">
 				<div class="col-xs-12">
@@ -66,18 +71,6 @@
 				</div>
 			</div>
 
-
-
-<!-- 			<div class="row hidden" style="margin-top: 10px;" id="intervalo">
-				<div class="col-xs-12">
-					<label> Intervalos</label><br>
-					<label class="radio-inline"><input type="radio" name="intervalo" value="total" checked="checked"> Meses </label>
-					<label class="radio-inline"><input type="radio" name="intervalo" value="total"> Trimestres </label>
-					<label class="radio-inline"><input type="radio" name="intervalo" value="marginal"> Años </label>
-				</div>
-			</div> -->
-
-
 			<div class="row hidden" style="margin-top: 10px;" id="vista">
 				<div class="col-xs-12">
 					<label>Vista</label>
@@ -105,7 +98,7 @@
 								{% for opcion in opciones[corte[0]] %}
 									<div class="checkbox">
 										<label>
-											<input class="opcion" type="checkbox" value="{{opcion[0]}}" id="{{corte[0]}}_{{opcion[0]}}" {% if corte[0] in ['tec', 'estado', 'intervalo', 'moneda'] %}checked{% endif %}> {{opcion[1]}}
+											<input class="opcion" type="checkbox" value="{{opcion[0]}}" id="{{corte[0]}}_{{opcion[0]}}" {% if corte[0] in ['tec', 'estado', 'intervalo', 'moneda', 'destino', 'calificacion', 'sector', 'garantia','monto'] %}checked{% endif %}> {{opcion[1]}}
 										</label>
 									</div>
 								{% endfor %}								
@@ -115,94 +108,6 @@
 				</div>
 			{% endfor %}
 
-			<div class="row hidden" style="margin-top: 10px;" id="tipo_de_grafica">
-				
-				<div class="col-xs-12">
-					<label style="margin-top: 10px; margin-bottom: 0px;">Tipo de gráfica</label>
-					<div class="row">
-						<div class="col-xs-4">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="bar_chart" id="chart_type_bar_chart"> Barras </label>
-							</div>
-						</div>		
-					
-						<div class="col-xs-4" style="padding-left: 5px;">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
-							</div>
-						</div>	
-						<div class="col-xs-4">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="chart_type_line_chart" checked="checked"> Lineas </label>	
-							</div>
-						</div>
-					</div>
-					<div class="row">					
-						<div class="col-xs-4">
-							<div class="radio">
-								<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="pie_chart" id="chart_type_pie_chart"> Pie </label>
-							</div>
-						</div>	
-					</div>	
-				</div>				
-			</div>
-
-
-			<div class="row hidden" style="margin-top: 10px;" id="opciones_visuales">
-				
-				<div class="col-xs-12">					
-					<label style="margin-bottom: 0px;">Opciones Visuales</label>
-					<div class="row">
-
-						<div class="col-xs-4">
-							<div class="checkbox"><label><input type="checkbox" id="is_transposed" class="QuickChartViewUpdate"> Invertir </label></div>
-						</div>
-						
-						<div class="col-xs-4">
-							<div class="checkbox"><label><input type="checkbox" id="is_sorted" class="QuickChartViewUpdate"> Ordenar </label></div>
-						</div>
-
-						<div class="col-xs-4">
-							<div class="checkbox"><label><input type="checkbox" id="is_stacked" class="QuickChartViewUpdate"> Apilar </label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="value_labels_div">
-							<div class="checkbox"><label><input type="checkbox" id="value_labels" class="QuickChartViewUpdate"> Valores</label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="is_donut" class="QuickChartViewUpdate"> Dona </label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="is_3D" class="QuickChartViewUpdate"> 3D </label></div>
-						</div>
-
-						<div class="col-xs-4" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="as_delta" class="QuickChartViewUpdate"> Δ%  </label></div>
-						</div>
-
-						<div class="col-xs-6" style="" id="">
-							<div class="checkbox"><label><input type="checkbox" id="as_percent" class="QuickChartViewUpdate"> % del total </label></div>
-						</div>						
-
-					</div>											
-
-					<div class="row">												
-						<div class="col-xs-6">														
-							<select class="form-control" dir="rtl" name="" id="denominador" style="margin-bottom:7px; width: 111px; -webkit-appearance: none; padding-left: 10px; padding-right: 10px;">															
-								<option value="1" unidades_denominador="">1</option>
-								<option value="1000" unidades_denominador="Miles de ">1,000</option>
-								<option value="1000000" unidades_denominador="Millones de ">1,000,000</option>
-								<option value="1000000000" unidades_denominador="Miles de Millones de ">1,000,000,000</option>
-							</select> 
-						</div>
-						<div class="col-xs-6" style="padding-left: 0px; margin-left: -10px;"><span>Denominador</span></div>
-					</div>
-				</div>				
-			</div>
-
-			
 			<div class="row hidden" style="margin-top: 10px;" id="boton_graficar">
 				<div class="col-xs-12">
 					<div style="margin-bottom: 20px;">
@@ -210,20 +115,106 @@
 					</div>
 				</div>
 			</div>
-
-
-			<div class="row hidden" id="download_row">
-				<div class="col-xs-12">
-					<label>Descargar</label>
+			<div  class="hidden" id="chart_details_div">
+				<div class="row hidden" style="margin-top: 10px;" id="tipo_de_grafica">					
+					<div class="col-xs-12">
+						<label style="margin-top: 0px; margin-bottom: 0px;">Tipo de gráfica</label>
+						<div class="row">
+							<div class="col-xs-4">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="bar_chart" id="chart_type_bar_chart"> Barras </label>
+								</div>
+							</div>		
+						
+							<div class="col-xs-4" style="padding-left: 5px;">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" name="chart_type" value="column_chart" id=""> Columnas </label>
+								</div>
+							</div>	
+							<div class="col-xs-4">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" name="chart_type" value="line_chart" id="chart_type_line_chart" checked="checked"> Lineas </label>	
+								</div>
+							</div>
+						</div>
+						<div class="row">					
+							<div class="col-xs-4">
+								<div class="radio">
+									<label class="radio-inline"><input type="radio" style="margin-left: -19px;" name="chart_type" value="pie_chart" id="chart_type_pie_chart"> Pie </label>
+								</div>
+							</div>	
+						</div>	
+					</div>				
 				</div>
-				
-				<div class="col-xs-6">
-					<button type="button" class="btn btn-success btn-md" id="download_button" style="width: 100px;"> Imagen <span style="margin-left:2px;" class="glyphicon glyphicon-picture"></span></button>
+
+				<div class="row hidden" style="margin-top: 10px;" id="opciones_visuales">
+					
+					<div class="col-xs-12">					
+						<label style="margin-bottom: 0px;">Opciones Visuales</label>
+						<div class="row">
+
+							<div class="col-xs-4" id="is_transposed_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_transposed" class="QuickChartViewUpdate"> Invertir </label></div>
+							</div>
+							
+							<div class="col-xs-4" id="is_sorted_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_sorted" class="QuickChartViewUpdate"> Ordenar </label></div>
+							</div>
+
+							<div class="col-xs-4" id="is_stacked_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_stacked" class="QuickChartViewUpdate"> Apilar </label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="value_labels_div">
+								<div class="checkbox"><label><input type="checkbox" id="value_labels" class="QuickChartViewUpdate"> Valores</label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="is_donut_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_donut" class="QuickChartViewUpdate"> Dona </label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="is_3D_col">
+								<div class="checkbox"><label><input type="checkbox" id="is_3D" class="QuickChartViewUpdate"> 3D </label></div>
+							</div>
+
+							<div class="col-xs-4" style="" id="as_delta_col">
+								<div class="checkbox"><label><input type="checkbox" id="as_delta" class="QuickChartViewUpdate"> Δ%  </label></div>
+							</div>
+
+							<div class="col-xs-6" style="" id="as_percent_col">
+								<div class="checkbox"><label><input type="checkbox" id="as_percent" class="QuickChartViewUpdate"> % del total </label></div>
+							</div>						
+
+						</div>											
+
+						<div class="row" id="denominador_col">												
+							<div class="col-xs-6">														
+								<select class="form-control" dir="rtl" name="" id="denominador" style="margin-bottom:7px; width: 111px; -webkit-appearance: none; padding-left: 10px; padding-right: 10px;">															
+									<option value="1" unidades_denominador="">1</option>
+									<option value="1000" unidades_denominador="Miles de ">1,000</option>
+									<option value="1000000" unidades_denominador="Millones de ">1,000,000</option>
+									<option value="1000000000" unidades_denominador="Miles de Millones de ">1,000,000,000</option>
+								</select> 
+							</div>
+							<div class="col-xs-6" style="padding-left: 0px; margin-left: -10px;"><span>Unidades</span></div>
+						</div>
+					</div>				
 				</div>
-				
-				<div class="col-xs-6">
-					<button type="button" class="btn btn-success btn-md" id="download_datos" style="width: 100px;"> Datos <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button>
-				</div>				
+
+				<div class="row hidden" id="download_row" style="margin-top: 10px;">
+					<div class="col-xs-12">
+						<label>Descargar</label>
+					</div>
+					
+					<div class="col-xs-6">
+						<button type="button" class="btn btn-success btn-md" id="download_button" style="width: 100px;"> Imagen <span style="margin-left:2px;" class="glyphicon glyphicon-picture"></span></button>
+					</div>
+					
+					<div class="col-xs-6">
+						<button type="button" class="btn btn-success btn-md" id="download_datos" style="width: 100px;"> Datos <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button>
+					</div>				
+				</div>
+
 			</div>
 		</form>
 		<br>
@@ -233,7 +224,7 @@
 	<div class="col-xs-9" style="padding-left: 30px;"> 
 		<div class="SlideDisplaySection" style="padding: 0px" id="SlideDisplaySection">
 		
-			<img src="images/Portada.png" id="imagen_portada">
+			<img style="height: 100%; width: 100%" src="images/Portada.png" id="imagen_portada">
 		
 			<div id="ChartLead" style="margin-right: 15px; margin-left: 15px;">
 				<div class="row"><div class="col-xs-12"><span id="chart_lead" class="ChartLead"></span></div></div>
@@ -241,7 +232,7 @@
 				<hr style="margin-top:5px; margin-bottom: 0px;">
 			</div>
 			<div class="loader hidden" style="margin-left: 300px; margin-top: 200px;" id="chart_loader"></div>
-			<div class="row" style=""><div class="col-xs-12"><div id="chart_div" class="hidden" style="margin-left: 10px; height:490px;"></div></div></div>
+			<div class="row" style=""><div class="col-xs-12"><div id="chart_div" class="hidden" style="margin-left: 10px; height: 75vh;"></div></div></div>
 			<div class="row hidden" id="MensajeError" ><div class="col-xs-12"> <span style="font-size: 100px; padding-left: 42%; padding-top: 10%; color:#337ab7;" class="glyphicon glyphicon-warning-sign"></span><h3 style="text-align: center; color:#337ab7" id="TextoMensajeError">Hubo un problema al intentar obtener los datos para generar la gráfica según los campos seleccionados. <br><br> Favor de modificar su selección e intentarlo nuevamente</h3></div></div>				
 		</div>		
 	</div>

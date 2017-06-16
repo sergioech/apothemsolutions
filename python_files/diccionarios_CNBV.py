@@ -46,28 +46,26 @@ def_variables  = {
 
 def_variables_lead = {
 	'total':{
-		'saldo_total': 'Saldo total de '.decode('utf-8'),				
-		'creditos': 'Número de créditos totales de '.decode('utf-8'),
-		'acreditados': 'Número de acreditados totales de '.decode('utf-8'),	
-		'concentracion_cartera': 'Concentración de cartera por cliente del portafolio total de '.decode('utf-8'),
-		'saldo_acum': 'Saldo acumulado por cliente del portafolio total de '.decode('utf-8'),
-		'porc_acum': 'Saldo acumulado por cliente del portafolio total de '.decode('utf-8'),
-		'tasa': 'Tasa de interes ponderada del portafolio total de '.decode('utf-8'),
-		'plazo': 'Plazo ponderado de los creditos remanentes de '.decode('utf-8'),
-		'imor': 'Índice de Morosidad del portafolio total de '.decode('utf-8')
+		'saldo_total': 'Saldo total'.decode('utf-8'),				
+		'creditos': 'Número de créditos totales'.decode('utf-8'),
+		'acreditados': 'Número de acreditados totales'.decode('utf-8'),	
+		'concentracion_cartera': 'Concentración de cartera por cliente del portafolio total'.decode('utf-8'),
+		'saldo_acum': 'Saldo acumulado por cliente del portafolio total'.decode('utf-8'),
+		'porc_acum': 'Saldo acumulado por cliente del portafolio total'.decode('utf-8'),
+		'tasa': 'Tasa de interes ponderada del portafolio total'.decode('utf-8'),
+		'plazo': 'Plazo ponderado de los creditos remanentes'.decode('utf-8'),
+		'imor': 'Índice de Morosidad del portafolio total'.decode('utf-8')
 	},
 
 	'marginal':{
-		'saldo_total': 'Incremento marginal en monto dispuesto por '.decode('utf-8'),
-		'creditos': 'Incremento marginal en número de créditos de '.decode('utf-8'),
-		'acreditados': 'Incremento marginal en número de acreditados de '.decode('utf-8'),				
+		'saldo_total': 'Incremento marginal en monto dispuesto'.decode('utf-8'),
+		'creditos': 'Incremento marginal en número de créditos emitidos'.decode('utf-8'),
+		'acreditados': 'Incremento marginal en número de acreditados'.decode('utf-8'),				
 		
-		'tasa': 'Tasa de interes de nuevos créditos emitidos por '.decode('utf-8'),
-		'plazo': 'Plazo ponderado de los nuevos créditos emitidos por '.decode('utf-8'),
+		'tasa': 'Tasa de interes de nuevos créditos emitidos'.decode('utf-8'),
+		'plazo': 'Plazo ponderado de los nuevos créditos emitidos'.decode('utf-8'),
 	}
 }
-
-
 
 def_variables_unidades  = {
 	'saldo_total': 'Pesos ($MXN)'.decode('utf-8'),
@@ -110,7 +108,12 @@ def_cortes = {
 	'tec': 'Tamaño de Empresa'.decode('utf-8'),
 	'cliente': 'Cliente'.decode('utf-8'),
 	'intervalo': 'Intervalo de Plazo'.decode('utf-8'),
-	'moneda': 'Moneda'.decode('utf-8')
+	'monto': 'Monto del crédito [miles]'.decode('utf-8'),
+	'moneda': 'Moneda'.decode('utf-8'),
+	'destino': 'Destino del crédito'.decode('utf-8'),
+	'garantia': 'Tipo de garantía'.decode('utf-8'),
+	'calificacion': 'Calificación'.decode('utf-8'),
+	'sector': 'Sector económico'.decode('utf-8')
 }
 
 opc_cortes = [
@@ -119,8 +122,88 @@ opc_cortes = [
 	'estado',
 	'tec',
 	'intervalo',
+	'monto',
 	'moneda',
+	'destino',
+	'garantia',
+	'calificacion',
+	'sector'
 ]
+
+def_secciones = {
+	'S99': 'Menu',
+	'S00': 'General',
+	'S01': 'Por tamaño de empresa',
+	'S02': 'Por región geográfica',
+	'S03': 'Efectividad de sucursales',
+	'S04': 'Tasas y precios',
+	'S05': 'Cartera vencida y riesgos',
+	'S06': 'Por sector'
+}
+
+opc_secciones = [
+	['S99', 'Menu'],
+	['S00', 'General'],
+	['S01', 'Por tamaño de empresa'],
+	['S02', 'Por región geográfica'],
+	['S03', 'Efectividad de sucursales'],
+	['S04', 'Tasas y precios'],
+	['S05', 'Cartera vencida y riesgos'],
+	['S06', 'Por sector']
+]
+
+def_bulk_slide_import = {
+	'Slide0.PNG': ['Menu', ['S99']],
+	'Slide1.PNG': ['Evolución y distribución de la cartera', ['S00']],
+	'Slide2.PNG': ['Crecimiento en originaciones', ['S00']],
+	'Slide3.PNG': ['Componentes del portafolio (1/2)', ['S00']],
+	'Slide4.PNG': ['Componentes del portafolio (2/2)', ['S00']],
+	'Slide5.PNG': ['Crecimiento vs. portafolio total', ['S00']],
+	'Slide6.PNG': ['Componentes del portafolio', ['S00']],
+	'Slide7.PNG': ['Distribución de cartera por tamaño de empresa', ['S00', 'S01']],
+	'Slide8.PNG': ['Distribución de cartera por sector económico', ['S00', 'S06']],
+	'Slide9.PNG': ['Distribución de cartera por región geográfica', ['S00', 'S02']],
+	'Slide10.PNG': ['FALTA (NO LA VAMOS A HACER)', []],
+	'Slide11.PNG': ['Cartera por tamaño de empresa', ['S01']],
+	'Slide12.PNG': ['Componentes del portafolio', ['S01']],
+	'Slide13.PNG': ['Componentes del portafolio', ['S01']],
+	'Slide14.PNG': ['Crecimiento vs. portafolio total', ['S01']],
+	'Slide15.PNG': ['Distribución de créditos empresariales por tamaño de empresa', ['S01']],
+	'Slide16.PNG': ['Cartera por región', ['S02']],
+	'Slide17.PNG': ['Componentes del portafolio', ['S02']],
+	'Slide18.PNG': ['Componentes del portafolio', ['S02']],
+	'Slide19.PNG': ['Crecimiento vs. portafolio total (1/3)', ['S02']],
+	'Slide20.PNG': ['Crecimiento vs. portafolio total (2/3)', ['S02']],
+	'Slide21.PNG': ['Crecimiento vs. portafolio total (3/3)', ['S02']],
+	'Slide22.PNG': ['Distribución de créditos empresariales por región geográfica', ['S02']],
+	'Slide23.PNG': ['Existe una alta correlación entre la participación de sucursales con la participación de clientes y el share of wallet', ['S03']],
+	'Slide24.PNG': ['Comparación de la efectividad por sucursal entre bancos', ['S03']],
+	'Slide25.PNG': ['Efectividad sucursales por estado', ['S03']],
+	'Slide26.PNG': ['Comparación de tasas de interés por tamaño de empresa', ['S04']],
+	'Slide27.PNG': ['Comparación de tasas de interés por tamaño de crédito', ['S04']],
+	'Slide28.PNG': ['Comparación de tasas de interés por calificación crediticia de la cartera', ['S04']],
+	'Slide29.PNG': ['Comparación de la cartera vencida por tamaño de empresa', ['S05']],
+	'Slide30.PNG': ['Comparación de la cartera vencida por tamaño de crédito', ['S05']],
+	'Slide31.PNG': ['Correlación entre crecimiento en originaciones y tasa de interés promedio', ['S04']],
+	'Slide32.PNG': ['Correlación entre crecimiento en originaciones y tasa de interés promedio por tamaño de empresa', ['S04']],
+	'Slide33.PNG': ['Correlación entre riesgo (medido como cartera vencida) y tasa de interés promedio', ['S04', 'S05']],
+	'Slide34.PNG': ['Correlación entre riesgo (medido como cartera vencida) y tasa de interés promedio por tamaño de empresa', ['S04', 'S05']],
+	'Slide35.PNG': ['Correlación entre cartera total y tasa de interés promedio', ['S04']],
+	'Slide36.PNG': ['Riesgo de concentración de clientes por banco', ['S05']],
+	'Slide37.PNG': ['Cartera por sector', ['S06']],
+	'Slide38.PNG': ['Componentes del portafolio por sector', ['S06']],
+	'Slide39.PNG': ['Componentes del portafolio por sector', ['S06']],
+	'Slide40.PNG': ['Crecimiento vs. portafolio total (1/3)', ['S06']],
+	'Slide41.PNG': ['Crecimiento vs. portafolio total (2/3)', ['S06']],
+	'Slide42.PNG': ['Crecimiento vs. portafolio total (3/3)', ['S06']],
+	'Slide43.PNG': ['Distribución de créditos empresariales por sector económico', ['S06']],
+	'Slide44.PNG': ['Evolución de la cartera vencida por banco', ['S05']],
+	'Slide45.PNG': ['Evolución de la cartera vencida por tamaño de empresa y banco', ['S05']],
+	'Slide46.PNG': ['FALTA (NO LA VAMOS A HACER)', []],
+	
+
+} 
+
 
 
 def decode_options(options_list, corte):	
@@ -298,6 +381,7 @@ def_estado = {
 	'30': 'Veracruz de Ignacio de la Llave',
 	'31': 'Yucatán',
 	'32': 'Zacatecas',
+	'90': 'Estado sin clasificar',
 	'91': 'Migración',
 	'92': 'Extranjero'
 }
@@ -336,6 +420,7 @@ opc_estado = [
 	['30',  'Veracruz de Ignacio de la Llave'],
 	['31',  'Yucatán'],
 	['32',  'Zacatecas'],
+	['90',  'Estado sin clasificar'],
 	['91',  'Migración'],
 	['92',  'Extranjero']
 ]
@@ -544,7 +629,6 @@ opc_periodo = [
 	['201203', '201203'],
 	['201202', '201202'],
 	['201201', '201201']	
-
 ]
 
 opc_periodo_y = [
@@ -946,6 +1030,53 @@ opc_intervalo = [
 ]
 
 
+def_monto = {
+	'00': 'Sin clasificación',
+	'01': '0-10 ',
+	'02': '10-25',
+	'03': '25-50 ',
+	'04': '50-100 ',
+	'05': '100-250',
+	'06': '250-500',
+	'07': '500-1,000',
+	'08': '1,000-2,500',
+	'09': '2,500-5,000',
+	'10': '5,000-10,000',
+	'11': '10,000-25,000',
+	'12': '25,000-50,000',
+	'13': '50,000-100,000',
+	'14': '100,000-250,000',
+	'15': '250,000-500,000',
+	'16': '500,000-1,000,000',
+	'17': '1,000,000-2,500,000',
+	'18': '2,500,000-5,000,000',
+	'19': '+ 5,000,000'
+}
+
+opc_monto = [
+	['01', '0-10 '],
+	['02', '10-25'],
+	['03', '25-50 '],
+	['04', '50-100 '],
+	['05', '100-250'],
+	['06', '250-500'],
+	['07', '500-1,000'],
+	['08', '1,000-2,500'],
+	['09', '2,500-5,000'],
+	['10', '5,000-10,000'],
+	['11', '10,000-25,000'],
+	['12', '25,000-50,000'],
+	['13', '50,000-100,000'],
+	['14', '100,000-250,000'],
+	['15', '250,000-500,000'],
+	['16', '500,000-1,000,000'],
+	['17', '1,000,000-2,500,000'],
+	['18', '2,500,000-5,000,000'],
+	['19', '+ 5,000,000'],
+	['00', 'Sin clasificación']
+]
+
+
 def_moneda = {
 	'00':'Nacional',
 	'01':'Extranjera',
@@ -960,6 +1091,149 @@ opc_moneda = [
 ]
 
 
+def_destino_credito = {
+	'00': 'No Clasificado',
+	'21': 'Consolidacion (pago) de pasivos',
+	'22': 'Activo fijo',
+	'23': 'Obras publicas',
+	'24': 'Proyectos de infraestructura',
+	'25': 'Desarrollo Inmobiliario de Vivienda',
+	'26': 'Desarrollo Inmobiliario Comercial',
+	'27': 'Capital de Trabajo',
+	'28': 'Operaciones de Factoraje Financiero',
+	'29': 'Operaciones de Arrendamiento Puro',
+	'30': 'Operaciones de Arrendamiento Financiero',
+	'31': 'Credito a Estados y Municipios',
+	'32': 'Credito a Instituciones Financieras',
+	'33': 'Procampo'
+}
+
+opc_destino_credito = [
+	['00', 'No Clasificado'],
+	['21', 'Consolidacion (pago) de pasivos'],
+	['22', 'Activo fijo'],
+	['23', 'Obras publicas'],
+	['24', 'Proyectos de infraestructura'],
+	['25', 'Desarrollo Inmobiliario de Vivienda'],
+	['26', 'Desarrollo Inmobiliario Comercial'],
+	['27', 'Capital de Trabajo'],
+	['28', 'Operaciones de Factoraje Financiero'],
+	['29', 'Operaciones de Arrendamiento Puro'],
+	['30', 'Operaciones de Arrendamiento Financiero'],
+	['31', 'Credito a Estados y Municipios'],
+	['32', 'Credito a Instituciones Financieras'],
+	['33', 'Procampo']
+]
+
+
+def_garantia = {
+	'00': 'Sin Garantía',
+	'01': 'Dinero en Efectivo',
+	'02': 'Acciones Representativas de Capital',
+	'03': 'Bienes Muebles',
+	'04': 'Bienes Inmuebles',
+	'05': 'Documentos por Cobrar',
+	'06': 'Inventarios o Productos Terminado',
+	'07': 'Títulos de Deuda Emitidos por el Gobierno Federal',
+	'08': 'Títulos de Deuda Emitidos por Entidades Distintas al Gobierno Federal',
+	'09': 'Con Garantía Fiduciaria',
+	'10': 'Masa de Garantías'	
+}
+
+opc_garantia = [
+	['00', 'Sin Garantía'],
+	['01', 'Dinero en Efectivo'],
+	['02', 'Acciones Representativas de Capital'],
+	['03', 'Bienes Muebles'],
+	['04', 'Bienes Inmuebles'],
+	['05', 'Documentos por Cobrar'],
+	['06', 'Inventarios o Productos Terminado'],
+	['07', 'Títulos de Deuda Emitidos por el Gobierno Federal'],
+	['08', 'Títulos de Deuda Emitidos por Entidades Distintas al Gobierno Federal'],
+	['09', 'Con Garantía Fiduciaria'],
+	['10', 'Masa de Garantías']
+]
+
+
+def_calificacion = {
+	'A1': 'A1',
+	'A2': 'A2',
+	'B1': 'B1',
+	'B2': 'B2',
+	'B3': 'B3',
+	'CDE': 'C,D,E',
+	'PM': 'PM',
+	'EX': 'EX'	
+}
+
+opc_calificacion = [
+	['A1', 'A1'],
+	['A2', 'A2'],
+	['B1', 'B1'],
+	['B2', 'B2'],
+	['B3', 'B3'],
+	['CDE', 'C,D,E'],
+	['PM', 'PM'],
+	['EX', 'EX']
+]
+
+def_sector = {
+	'010': 'Agricultura, Silvicultura, Ganadería y Pesca',
+	'020': 'Bancario',
+	'030': 'Comercio',
+	'040': 'Comunicaciones y Telecomunicaciones',
+	'050': 'Construcción',
+	'051': 'Edificación residencial',
+	'052': 'Otros construcción',
+	'060': 'Educativo',
+	'070': 'Hoteles y Restaurantes',
+	'080': 'Alimentos, Bebidas y Tabaco',
+	'090': 'Industria Automotriz',
+	'100': 'Petróleo, Minería, Gas y Energía',
+	'110': 'Resto Industria',
+	'120': 'Salud',
+	'130': 'Servicios Comunales y Sociales',
+	'140': 'Servicios Financieros (No Bancarios)',
+	'150': 'Servicios Profesionales y Técnicos',
+	'160': 'Transporte',
+	'170': 'Gobierno, Estados y Municipio',
+	'180': 'Gobierno Federal',
+	'190': 'Organismos Internacionales',
+	'200': 'Industria Textil y de Calzado',
+	'210': 'Industria Química y Farmacéutica',
+	'220': 'Industria Materiales de Construcción',
+	'230': 'Servicios de Esparcimiento y otros Servicios Recreativo',
+	'999': 'Total'
+}
+
+opc_sector = [
+	['010', 'Agricultura, Silvicultura, Ganadería y Pesca'],
+	['020', 'Bancario'],
+	['030', 'Comercio'],
+	['040', 'Comunicaciones y Telecomunicaciones'],
+	['051', 'Edificación residencial'],
+	['052', 'Otros construcción'],
+	['060', 'Educativo'],
+	['070', 'Hoteles y Restaurantes'],
+	['080', 'Alimentos, Bebidas y Tabaco'],
+	['090', 'Industria Automotriz'],
+	['100', 'Petróleo, Minería, Gas y Energía'],
+	['110', 'Resto Industria'],
+	['120', 'Salud'],
+	['130', 'Servicios Comunales y Sociales'],
+	['140', 'Servicios Financieros (No Bancarios)'],
+	['150', 'Servicios Profesionales y Técnicos'],
+	['160', 'Transporte'],
+	['170', 'Gobierno, Estados y Municipio'],
+	['180', 'Gobierno Federal'],
+	['190', 'Organismos Internacionales'],
+	['200', 'Industria Textil y de Calzado'],
+	['210', 'Industria Química y Farmacéutica'],
+	['220', 'Industria Materiales de Construcción'],
+	['230', 'Servicios de Esparcimiento y otros Servicios Recreativo']
+]
+
+
 definiciones = {
 	'tipo_valor':def_tipo_valor,
 	'institucion':def_institucion, 
@@ -971,8 +1245,15 @@ definiciones = {
 	'cliente': def_cliente,
 	'moneda': def_moneda,
 	'intervalo': def_intervalo,
+	'monto': def_monto,
 	'variables_lead': def_variables_lead,
-	'periodo_lead': def_periodo_lead
+	'periodo_lead': def_periodo_lead,
+	'destino':def_destino_credito,
+	'garantia': def_garantia,
+	'calificacion': def_calificacion,
+	'sector': def_sector,
+	'secciones': def_secciones,
+	'bulk_slide_import': def_bulk_slide_import
 }
 
 
@@ -985,7 +1266,13 @@ opciones = {
 	'periodo_y': decode_options(opc_periodo_y, 'periodo_y'),
 	'cliente': decode_options(opc_cliente, 'cliente'),
 	'intervalo': decode_options(opc_intervalo, 'intervalo'),
+	'monto': decode_options(opc_monto, 'monto'),
 	'moneda': decode_options(opc_moneda, 'moneda'),
+	'destino':decode_options(opc_destino_credito, 'destino'),
+	'garantia':decode_options(opc_garantia, 'garantia'),
+	'calificacion':decode_options(opc_calificacion, 'calificacion'),
+	'sector':decode_options(opc_sector, 'sector'),
+	'secciones':decode_options(opc_secciones, 'secciones'),
 }
 
 
@@ -1148,10 +1435,11 @@ cat_estado = {
 	'30': ['Veracruz de Ignacio de la Llave', '30'],
 	'31': ['Yucatán', '31'],
 	'32': ['Zacatecas', '32'],
+	'88': ['Extranjero', '92'],
 	'99': ['Migración', '91'],
+	'888': ['Estado sin clasificar', '90'],
 	'999': ['Extranjero', '92']
 }
-
 
 cat_concentracion = {
 	'Cliente 1': ['Cliente 1', '001'],
@@ -1478,11 +1766,104 @@ cat_intervalo = {
 	'14': ['más de 120', '14']
 }
 
+cat_monto = {
+	'0': ['Sin clasificación', '00'],
+	'1': ['0-10 ', '01'],
+	'2': ['10-25', '02'],
+	'3': ['25-50 ', '03'],
+	'4': ['50-100 ', '04'],
+	'5': ['100-250', '05'],
+	'6': ['250-500', '06'],
+	'7': ['500-1,000', '07'],
+	'8': ['1,000-2,500', '08'],
+	'9': ['2,500-5,000', '09'],
+	'10': ['5,000-10,000', '10'],
+	'11': ['10,000-25,000', '11'],
+	'12': ['25,000-50,000', '12'],
+	'13': ['50,000-100,000', '13'],
+	'14': ['100,000-250,000', '14'],
+	'15': ['250,000-500,000', '15'],
+	'16': ['500,000-1,000,000', '16'],
+	'17': ['1,000,000-2,500,000', '17'],
+	'18': ['2,500,000-5,000,000', '18'],
+	'19': ['+ 5,000,000', '19']
+}
 
 cat_moneda = {
 	'0':['Nacional', '00'],
 	'1':['Extranjera', '01'],
 	'2':['UDIS', '02']
+}
+
+cat_destino_credito = {
+	'0': ['No Clasificado', '00'],
+	'21': ['Consolidacion (pago) de pasivos', '21'],
+	'22': ['Activo fijo', '22'],
+	'23': ['Obras publicas', '23'],
+	'24': ['Proyectos de infraestructura', '24'],
+	'25': ['Desarrollo Inmobiliario de Vivienda', '25'],
+	'26': ['Desarrollo Inmobiliario Comercial', '26'],
+	'27': ['Capital de Trabajo', '27'],
+	'28': ['Operaciones de Factoraje Financiero', '28'],
+	'29': ['Operaciones de Arrendamiento Puro', '29'],
+	'30': ['Operaciones de Arrendamiento Financiero', '30'],
+	'31': ['Credito a Estados y Municipios', '31'],
+	'32': ['Credito a Instituciones Financieras', '32'],
+	'33': ['Procampo', '33']
+}
+
+cat_garantia = {
+	'0': ['Sin Garantía', '00'],
+	'1': ['Dinero en Efectivo', '01'],
+	'2': ['Acciones Representativas de Capital', '02'],
+	'3': ['Bienes Muebles', '03'],
+	'4': ['Bienes Inmuebles', '04'],
+	'5': ['Documentos por Cobrar', '05'],
+	'6': ['Inventarios o Productos Terminado', '06'],
+	'7': ['Títulos de Deuda Emitidos por el Gobierno Federal', '07'],
+	'8': ['Títulos de Deuda Emitidos por Entidades Distintas al Gobierno Federal', '08'],
+	'9': ['Con Garantía Fiduciaria', '09'],
+	'10': ['Masa de Garantías', '10']	
+}
+
+cat_calificacion = {
+	'A1': ['A1', 'A1'],
+	'A2': ['A2', 'A2'],
+	'B1': ['B1', 'B1'],
+	'B2': ['B2', 'B2'],
+	'B3': ['B3', 'B3'],
+	'CDE': ['C,D,E', 'CDE'],
+	'PM': ['PM', 'PM'],
+	'EX': ['EX', 'EX']
+}
+
+cat_sector = {
+	'1': ['Agricultura, Silvicultura, Ganadería y Pesca', '010'],
+	'2': ['Bancario', '020'],
+	'3': ['Comercio', '030'],
+	'4': ['Comunicaciones y Telecomunicaciones', '040'],
+	'5': ['Construcción', '050'],
+	'6': ['Educativo', '060'],
+	'7': ['Hoteles y Restaurantes', '070'],
+	'8': ['Alimentos, Bebidas y Tabaco', '080'],
+	'9': ['Industria Automotriz', '090'],
+	'10': ['Petróleo, Minería, Gas y Energía', '100'],
+	'11': ['Resto Industria', '110'],
+	'12': ['Salud', '120'],
+	'13': ['Servicios Comunales y Sociales', '130'],
+	'14': ['Servicios Financieros (No Bancarios)', '140'],
+	'15': ['Servicios Profesionales y Técnicos', '150'],
+	'16': ['Transporte', '160'],
+	'17': ['Gobierno, Estados y Municipio', '170'],
+	'18': ['Gobierno Federal', '180'],
+	'19': ['Organismos Internacionales', '190'],
+	'20': ['Industria Textil y de Calzado', '200'],
+	'21': ['Industria Química y Farmacéutica', '210'],
+	'22': ['Industria Materiales de Construcción', '220'],
+	'23': ['Servicios de Esparcimiento y otros Servicios Recreativo', '230'],
+	'999': ['Total', '999'],
+	'5999': ['Otros construcción', '052'],
+	'23611': ['Edificación residencial', '051']
 }
 
 #--- trasformation maps ---
@@ -1511,11 +1892,82 @@ tm_040_11A_R8 = {
 	'dato': ['valor']
 }
 
+
+tm_mod_11C_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+
+	'intervalo_responsabilidad':['monto', cat_monto],
+	'creditos': ['creditos'],	
+	'cart_total': ['saldo_total'],
+	'IMOR': ['imor']
+}
+
+tm_mod_11C_R2 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_grupo':['monto', cat_monto],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+
+	'plazo_venc':['plazo'],
+	'plazo':['vigencia'],
+	'tasa': ['tasa']	
+}
+
+tm_mod_11D_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'sector': ['sector', cat_sector],
+
+	'm_total': ['saldo_total'],
+	'imor': ['imor'],
+	'creditos': ['creditos'],
+	'acreditados': ['acreditados']
+	
+}
+
+tm_mod_11D_R2 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'sector': ['sector', cat_sector],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+
+	'plazo_venc':['plazo'],
+	'plazo':['vigencia'],
+	'tasa': ['tasa']	
+}
+
+
+tm_mod0_11E_R1 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	'calificacion':['calificacion', cat_calificacion],
+	'm_total':['saldo_total'],
+	'imor': ['imor']
+}
+
 tm_mod_11E_R1 = {
 	'cve_institucion': ['institucion', cat_institucion],
 	'cve_periodo': ['periodo'],	
 	'imor': ['imor']
 }
+
+tm_mod_11E_R3 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	'calificacion':['calificacion', cat_calificacion],
+	'n_total': ['creditos']
+}
+
+tm_mod_11E_R5 = {
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_periodo': ['periodo'],	
+	
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+	'calificacion':['calificacion', cat_calificacion],
+	'tasa': ['tasa']
+}
+
 
 tm_040_11F_R1 = {
 	'cve_periodo': ['periodo'],
@@ -1535,6 +1987,40 @@ tm_040_11F_R2 = {
 	'id':['intervalo', cat_intervalo],
 	'creditos': ['creditos'],	
 	'monto_dispuesto': ['saldo_total']
+}
+
+
+tm_mod_11G_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_estado': ['estado', cat_estado],
+	'cartera_total': ['saldo_total'],
+
+	'imor': ['imor'],
+	'creditos': ['creditos'],
+	'acreditados': ['acreditados']
+	
+}
+
+
+tm_mod_11K_R1 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+
+	'cve_tipo_garantia':['garantia', cat_garantia],
+	'creditos': ['creditos'],	
+	'total': ['saldo_total'],
+	'imor': ['imor']
+}
+
+
+tm_mod_11K_R20 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+
+	'cve_tipo_garantia':['garantia', cat_garantia],
+	'tasa_ponderada':  ['tasa'],
+	'cve_tipo_moneda': ['moneda', cat_moneda]	
 }
 
 
@@ -1566,6 +2052,28 @@ tm_040_11L_R3 = {
 	'dat_id_credito_met_cnbv': ['creditos'],
 	'dat_rfc': ['acreditados'],
 	'dat_responsabilidad_total': ['saldo_total']
+}
+
+
+tm_040_11L_R5 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_TEC': ['tec', cat_TEC],
+	'cve_destino_credito': ['destino', cat_destino_credito],
+	'dat_responsabilidad_total': ['saldo_total']
+}
+
+
+tm_040_11L_R6 = {
+	'cve_periodo': ['periodo'],
+	'cve_institucion': ['institucion', cat_institucion],
+	'cve_tipo_moneda': ['moneda', cat_moneda],
+	'cve_destino_credito': ['destino', cat_destino_credito],
+	'cve_TEC': ['tec', cat_TEC],
+
+	'tasa': ['tasa'],
+	'responsabilidad':['saldo_total'],
+	'plazo':['plazo']
 }
 
 
@@ -1606,14 +2114,31 @@ transformation_maps_CNBV = {
 	'040_11A_R4': tm_040_11A_R4,
 	'040_11A_R8': tm_040_11A_R8,
 
+	'mod_11C_R1': tm_mod_11C_R1,
+	'mod_11C_R2': tm_mod_11C_R2,
+
+	'mod_11D_R1': tm_mod_11D_R1,
+	'mod_11D_R2': tm_mod_11D_R2,
+
+	'mod0_11E_R1': tm_mod0_11E_R1,
 	'mod_11E_R1': tm_mod_11E_R1,
+	'mod_11E_R3': tm_mod_11E_R3,
+	'mod_11E_R5': tm_mod_11E_R5,
 
 	'040_11F_R1': tm_040_11F_R1,
 	'040_11F_R2': tm_040_11F_R2,
 
+	'mod_11G_R1': tm_mod_11G_R1,
+
+	'mod_11K_R1': tm_mod_11K_R1,
+	'mod_11K_R20': tm_mod_11K_R20,
+
 	'040_11L_R0': tm_040_11L_R0,
 	'040_11L_R2': tm_040_11L_R2,
 	'040_11L_R3': tm_040_11L_R3,
+	'040_11L_R5': tm_040_11L_R5,
+	'040_11L_R6': tm_040_11L_R6,
+
 	'040_11L_R11': tm_040_11L_R11,
 	'040_11L_R12': tm_040_11L_R12,
 	'040_11L_R13': tm_040_11L_R13,
@@ -1628,17 +2153,41 @@ detalles_tabla = {
 	
 	# '040_11A_R8': {'tipo_variables': 'indirectas', 'perspectiva': 'marginal'}, #Por lo pronto solo queda fuera de forma temporal.
 
+	'mod_11C_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11C_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11D_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11D_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod0_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
 	'mod_11E_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11E_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11E_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 	
 	'040_11F_R1': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
 	'040_11F_R2': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
+
+	'mod_11G_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11K_R1': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'mod_11K_R20': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'040_11L_R0': {'tipo_variables': 'indirectas', 'perspectiva': 'total'},
 	
 	'040_11L_R2': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'040_11L_R3': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'040_11L_R5': {'tipo_variables': 'directas', 'perspectiva': 'total'},
+
+	'040_11L_R6': {'tipo_variables': 'directas', 'perspectiva': 'total'},
 
 	'040_11L_R11': {'tipo_variables': 'directas', 'perspectiva': 'marginal'},
 
@@ -1649,18 +2198,35 @@ detalles_tabla = {
 
 
 tablas_CNBV = [
+	'mod_11E_R1',
+	'mod0_11E_R1',
+	'mod_11E_R3',
+	'mod_11E_R5',
+
 	'040_11A_R1',
 	# '040_11A_R4',
 	# '040_11A_R8',
+
+	'mod_11C_R1',
+	'mod_11C_R2',
 	
-	'mod_11E_R1',
+	'mod_11D_R1',
+	'mod_11D_R2',
 
 	'040_11F_R1',
 	'040_11F_R2',
+	
+	'mod_11G_R1',
+
+	'mod_11K_R1',
+	'mod_11K_R20',
 
 	'040_11L_R0',
 	'040_11L_R2',
 	'040_11L_R3',
+	'040_11L_R5',
+	'040_11L_R6',
+
 	'040_11L_R11',
 	'040_11L_R12',
 	'040_11L_R13'
@@ -1680,11 +2246,56 @@ demo_version_details = {
 	# 	'registros': 0
 	# },
 
+	'mod_11C_R1': {
+		'descripcion':'Cartera actividad empresarial: numero, saldo e IMOR por intervalo de monto de credito. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod_11C_R2': {
+		'descripcion':'Cartera actividad empresarial: tasa por monto del credito. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod_11D_R1': {
+		'descripcion':'Cartera actividad empresarial: numero de creditos y saldo de cartera por sector economico. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod_11D_R2': {
+		'descripcion':'Cartera actividad empresarial: tasa por sector economico. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod0_11E_R1': {
+		'descripcion':'Cartera actividad empresarial: saldo de cartera por calificación. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 	'mod_11E_R1': {
 		'descripcion':'Cartera actividad empresarial: Índice de morosidad', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
+
+
+	'mod_11E_R3': {
+		'descripcion':'Cartera actividad empresarial: número de creditos por calificacion. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+
+	'mod_11E_R5': {
+		'descripcion':'Cartera actividad empresarial: tasa por calificación. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
 
 	# '040_11A_R8': {
 	# 	'descripcion':'Cartera actividad empresarial: Caracteristicas promedio de los creditos dispuestos marginalmente', 
@@ -1704,6 +2315,27 @@ demo_version_details = {
 		'registros': 0
 	},
 
+
+	'mod_11G_R1': {
+		'descripcion':'Cartera actividad empresarial: numero de créditos y saldo de cartera por estado. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'mod_11K_R1': {
+		'descripcion':'Cartera actividad empresarial: número de créditos y saldos de cartera por tipo de garantía. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	
+	'mod_11K_R20': {
+		'descripcion':'Cartera actividad empresarial: tasa de interes por tipo de garantia. Portafolio total', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+
 	'040_11L_R0': {
 		'descripcion':'Numero de creditos, acreditados y saldo por tamano de empresa', 
 		'url_fuente': 'Un URL',
@@ -1719,6 +2351,18 @@ demo_version_details = {
 	
 	'040_11L_R3': {
 		'descripcion':'Distribucion geografica del numero de creditos, acreditados y saldo por tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'040_11L_R5': {
+		'descripcion':'Saldo por destino del credito y tamano de empresa', 
+		'url_fuente': 'Un URL',
+		'registros': 0
+	},
+
+	'040_11L_R6': {
+		'descripcion':'Tasa de interés, plazos y saldo por destino del crédito y tamaño de empresa', 
 		'url_fuente': 'Un URL',
 		'registros': 0
 	},
@@ -1748,9 +2392,8 @@ def generar_indice_CNBV(lista_tablas):
 	
 	indice_CNBV = []
 
-
 	campos_variables = ['saldo_total', 'creditos', 'acreditados', 'concentracion_cartera', 'porc_acum', 'saldo_acum', 'tasa', 'plazo', 'imor'] # tipo_valor
-	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'moneda']
+	campos_cortes = ['periodo', 'institucion', 'tec', 'estado', 'cliente', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion', 'sector']
 
 	for tabla in lista_tablas:
 		variables = []

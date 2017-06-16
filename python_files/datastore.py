@@ -35,8 +35,6 @@ class Usuario(ndb.Model):
 			return usuario
 
 
-
-
 class TablaCNBV(ndb.Model):
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	nombre = ndb.StringProperty(required=True)
@@ -57,6 +55,16 @@ class CsvCNBV(ndb.Model):
 	rows_transfered = ndb.IntegerProperty(default=0)
 
 
+class Slide(ndb.Model):	
+	created = ndb.DateTimeProperty(auto_now_add=True)	
+	lead = ndb.StringProperty()
+	pic_key = ndb.BlobKeyProperty()
+	pic_url = ndb.StringProperty()
+	number = ndb.IntegerProperty(required=True, default=0)	
+	tags = ndb.JsonProperty()
+	doc_name = ndb.StringProperty()
+	
+
 class DatoCNBV(ndb.Model):
 	
 	created = ndb.DateTimeProperty(auto_now_add=True)
@@ -69,8 +77,13 @@ class DatoCNBV(ndb.Model):
 	estado = ndb.StringProperty()	
 	cliente = ndb.StringProperty()
 	moneda = ndb.StringProperty()
-	intervalo = ndb.StringProperty()
-	
+	intervalo = ndb.StringProperty() #Se refiere al rango del plazo
+	monto = ndb.StringProperty() #Se refiere al rango del monto
+	destino = ndb.StringProperty()
+	garantia = ndb.StringProperty()
+	calificacion = ndb.StringProperty()
+	sector = ndb.StringProperty()
+
 	#Formato vertical
 	tipo_valor = ndb.StringProperty()
 	valor = ndb.FloatProperty()
@@ -80,7 +93,8 @@ class DatoCNBV(ndb.Model):
 	creditos = ndb.FloatProperty()
 	acreditados = ndb.FloatProperty()
 	tasa = ndb.FloatProperty()
-	plazo = ndb.FloatProperty()
+	plazo = ndb.FloatProperty() #Plazo ponderado del remanente
+	vigencia = ndb.FloatProperty() #Plazo  original
 	imor = ndb.FloatProperty()
 
 	saldo_acum = ndb.FloatProperty()

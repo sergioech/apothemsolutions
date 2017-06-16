@@ -4,6 +4,7 @@ var seconds = 0, minutes = 0, hours = 0, limite_periodos = 1, limite_institucion
     chart_url,
     chart_units,
     csvContent,
+    unmodified_chart_array,
     chart_array,
     chart_type;
 
@@ -41,8 +42,11 @@ $('.ExpandColapseSection').on('click', function(){
 
 
 $('.SeleccionarCorte').on('click', function(){
-  
+
   var CorteSeleccionado = $(this)
+  // console.log('Este es el corte que se acaba de seleccionar: ')
+  // console.log(CorteSeleccionado.attr('value'))
+
   var CortesActivos = parseInt($('#NumeroCortesSeleccionados').val());
   var CorteRenglones = $('#CorteRenglones');
   var CorteColumnas = $('#CorteColumnas');
@@ -51,9 +55,13 @@ $('.SeleccionarCorte').on('click', function(){
 
   if (CorteSeleccionado.attr("corte_activo") == "Si") {
     $('#NumeroCortesSeleccionados').val(CortesActivos - 1);
-    CorteRenglones.val(CorteColumnas.val())
+    
+    if(CorteSeleccionado.attr('value') == CorteRenglones){
+      CorteRenglones.val(CorteColumnas.val())
+    }
+
     CorteColumnas.val('')
-  
+
   } else {
 
     if ( CortesActivos == 0){
@@ -65,22 +73,19 @@ $('.SeleccionarCorte').on('click', function(){
       $('#NumeroCortesSeleccionados').val(2);   
 
     } else if (CortesActivos == 2){
-
       flipear_boton_corte(CorteRenglones.val())
       CorteRenglones.val(CorteColumnas.val())
-      CorteColumnas.val(CorteSeleccionado.val())   
-
-      // console.log('This is the current corte columnas')
-      // console.log(CorteColumnas.val())
-      // console.log('This is the current corte renglones')
-      // console.log(CorteRenglones.val())
-      
+      CorteColumnas.val(CorteSeleccionado.val())         
     }
 
   }
 
-  flipear_boton_corte(CorteSeleccionado.val());
+  // console.log('This is the current corte columnas')
+  // console.log(CorteColumnas.val())
+  // console.log('This is the current corte renglones')
+  // console.log(CorteRenglones.val())
 
+  flipear_boton_corte(CorteSeleccionado.val());
 });
 
 
@@ -101,7 +106,6 @@ function flipear_boton_corte(nombre_corte) {
   var boton_PlusMinus = $('#boton_' + nombre_corte + '_PlusMinus')
   boton_PlusMinus.toggleClass('btn-primary');
   boton_PlusMinus.toggleClass('btn-default');
-
 };
 
 
@@ -127,8 +131,6 @@ $(document).on('click', '.UpdateChartButton', function(){
 
   start_time = new Date()
   timer()
-
-  $("#left_options_bar").animate({ scrollTop: 0 }, "fast");
   
   $('.opciones_corte').addClass('hidden');
   $('.glyphicon_boton').removeClass('glyphicon-minus');
@@ -184,7 +186,8 @@ $(document).on('click', '.UpdateChartButton', function(){
     console.log('Total de data points en query: ' + raw_data['total_dps'])
     console.log('Total de tiempo requerido para generar chart: '+m.getMinutes()+":"+m.getSeconds())
     console.log('    ')
-    
+    $('#chart_details_div').removeClass('hidden');
+    $("#left_options_bar").animate({ scrollTop: 1000 }, "fast");
   })
 });
 
@@ -253,7 +256,7 @@ function draw_chart(chart_array, chart_type){
       is_stacked = 'percent'
       axis_format = 'percent'
       unidades_denominador_locales = ''
-      chart_units_locales = 'Camo porcentaje del total (%)'
+      chart_units_locales = 'Como porcentaje del total (%)'
     }
 
     $('#unidades_denominador').text(unidades_denominador_locales);
@@ -377,10 +380,6 @@ function transpose_matrix(matrix){
 
 function invertir_renglones(matrix){
 
-  // console.log(' ')
-  // console.log('Orden antes de invertir: ' + $('#orden_matriz').val())
-  // console.log('Invirtiendo renglones...')
-
   var newArray = [matrix[0]],
     arrayLength = matrix.length,
     i;
@@ -395,11 +394,7 @@ function invertir_renglones(matrix){
     $('#orden_matriz').val('original')
   }
 
-  // console.log('Orden despues de invertir: ' + $('#orden_matriz').val())
-  // console.log(' ')
-
   return newArray  
-
 };
 
 
@@ -414,17 +409,21 @@ $('input[type=radio][name=perspectiva_institucion]').on('change',function(){
   } else {
     $('#value_labels_div').removeClass('hidden')
   }
-
 }); 
 
 
-$('input[type=radio][name=chart_type]').on('change',function(){
-  if(chart_array != undefined){
-    chart_type = $('input:radio[name=chart_type]:checked').val();
+$('input[type=radio][name=chart_type]').on('change',function(){    
   
+  if(chart_array != undefined){    
+    chart_type = $('input:radio[name=chart_type]:checked').val();
+    
+    hide_group(opciones_visuales);
+    unhide_group(menus_visibles[chart_type]);
+
     draw_chart(chart_array, chart_type);
   }
 });  
+
 
 $('#value_labels').on('change', function(){
   chart_type = $('input:radio[name=chart_type]:checked').val();  
@@ -569,18 +568,18 @@ var menus_visibles = {
 
   'total':{
     'concentracion_cartera':[],
-    'saldo_total':[],
+    'saldo_total':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
   
     'car_vigente':[],
     'car_vencida':[],
 
-    'creditos':[],
-    'acreditados':[],
+    'creditos':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
+    'acreditados':['[value=sector]'],
     
-    'plazo':[],
-    'tasa':[],
+    'plazo':['[value=destino]', '[value=monto]', '[value=sector]'],
+    'tasa':['[value=destino]', '[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=sector]'],
 
-    'imor':[],
+    'imor':['[value=monto]', '[value=garantia]', '[value=calificacion]', '[value=estado]', '[value=sector]'],
   },
 
   'marginal':{
@@ -597,18 +596,72 @@ var menus_visibles = {
     'tasa':['[value=intervalo]'],
 
     'imor':[],
-  }
+  },
+
+ 'bar_chart':[
+    '#is_transposed_col',
+    '#is_sorted_col',
+    '#is_stacked_col',
+    '#value_labels_div',
+    
+    '#as_delta_col',
+    '#as_percent_col',
+    '#denominador_col'
+  ],
+
+  'pie_chart': [
+    '#is_transposed_col',
+    '#is_sorted_col',
+    
+    '#is_donut_col',
+    '#is_3D_col',
+    
+    '#denominador_col'
+  ],
+  
+  'line_chart': [
+    '#is_transposed_col',
+    '#denominador_col'
+  ],
+  
+  'column_chart': [
+    '#is_transposed_col',
+    '#is_sorted_col',
+    '#is_stacked_col',
+    '#as_delta_col',
+    '#as_percent_col',
+    '#denominador_col'
+  ]
 }
+
+var opciones_visuales = [
+  '#is_transposed_col',
+  '#is_sorted_col',
+  '#is_stacked_col',
+  '#value_labels_div',
+  '#is_donut_col',
+  '#is_3D_col',
+  '#as_delta_col',
+  '#as_percent_col',
+  '#denominador_col'
+]
 
 
 var cortes_incompatibles = {
   'periodo':[],
   'institucion':[],
-  'estado':['moneda', 'estado'],
-  'tec':['intervalo', 'moneda'],
-  'intervalo':['tec', 'estado'],
-  'moneda':['estado', 'tec']  
+  'estado':['moneda', 'estado', 'destino', 'intervalo', 'monto', 'garantia', 'calificacion', 'sector'],
+  'tec':['intervalo', 'monto', 'moneda', 'garantia', 'calificacion', 'sector'],
+  'intervalo':['tec', 'estado', 'destino', 'garantia', 'calificacion', 'sector'],
+  'monto': ['tec', 'estado', 'destino', 'garantia', 'calificacion', 'sector'],
+  'moneda':['estado', 'tec', 'monto', 'garantia', 'calificacion', 'sector'],
+  'destino':['estado', 'intervalo', 'monto', 'garantia', 'calificacion', 'sector'],
+  'garantia':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'calificacion', 'sector'],
+  'calificacion':['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'sector'],
+  'sector': ['estado', 'tec', 'intervalo', 'monto', 'moneda', 'destino', 'garantia', 'calificacion']
 }
+
+
 
 
 function validar_compatibilidad(corte_seleccionado, corte_activo){
@@ -637,11 +690,16 @@ var to_be_hidden = [
   '[value=institucion]', 
   '[value=tec]', 
   '[value=estado]',
-  '[value=intervalo]',  
+  '[value=intervalo]',
+  '[value=monto]',  
   '#tipo_de_grafica',
   '#boton_graficar',
   '#tipo_moneda',
-  '[value=moneda]'
+  '[value=moneda]',
+  '[value=destino]',
+  '[value=garantia]',
+  '[value=calificacion]',
+  '[value=sector]',
 ]
 
 
@@ -650,85 +708,85 @@ var seleccion_default = {
   'saldo_total':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'creditos':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'acreditados':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'car_vigente':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
   
   'car_vencida':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_mn':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_me':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'tasa_i_udis':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'plazo_ponderado':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
 
   'concentracion_cartera':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'line_chart'
   },
 
   'tasa':{
-    'periodos': ['#periodo_201610'],
+    'periodos': ['#periodo_201612'],
     'instituciones': grupo_top7,
     'corte_renglones':'institucion',
     'corte_columnas': 'tec',
@@ -746,12 +804,10 @@ var seleccion_default = {
   'imor':{
     'periodos': grupo_ultimoPeriodo,
     'instituciones': grupo_top7,
-    'corte_renglones':'institucion',
-    'corte_columnas': 'periodo',
+    'corte_renglones':'periodo',
+    'corte_columnas': 'institucion',
     'grafica': 'bar_chart'
   },
-
-
 }
 
 
@@ -871,7 +927,9 @@ function divide_matrix(matrix, denominador){
   
   for(i = 1; i < renglonesMatriz; i++){
       for(var j = 1; j < columnasMatriz; j++){
-          newArray[i].push(matrix[i][j]/parseInt(denominador)*denominador_actual);
+          // newArray[i].push(matrix[i][j]/parseInt(denominador)*denominador_actual);
+          newArray[i].push(parseFloat((matrix[i][j]/parseInt(denominador)*denominador_actual).toFixed(2)));
+          // console.log(parseFloat((matrix[i][j]/parseInt(denominador)*denominador_actual).toFixed(2)));
       };
   };
 
@@ -880,6 +938,7 @@ function divide_matrix(matrix, denominador){
   return newArray
 
 };
+
 
 
 function SumChartRow(chart_row){

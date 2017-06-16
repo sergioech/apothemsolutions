@@ -1,0 +1,43 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<div class="row"> 	
+	<div class="col-xs-2"></div>
+	<div class="col-xs-8"> 
+		<div class="row" style="margin-top: 20px;">
+			<div class="col-xs-12">
+				<form action="{{blob_file_input|safe}}" method="POST" enctype="multipart/form-data">  
+					
+					<div class="row">
+						<div class="col-xs-8">
+							<label>Nombre documento</label>						
+							<input type="text" class="form-control" placeholder="e.g. DocChingon_v13" name="doc_name">
+						</div>
+						
+						<div class="col-xs-2">
+							<input type="file" name="file" id="imgInp" style="margin-top: 20px;" multiple>
+						</div>	
+						
+						<div class="col-xs-2">
+							<input style="margin-top: 25px;" type="submit" class="form-control btn-primary" name="submit" value="Submit">	
+						</div>	
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<label>Lead</label>					
+							<textarea class="form-control" placeholder="e.g. Esto es un ejemplo de lo que podría ser el lead" name="lead" style="font-size:20px;"></textarea>					
+						</div>						
+					</div>
+					
+					<div class="row">									
+							<div class="col-xs-12">								    
+								<img id="blah" src="#" alt="Aqui aparecera la imagen de la slide" />
+							</div>																								
+					</div>									
+				</form>								
+			</div>
+		</div>
+	</div>
+</div>	
+{% endblock %}

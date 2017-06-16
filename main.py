@@ -27,6 +27,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from google.appengine.ext import deferred
 from google.appengine.runtime import DeadlineExceededError
+from google.appengine.api import images
 
 # from google.appengine.api import urlfetch
 # urlfetch.set_default_fetch_deadline(900)
@@ -38,6 +39,7 @@ Usuario = datastore.Usuario
 DatoCNBV = datastore.DatoCNBV
 CsvCNBV = datastore.CsvCNBV
 TablaCNBV = datastore.TablaCNBV
+Slide = datastore.Slide
 
 template_dir = os.path.join(os.path.dirname(__file__), 'html_files')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -121,10 +123,10 @@ class ChartViewer(Handler):
 	def post(self):
 		chart_details = json.loads(self.request.body)
 
-		# print
-		# print 'This are the chart details: '
-		# print chart_details
-		# print
+		print
+		print 'This are the chart details: '
+		print chart_details
+		print
 
 		# chart_details['filtros']['periodo'] = list(reversed(chart_details['filtros']['periodo']))
 
@@ -200,6 +202,8 @@ class ChartViewer(Handler):
 		print
 		print 'This is the chart array'
 		print chart_array
+		logging.info('This is the chart array')
+		logging.info(chart_array)
 		print
 
 		self.response.out.write(json.dumps({
@@ -217,8 +221,16 @@ class ChartViewer(Handler):
 		
 		variable_lead = definiciones['variables_lead'][perspectiva_portafolio][variable]
 		
-		banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8')
-		
+				
+		banco_lead = '' 		
+		if len(bancos) == 1:
+			banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8')
+
+		elif len(bancos) == 2:
+			banco_lead = definiciones['institucion'][bancos[0]].decode('utf-8') + ' y ' + definiciones['institucion'][bancos[1]].decode('utf-8')
+			
+
+
 		cortes_lead = ''
 		if cortes[0] and cortes[1]:
 			cortes_lead = ' por ' + definiciones['cortes'][cortes[0]] + ' y ' + definiciones['cortes'][cortes[1]]
@@ -228,27 +240,30 @@ class ChartViewer(Handler):
 			elif cortes[1]:
 				cortes_lead = 'por ' + definiciones['cortes'][cortes[1]]
 
-
-		if len(bancos) > 1:
-			if len(bancos) == 2:
-				banco_lead += ' y ' + definiciones['institucion'][bancos[1]].decode('utf-8')
-			else:
-				banco_lead += ' y otras ' + str(len(bancos) - 1) + ' instituciones ' 
-
+		conjuncion = ''
+		union_temporal = ''
 		if perspectiva_portafolio == 'total':
-			union_temporal = ' a '
+			if len(periodos) < 3:
+				union_temporal = ' a '
+			if len(bancos) < 3:
+				conjuncion = ' de '
 		else:
-			union_temporal = ' durante '		
+			if len(periodos) < 3:
+				union_temporal = ' durante '
+			if len(bancos) < 3:
+				conjuncion = ' por '		
+
+
 	
-		periodo_lead =  definiciones['periodo_lead'][int(periodos[0])]
-
+		periodo_lead = ''
+		if len(periodos) == 1:
+			periodo_lead =  definiciones['periodo_lead'][int(periodos[0])]
 		if len(periodos) == 2:
-			periodo_lead += ' y ' + definiciones['periodo_lead'][int(periodos[1])]
+			periodo_lead = definiciones['periodo_lead'][int(periodos[0])] + ' y ' + definiciones['periodo_lead'][int(periodos[1])]
 		
-		elif len(periodos) > 2:
-			periodo_lead += ' y otros ' + str(len(periodos) - 1) + ' periodos ' 
 
-		lead = variable_lead + banco_lead + union_temporal + periodo_lead + ' visto ' + cortes_lead
+
+		lead = variable_lead + conjuncion + banco_lead + union_temporal + periodo_lead + ' visto ' + cortes_lead
 		return lead	
 
 	def define_chart_units(self, variable):
@@ -263,7 +278,7 @@ class ChartViewer(Handler):
 
 		return result
 
-		#xx
+		
 	def seleccionar_tabla(self, variable, corte_renglones, corte_columnas, indice_tablas, perspectiva_portafolio):
 
 		new_indice_tablas = []
@@ -274,8 +289,15 @@ class ChartViewer(Handler):
 
 		indice_tablas = new_indice_tablas
 
+		print
+		logging.info('Este es el indice de las tablas: ')
+		logging.info(indice_tablas)
+		print
+
 		if corte_columnas:
 			for tabla in indice_tablas:
+				logging.info(tabla[0])
+
 				variables_validas = tabla[1]
 				cortes_validos = tabla[2]
 				if variable in variables_validas and corte_renglones in cortes_validos and corte_columnas in cortes_validos:
@@ -401,6 +423,7 @@ class ChartViewer(Handler):
 				
 				filtered_query = output_filtro
 
+
 		return filtered_query
 
 	def generar_opciones_de_filtro(self, opciones):
@@ -485,6 +508,101 @@ class CreateAllTables(Handler):
 
 
 
+
+
+class DeckEditor(Handler):
+	@super_civilian_bouncer
+	def get(self):
+		slides = Slide.query().order(Slide.number).fetch()
+		upload_url = blobstore.create_upload_url('/upload_slide')
+		blob_file_input = "{0}".format(upload_url)
+		self.print_html('DeckEditor.html', slides=slides, blob_file_input=blob_file_input)
+
+	def post(self):
+		event_details = json.loads(self.request.body)
+		slide = Slide.get_by_id(int(event_details['slide_id']))
+		user_action = event_details['user_action']
+		
+		if user_action == 'UpdateSlide':
+			attr_key = event_details['attr_key']
+			attr_value = event_details['attr_value']
+			
+			if attr_key == 'lead':
+				slide.lead = attr_value.encode('utf-8')
+			elif attr_key == 'number':
+				slide.number = int(attr_value)
+			elif attr_key == 'tags':
+				tags = []
+				new_tags = attr_value.split(',')
+				valid_tags = diccionarios_CNBV.definiciones['secciones']
+				for tag in new_tags:
+					if tag in valid_tags:
+						tags.append(tag)
+				slide.tags = tags
+			slide.put()
+			self.response.out.write(json.dumps({
+				'message': 'the package has been delivered'
+				}))
+		elif user_action == 'DeleteSlide':
+			blob_key = slide.pic_key
+			slide.key.delete()
+			blob_info = blobstore.BlobInfo.get(blob_key)
+			blob_info.delete()
+			self.response.out.write(json.dumps({
+				'message': 'slide deleted'
+				}))			
+
+
+class ReportViewer(Handler):
+	@super_civilian_bouncer
+	def get(self):
+		slides = Slide.query().order(Slide.number).fetch()
+		secciones = diccionarios_CNBV.opciones['secciones']
+		self.print_html('ReportViewer.html', slides=slides, secciones=secciones)
+
+
+
+class NewSlide(Handler):
+	@super_civilian_bouncer
+	def get(self):
+		upload_url = blobstore.create_upload_url('/upload_slide')
+		blob_file_input = "{0}".format(upload_url)
+		self.print_html('NewSlide.html', blob_file_input=blob_file_input)
+
+
+
+class SlideUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+	# @super_civilian_bouncer
+	def post(self):		
+		uploads = self.get_uploads()
+
+		bulk_upload = False
+		slides_details = diccionarios_CNBV.definiciones['bulk_slide_import']
+		
+		i = 0
+		for upload in uploads:
+
+			if bulk_upload:
+				slide = Slide(			
+					pic_key = upload.key(),
+					pic_url = images.get_serving_url(blob_key=upload.key()),		
+					lead = slides_details[upload.filename][0],
+					tags = slides_details[upload.filename][1],
+					number = i,
+					doc_name = 'Default')			
+			else:
+				slide = Slide(			
+					pic_key = upload.key(),
+					pic_url = images.get_serving_url(blob_key=upload.key()),		
+					lead = 'Lead',
+					tags = [],
+					number = i,
+					doc_name = 'Default')
+			slide.put()
+			i += 1
+		self.redirect('/DeckEditor')
+
+
 class TableViewer(Handler):
 	@super_civilian_bouncer
 	def get(self):
@@ -493,6 +611,40 @@ class TableViewer(Handler):
 		blob_file_input = "{0}".format(upload_url)
 		self.print_html('TableViewer.html', tablas_cnbv=tablas_cnbv, blob_file_input=blob_file_input)
 
+	@super_civilian_bouncer
+	def post(self):
+		event_details = json.loads(self.request.body)
+		table = TablaCNBV.get_by_id(int(event_details['table_id']))
+		user_action = event_details['user_action']
+	
+		if user_action == 'DeleteTable':
+			
+			key_tabla = table.key
+			table_entities = DatoCNBV.query(DatoCNBV.tabla == key_tabla).fetch(limit=500)	
+			rows_to_be_deleted = len(table_entities)
+			
+			if rows_to_be_deleted > 0:
+				self.operate_on_multiple_keys_at_once(table_entities)
+				# table.key.delete()
+				table.registros -= rows_to_be_deleted
+				table.put()
+				self.response.out.write(json.dumps({
+					'message': 'Only rows deleted',
+					'RowsDeleted': rows_to_be_deleted,
+					'RowsLeft': table.registros
+					}))
+
+			if rows_to_be_deleted == 0:	
+				table.key.delete()
+				self.response.out.write(json.dumps({
+					'message': 'Table deleted',
+					'RowsDeleted': 0
+					}))		
+
+	def operate_on_multiple_keys_at_once(self, list_of_entities):
+	    list_of_keys = ndb.put_multi(list_of_entities)
+	    list_of_entities = ndb.get_multi(list_of_keys)
+	    ndb.delete_multi(list_of_keys)
 
 
 class LoadCSV(Handler):
@@ -508,9 +660,8 @@ class LoadCSV(Handler):
 		self.redirect('/')
 
 
-
 class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-	@super_civilian_bouncer
+	# @super_civilian_bouncer
 	def post(self):
 		upload = self.get_uploads()[0]
 		tabla_id = self.request.get('id_tabla')
@@ -524,7 +675,6 @@ class CsvUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 		csv_file.put()		
 
 		self.redirect('/LoadCSV?tabla_id=' + tabla_id + '&csv_id=' + str(csv_file.key.id()))
-
 
 
 class LandingPage(Handler):
@@ -623,10 +773,11 @@ class Accounts(Handler):
 				next_step = 'CheckYourEmail'
 
 				email_receiver = str(usuario.email)
-				email_body = '<a href="apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)+'">Actualizar mi contraseña</a>'
+				email_body = '<a href="apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)+'">Actualizar mi contraseña</a>. Si el hipervínculo no funciona, por favor copie y pegue la siguiente liga en su navegador: apothemsolutions.com/Accounts?user_id='+str(usuario.key.id())+'&user_request=set_new_password&reset_code='+str(usuario.password_hash)
 				mail.send_mail(sender="Apothem@apothem100.appspotmail.com", to=email_receiver, subject="Solicitud para actualizar contraseña de Apothem Solutions", body=email_body, html=email_body) 
 				print
 				print email_body
+				logging.info(email_body)
 
 			else:
 				next_step = 'EnterValidEmail'
@@ -799,10 +950,10 @@ def load_cnbv_csv(tabla_cnbv, csv_cnbv, file_source, start_key, max_iterations, 
 		for a_key in attributes:
 			a_val = raw_dp[i]
 			
-			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo']:				
+			if a_key in ['institucion', 'tec', 'estado', 'tipo_valor', 'cliente', 'moneda', 'intervalo', 'monto', 'destino', 'garantia', 'calificacion', 'sector']:				
 				setattr(new_dp, a_key, values_map[a_key][a_val.decode('utf-8')][1])					
 			
-			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'imor']:
+			elif a_key in ['valor', 'saldo_total', 'creditos', 'acreditados', 'saldo_acum', 'porc_acum', 'tasa', 'plazo', 'vigencia', 'imor']:
 				if a_val == '':
 					a_val = '0'
 				setattr(new_dp, a_key, float(a_val))		
@@ -858,7 +1009,7 @@ def adjust_post_details(post_details):
 app = webapp2.WSGIApplication([
     ('/', LandingPage),
     
-    # ('/FirstUser', FirstUser),
+    ('/FirstUser', FirstUser),
     ('/CrearUsuario', CrearUsuario),
 
     ('/VisualizadorCNBV', ChartViewer),
@@ -867,9 +1018,13 @@ app = webapp2.WSGIApplication([
     ('/LogOut', LogOut),
     ('/Accounts', Accounts),
     
+    ('/NewSlide', NewSlide),
+    ('/DeckEditor', DeckEditor),
+    ('/ReportViewer', ReportViewer),
     ('/NewTable', NewTable),
     ('/TableViewer', TableViewer),
     ('/LoadCSV', LoadCSV),
+    ('/upload_slide', SlideUploadHandler),
     ('/upload_csv', CsvUploadHandler),
     ('/LoadDemoTables', PopulateDemoVersion),
     ('/CreateAllTables', CreateAllTables)

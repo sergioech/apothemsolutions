@@ -10,11 +10,12 @@
 			<div class="col-xs-2"><span style="font-weight: bold;">Registros</span></div>
 			<div class="col-xs-4"><span style="font-weight: bold;">Agregar CSV</span></div>
 		</div>
-		{% for tabla in tablas_cnbv %}
-			<div class="row" style="margin-top: 20px;">
+		{% for tabla in tablas_cnbv %}			
+			<div class="row" id="TableViewerTable" style="margin-top: 20px;" value="{{tabla.key.id()}}">
+				<hr>
 				<div class="col-xs-2"><span>{{tabla.nombre}}</span></div>
 				<div class="col-xs-4"><span> {{tabla.descripcion}}</span></div>
-				<div class="col-xs-2"><span>{{tabla.registros}}</span></div>
+				<div class="col-xs-1"><span id="registros">{{tabla.registros}}</span></div>
 				
 				<div></div>
 				<form action="{{blob_file_input|safe}}" method="POST" enctype="multipart/form-data"> 			
@@ -22,7 +23,9 @@
 					<div class="col-xs-3"><input type="file" name="file"></div>
 					<div class="col-xs-1"><input type="submit" name="submit" value="Submit"></div>
 				</form>
-
+				<div class="col-xs-1">
+					<button type="button" class="btn btn-danger DeleteTableButton" table_name="{{tabla.nombre}}" style=""><span class="glyphicon glyphicon-trash"></span></button>
+				</div>
 			</div>
 		{% endfor %}
 	</div>

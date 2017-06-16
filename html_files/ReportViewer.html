@@ -1,0 +1,39 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<div class="row"> 	
+	<div class="col-xs-3" style="background-color: rgb(240,247,253); height: 650px; overflow-y: auto; overflow-x: hidden;" id="left_options_bar">	
+		<div class="btn-group-vertical" style="margin-top: 30px;">
+			{% for seccion in secciones %}
+				<button type="button" class="btn btn-primary SectionButton" style="margin-bottom: 5px; width: 230px;" seccion_objetivo=".{{seccion[0]}}">{{seccion[1]}}</button>
+			{% endfor %}
+		</div>
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary MovementButton" movement="left"><span class="glyphicon glyphicon-arrow-left"></span></button>
+			<button type="button" class="btn btn-primary MovementButton" movement="right"><span class="glyphicon glyphicon-arrow-right"></span></button>
+		</div>
+<!-- 		<button type="button" class="btn btn-success btn-md" id="" style="width: 220px;"> Descargar reporte <span style="margin-left:2px;" class="glyphicon glyphicon-save-file"></span></button> -->
+	</div>
+
+	<div class="col-xs-9" style="padding-left: 30px;"> 
+		{% for slide in slides %}
+			<div class="row ReportSlide {% if slide.tags[0] != 'S99' %} hidden {% endif %}{% for tag in slide.tags %}{{tag}} {% endfor %}">
+				<div class="col-xs-12">
+					<div class="row" style="margin-top: 30px;"><div class="col-xs-12"><span id="chart_lead" style="font-size: 30px" class="">{{slide.lead}}</span></div></div>
+					<div class="row">
+						<div class="col-xs-12">
+							<img id="" src="{{slide.pic_url}}" alt="" style="max-height: 450px; margin-bottom: 10px margin-top:-10px;" />
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		{% endfor %}	
+	</div>
+</div>	
+{% endblock %}
+
+
+
+
+

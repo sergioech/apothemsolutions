@@ -136,3 +136,157 @@ $('#PasswordResetButton').on('click', function(){
 });
 
 
+function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imgInp").change(function(){
+    readURL(this);
+});
+
+$(document).on('focusin', '.QuickAttributeUpdate', function(){
+	
+	var attr_value = $(this).val();
+
+	$(this).on('focusout', function(){
+		if(attr_value != $(this).val()){
+			var attr_key = $(this).attr("name");
+			var slide = $(this).closest('#DeckEditorSlide');
+			var slide_id = slide.attr("value");
+			
+			console.log(attr_key);
+			console.log(attr_value);
+
+			$.ajax({
+				type: "POST",
+				url: "/DeckEditor",
+				dataType: 'json',
+				data: JSON.stringify({
+					'slide_id': slide_id,
+					'user_action': 'UpdateSlide',
+					'attr_key':attr_key,
+					'attr_value':$(this).val(),
+				})
+			}).done(function(data){console.log(data['message'])})
+		}
+	})
+});
+
+
+$(document).on('click', '.DeleteSlideButton', function(){
+	
+	var slide = $(this).closest('#DeckEditorSlide');
+	var slide_id = slide.attr("value");
+	slide.fadeOut("slow")
+	// slide.addClass('hidden');
+
+	$.ajax({
+		type: "POST",
+		url: "/DeckEditor",
+		dataType: 'json',
+		data: JSON.stringify({
+			'slide_id': slide_id,
+			'user_action': 'DeleteSlide'
+		})
+	}).done(function(data){
+		console.log(data['message']);
+		slide.addClass('hidden');
+		})
+});
+
+
+var past_slide = 0;
+var current_slide = 0;
+var next_slide = 0;
+
+
+function UpdateCurrentNextPreviews(movement){
+	var SeccionActiva = $('.SeccionActiva');
+	var TamanoSeccion = SeccionActiva.length;
+	
+	if(movement == 'right'){
+		past_slide = current_slide
+		current_slide = next_slide
+		
+		if(next_slide + 1 < TamanoSeccion ){
+			next_slide = next_slide + 1
+		}
+	}
+
+	if(movement == 'left'){
+		next_slide = current_slide
+		current_slide = past_slide
+				
+		if(past_slide - 1 >= 0 ){
+			past_slide = past_slide - 1
+		}
+	}
+};
+
+$(document).on('click', '.SectionButton', function(){
+	$('.ReportSlide').addClass('hidden')
+	$('.ReportSlide').removeClass('SeccionActiva')
+	var seccion_objetivo = $(this).attr('seccion_objetivo');
+	console.log(seccion_objetivo);
+	// $(seccion_objetivo).removeClass('hidden')
+	$(seccion_objetivo).addClass('SeccionActiva');
+	$($(seccion_objetivo)[0]).removeClass('hidden');
+
+	past_slide = 0;
+	current_slide = 0;
+	next_slide = 1;
+});
+
+
+
+$('.MovementButton').on('click', function(){
+	var movement = $(this).attr('movement');
+	var SeccionActiva = $('.SeccionActiva');
+	$(SeccionActiva[current_slide]).addClass('hidden');
+
+	if(movement == 'right'){	
+		$(SeccionActiva[next_slide]).removeClass('hidden');		
+	}
+
+	if(movement == 'left'){
+		$(SeccionActiva[past_slide]).removeClass('hidden');	
+	}
+	UpdateCurrentNextPreviews(movement)
+
+});
+
+$(document).on('click', '.DeleteTableButton', function(){
+	
+	var table = $(this).closest('#TableViewerTable');
+	var table_name = $(this).attr("table_name")
+	var table_id = table.attr("value");
+	// table.fadeOut("slow")
+	
+	console.log('This is the table to be deleted:')
+	console.log(table_name)
+
+	$.ajax({
+		type: "POST",
+		url: "/TableViewer",
+		dataType: 'json',
+		data: JSON.stringify({
+			'table_name': table_name,
+			'table_id': table_id,
+			'user_action': 'DeleteTable'
+		})
+	}).done(function(data){
+		console.log(data['message']);
+		console.log(data['RowsDeleted']);
+		console.log(data['RowsLeft'])
+		// table.addClass('hidden');
+		})
+});
